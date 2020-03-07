@@ -1,4 +1,5 @@
 import os from 'os';
+import pageRoutes from './router.config'
 import slash from 'slash2'
 
 const plugins = [
@@ -19,24 +20,10 @@ const plugins = [
     ]
 ]
 
-const routes = [
-    {
-      path: '/',
-      component: '../layouts/BasicLayout',
-      routes: [
-          { path: '/', redirect: '/calculation' },
-          {
-              path: '/calculation',
-              component: './Calculation'
-          }
-      ]
-    }
-  ]
-
 export default {
     plugins,
     treeShaking: true,
-    routes,
+    routes: pageRoutes,
     ignoreMomentLocale: true,
     lessLoaderOptions: {
         javascriptEnabled: true,

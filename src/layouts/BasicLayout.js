@@ -38,14 +38,27 @@ const query = {
 
 class BasicLayout extends React.Component {
     componentDidMount() {
+
+    }
+
+    getContext() {
+        const { location, breadcrumbNameMap } = this.props;
+        return {
+            location,
+            breadcrumbNameMap
+        }
     }
 
     render() {
         const {
-            children
+            children,
+            location: { pathname },
+            isMobile,
+            menuData,
+            breadcrumbNameMap
         } = this.props
 
-        const contentStyle = {}
+        const contentStyle = { paddingTop: 0 }
 
         const layout = (
             <Layout>

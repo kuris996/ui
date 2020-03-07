@@ -5,7 +5,6 @@ import { formatMessage, FormattedMessage } from 'umi-plugin-react/locale';
 import GridContent from '@/components/GridContent'
 import styles from './Calculation.less'
 
-
 class Calculation extends Component {
     render() {
         return (
