@@ -26,14 +26,14 @@ import styles from './TaskList.less'
 class TaskList extends PureComponent {
     state = {}
 
-    componentDidMount() {        
+    componentDidMount() {
     }
 
     render() {
         return (
-            <div>
+            <PageHeaderWrapper title="Список Задач">
                 Hello World!
-            </div>      
+            </PageHeaderWrapper>
         )
     }
 }

@@ -57,7 +57,7 @@ const PageHeaderWrapper = ({
                                             ...value,
                                             ...restProps,
                                             ...(home !== null && {
-                                                home: <FormattedMessage it="menu.home" defaultMessage="Home" />,
+                                                home: <FormattedMessage id="menu.home" defaultMessage="Home" />,
                                             }),
                                         })
                                     }
