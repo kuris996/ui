@@ -38,7 +38,14 @@ const query = {
 
 class BasicLayout extends React.Component {
     componentDidMount() {
-
+        const {
+            dispatch,
+            route: { routes, path },
+        } = this.props;
+        dispatch({
+            type: 'menu/getMenuData',
+            payload: { routes, path},
+        })
     }
 
     getContext() {
@@ -59,11 +66,12 @@ class BasicLayout extends React.Component {
         } = this.props
 
         const contentStyle = { paddingTop: 0 }
-
         const layout = (
             <Layout>
                 <Layout style={{ minHeight: '100vh' }}>
                     <HeaderView
+                        menuData={menuData}
+                        isMobile={isMobile}
                         {...this.props}
                     />
                     <Content className={styles.content} style={contentStyle}>
@@ -89,9 +97,10 @@ class BasicLayout extends React.Component {
     }
 }
 
-export default connect(({  }) => ({
-  }))(props => (
+export default connect(({ menu: menuModel }) => ({
+    menuData: menuModel.menuData
+}))(props => (
     <Media query="(max-width: 599px)">
-      {isMobile => <BasicLayout {...props} isMobile={isMobile} />}
+        {isMobile => <BasicLayout {...props} isMobile={isMobile} />}
     </Media>
-  ));
+));

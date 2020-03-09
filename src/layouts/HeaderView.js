@@ -14,12 +14,19 @@ class HeaderView extends Component {
     };
 
     componentDidMount() {
+        document.addEventListener('scroll', this.handScroll, { passive: true });
     }
 
     componentWillUnmount() {
+        document.removeEventListener('scroll', this.handScroll);
     }
 
+    handScroll = () => {
+        const { visible } = this.state;    
+    };
+
     render() {
+        const { isMobile } = this.props;
         const { visible } = this.state
         const width = '100%'
         const headerView = visible ? (

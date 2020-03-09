@@ -12,6 +12,10 @@ export default {
     },
 
     effects: {
+        *getMenuData({ payload }, { put }) {
+            const { routes, path} = payload;
+
+        }
     },
 
     reducers: {
