@@ -7,7 +7,7 @@ export default [
             { path: '/', redirect: '/task-list' },
             {
                 path: '/task-list',
-                name: 'task-list',
+                name: 'task',
                 component: './TaskList'
             },
         ]

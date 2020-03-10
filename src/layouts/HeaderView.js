@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import router from 'umi/router';
 import styles from './HeaderView.less';
 import TopNavHeader from '@/components/TopNavHeader';
+import GlobalHeader from '@/components/GlobalHeader';
 
 const { Header } = Layout;
 
@@ -21,17 +22,26 @@ class HeaderView extends Component {
         document.removeEventListener('scroll', this.handScroll);
     }
 
+    getHeadWidth = () => {
+        return '100%'
+    }
+
     handScroll = () => {
         const { visible } = this.state;    
     };
 
     render() {
-        const { isMobile } = this.props;
+        const { handleMenuCollapse } = this.props;
         const { visible } = this.state
-        const width = '100%'
+        const width = this.getHeadWidth();
         const headerView = visible ? (
-            <Header style={{ padding: 0, width, zIndex: 2 }}>
-                <TopNavHeader {...this.props} />
+            <Header 
+                style={{ padding: 0, width, zIndex: 3 }}
+                className={styles.fixedHeader}
+            >               
+                <GlobalHeader 
+                    onCollapse={handleMenuCollapse}
+                    {...this.props} />
             </Header>
         ) : null;
         return (

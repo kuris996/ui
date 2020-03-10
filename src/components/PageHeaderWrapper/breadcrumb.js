@@ -64,7 +64,7 @@ const conversionFromProps = props => {
 const conversionFromLocation = (routerLocation, breadcrumbNameMap, props) => {
     const { home } = props;
     // Convert the url to an array
-    const pathSnippets = urlToList(router.pathname);
+    const pathSnippets = urlToList(routerLocation.pathname);
     // Loop data mosaic routing
     const extraBreadcrumbItems = pathSnippets
         .map(url => {

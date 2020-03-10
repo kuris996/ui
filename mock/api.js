@@ -32,7 +32,7 @@ function getFakeTaskList(req, res) {
 
     const count = params.count * 1 || 20
 
-    const result = fakeTaskList(count);
+    const result = fakeTaskList(3);
     sourceData = result;
     return res.json(result);
 }

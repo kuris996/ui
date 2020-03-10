@@ -7,33 +7,34 @@ import classNames from 'classnames';
 import Media from 'react-media';
 import Context from './MenuContext';
 import HeaderView from './HeaderView'
+import SiderMenu from '@/components/SiderMenu';
 import styles from './BasicLayout.less';
 
 const { Content } = Layout;
 
 const query = {
-  'screen-xs': {
-    maxWidth: 575,
-  },
-  'screen-sm': {
-    minWidth: 576,
-    maxWidth: 767,
-  },
-  'screen-md': {
-    minWidth: 768,
-    maxWidth: 991,
-  },
-  'screen-lg': {
-    minWidth: 992,
-    maxWidth: 1199,
-  },
-  'screen-xl': {
-    minWidth: 1200,
-    maxWidth: 1599,
-  },
-  'screen-xxl': {
-    minWidth: 1600,
-  },
+    'screen-xs': {
+        maxWidth: 575,
+    },
+    'screen-sm': {
+        minWidth: 576,
+        maxWidth: 767,
+    },
+    'screen-md': {
+        minWidth: 768,
+        maxWidth: 991,
+    },
+    'screen-lg': {
+        minWidth: 992,
+        maxWidth: 1199,
+    },
+    'screen-xl': {
+        minWidth: 1200,
+        maxWidth: 1599,
+    },
+    'screen-xxl': {
+        minWidth: 1600,
+    },
 };
 
 class BasicLayout extends React.Component {
@@ -56,6 +57,14 @@ class BasicLayout extends React.Component {
         }
     }
 
+    handleMenuCollapse = collapsed => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: 'global/changeLayoutCollapsed',
+            payload: collapsed,
+        });
+    };
+
     render() {
         const {
             children,
@@ -65,15 +74,19 @@ class BasicLayout extends React.Component {
             breadcrumbNameMap
         } = this.props
 
-        const contentStyle = { paddingTop: 0 }
+        const contentStyle = { }
         const layout = (
             <Layout>
+                <SiderMenu 
+                    {...this.props}
+                />
                 <Layout style={{ minHeight: '100vh' }}>
                     <HeaderView
                         menuData={menuData}
+                        handleMenuCollapse={this.handleMenuCollapse}
                         isMobile={isMobile}
                         {...this.props}
-                    />
+                    /> 
                     <Content className={styles.content} style={contentStyle}>
                         {children}
                     </Content>
@@ -83,12 +96,12 @@ class BasicLayout extends React.Component {
 
         return (
             <React.Fragment>
-                <DocumentTitle title="Hello World">
+                <DocumentTitle title={"Ui"}>
                     <ContainerQuery query={query}>
                         {params => (
-                        <Context.Provider>
-                            <div className={classNames(params)}>{layout}</div>
-                        </Context.Provider>
+                            <Context.Provider value={this.getContext()}>
+                                <div className={classNames(params)}>{layout}</div>
+                            </Context.Provider>
                         )}
                     </ContainerQuery>
                 </DocumentTitle>
@@ -97,8 +110,10 @@ class BasicLayout extends React.Component {
     }
 }
 
-export default connect(({ menu: menuModel }) => ({
-    menuData: menuModel.menuData
+export default connect(({ global, menu: menuModel }) => ({
+    collapsed: global.collapsed,
+    menuData: menuModel.menuData,
+    breadcrumbNameMap: menuModel.breadcrumbNameMap
 }))(props => (
     <Media query="(max-width: 599px)">
         {isMobile => <BasicLayout {...props} isMobile={isMobile} />}

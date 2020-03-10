@@ -92,7 +92,7 @@ class TaskList extends PureComponent {
           );
 
         return (
-            <PageHeaderWrapper title="Задачи" >
+            <PageHeaderWrapper title="Расчеты" >
                 <div className={styles.standardList}>
                     <Card
                         className={styles.listCard}
@@ -121,6 +121,7 @@ class TaskList extends PureComponent {
                                     ]}
                                 >
                                     <List.Item.Meta
+                                        style={{ fontWeight: 900 }}
                                         title={<p>{item.calculationType}</p>}
                                     />
                                     <ListContent data={item} />
