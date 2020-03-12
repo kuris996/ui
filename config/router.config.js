@@ -14,6 +14,11 @@ export default [
                         path: '/calculation/task-list',
                         name: 'Список',
                         component: './Calculation/TaskList',
+                    },
+                    {
+                        path: '/calculation/task-form',
+                        name: 'Задача',
+                        component: './Calculation/TaskForm',
                     }
                 ],                
             },

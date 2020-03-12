@@ -143,7 +143,7 @@ class TaskForm extends PureComponent {
                 <Card className={styles.card} bordered={false}>
                     <Form layout="vertical" hideRequiredMark>
                     <Row gutter={16}>
-                            <Col lg={6} md={12} sm={24}>
+                            <Col xl={6} lg={8} md={12} sm={24}>
                                 <Form.Item label={fieldLabels.clientsCalculation} rules={[{ required: true }]}>
                                     <Dragger multiple={false}>
                                         <Button type="dashed" className={styles.uploadButton}>
