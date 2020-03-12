@@ -8,7 +8,7 @@ export default [
             {
                 path: '/calculation',
                 name: 'Расчеты',
-                icon: 'dashboard',
+                icon: 'calculator',
                 routes: [
                     {
                         path: '/calculation/task-list',

@@ -57,6 +57,16 @@ class BasicLayout extends React.Component {
         }
     }
 
+    getLayoutStyle = () => {
+        const{ isMobile, collapsed } = this.props;
+        if (!isMobile) {
+            return {
+                paddingLeft: collapsed ? '80px' : '256px',
+            }
+        }
+        return null
+    }
+
     handleMenuCollapse = collapsed => {
         const { dispatch } = this.props;
         dispatch({
@@ -80,7 +90,11 @@ class BasicLayout extends React.Component {
                 <SiderMenu 
                     {...this.props}
                 />
-                <Layout style={{ minHeight: '100vh' }}>
+                <Layout style={{
+                        ...this.getLayoutStyle(),
+                        minHeight: '100vh' 
+                    }}
+                >
                     <HeaderView
                         menuData={menuData}
                         handleMenuCollapse={this.handleMenuCollapse}

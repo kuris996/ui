@@ -49,6 +49,7 @@ export default class SiderMenu extends PureComponent {
         const defaultProps = collapsed ? {} : { openKeys }
 
         const siderClassName = classNames(styles.sider, {
+            [styles.fixSiderBar]: true,
             [styles.light]: false
         });
 

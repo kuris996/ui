@@ -1,6 +1,7 @@
 import os from 'os';
 import pageRoutes from './router.config'
 import slash from 'slash2'
+import darkTheme from '@ant-design/dark-theme'
 
 const plugins = [
     [
@@ -24,6 +25,9 @@ export default {
     plugins,
     treeShaking: true,
     routes: pageRoutes,
+    theme: {
+        ...darkTheme,
+    },
     ignoreMomentLocale: true,
     lessLoaderOptions: {
         javascriptEnabled: true,
