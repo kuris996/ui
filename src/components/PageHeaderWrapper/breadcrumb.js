@@ -5,6 +5,7 @@ import { formatMessage } from 'umi-plugin-react/locale'
 import { urlToList } from '../_utils/pathTools'
 import { router } from 'dva'
 import { render } from 'react-dom'
+import { menu } from '../../defaultSettings'
 
 // Render the Breadcrumb child node
 const itemRender = (route, params, routes, paths) => {
@@ -21,8 +22,10 @@ const itemRender = (route, params, routes, paths) => {
 
 const renderItemLocal = item => {
     if (item.locale) {
-        const name = formatMessage({id: item.locale, defaultMessage: item.name})
-        return name
+        const name = menu.disableLocal
+            ? item.name
+            : formatMessage({ id: item.locale, defaultMessage: item.name });
+        return name;
     }
     return item.name
 };

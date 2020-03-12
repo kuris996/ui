@@ -67,7 +67,7 @@ const PageHeaderWrapper = ({
                                     <div className={styles.detail}>
                                         <div className={styles.main}>
                                             <div className={styles.row}>
-                                                {content && <div className>{content}</div>}
+                                                {content && <div className={styles.content}>{content}</div>}
                                                 {extraContent && <div className={styles.extraContent}>{extraContent}</div>}
                                             </div>
                                         </div>

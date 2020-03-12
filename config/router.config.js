@@ -4,11 +4,18 @@ export default [
         path: '/',
         component: '../layouts/BasicLayout',
         routes: [
-            { path: '/', redirect: '/task-list' },
+            { path: '/', redirect: '/calculation/task-list', },
             {
-                path: '/task-list',
-                name: 'task',
-                component: './TaskList'
+                path: '/calculation',
+                name: 'Расчеты',
+                icon: 'dashboard',
+                routes: [
+                    {
+                        path: '/calculation/task-list',
+                        name: 'Список',
+                        component: './Calculation/TaskList',
+                    }
+                ],                
             },
         ]
     }

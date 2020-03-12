@@ -1,10 +1,11 @@
 import React, { PureComponent, Suspense } from 'react';
 import { Layout } from 'antd';
 import classNames from 'classnames';
+import { getDefaultCollapsedSubMenus } from '../_utils/menuTools'
 import Link from 'umi/link';
 import styles from './index.less';
 
-const BaseMenu = React.lazy(() => import('./BaseMenu'));
+const BaseMenu = React.lazy(() => import('../BaseMenu'));
 const { Sider } = Layout;
 
 let firstMount = true;
@@ -13,7 +14,7 @@ export default class SiderMenu extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            openKeys: []
+            openKeys: getDefaultCollapsedSubMenus(props)
         }
     }
 
@@ -23,8 +24,23 @@ export default class SiderMenu extends PureComponent {
 
     static getDerivedStateFromProps(props, state) {
         const { pathname, flatMenuKeysLen } = state;
-
+        if (props.location.pathname !== pathname || props.flatMenuKeys.length !== flatMenuKeysLen) {
+            return {
+                pathname: props.location.pathname,
+                flatMenuKeysLen: props.flatMenuKeys.length,
+                openKeys: getDefaultCollapsedSubMenus(props),
+            };
+        }
         return null;
+    }
+
+    isMainMenu = key => {
+        const { menuData } = this.props;
+        return menuData.some(item => {
+            if (key)
+                return item.key === key || item.path === key;
+        })
+        return false;
     }
 
     render() {
@@ -47,7 +63,7 @@ export default class SiderMenu extends PureComponent {
                 className={siderClassName}
             >
                 <div className={styles.logo} id="logo"/>
-                <Suspense fallback={null} >
+                <Suspense fallback={null}>
                     <BaseMenu
                         {...this.props}
                         mode="inline"
