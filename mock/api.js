@@ -38,5 +38,5 @@ function getFakeTaskList(req, res) {
 }
 
 export default {
-    'GET /calculation/api/fake_task_list': getFakeTaskList,
+    'GET /api/fake_task_list': getFakeTaskList,
 }

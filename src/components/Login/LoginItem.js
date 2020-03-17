@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Form, Input, Button, Row, Col } from 'antd'
 import styles from './index.less'
 import ItemMap from './map'
-import LoginContext from './loginContext'
 
 const FormItem = Form.Item;
 
@@ -42,20 +41,16 @@ class WrapFormItem extends Component {
 }
 
 const LoginItem = {};
+
 Object.keys(ItemMap).forEach(key => {
     const item = ItemMap[key];
     LoginItem[key] = props => (
-        <LoginContext.Consumer>
-            {context => (
-                <WrapFormItem
-                    customprops={item.props}
-                    rules={item.rules}
-                    {...props}
-                    type={key}
-                    form={context.form}
-                />
-            )}
-        </LoginContext.Consumer>
+        <WrapFormItem
+            customprops={item.props}
+            rules={item.rules}
+            {...props}
+            type={key}
+        />
     );
 });
 
