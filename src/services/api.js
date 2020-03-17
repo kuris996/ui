@@ -6,5 +6,8 @@ export async function queryFakeTaskList(params) {
 }
 
 export async function fakeAccountLogin(params) {
-    return request(``)
+    return request(`/api/login/account`, {
+        method: 'POST',
+        data: params,
+    });
 }
