@@ -1,6 +1,10 @@
 import { stringify } from 'qs'
 import request from '@/utils/request'
 
+export async function queryFob(params) {
+    return request(`/api/fob?${stringify(params)}`)
+}
+
 export async function queryFakeTaskList(params) {
     return request(`/api/fake_task_list?${stringify(params)}`)
 }

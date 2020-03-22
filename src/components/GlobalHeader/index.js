@@ -27,9 +27,9 @@ export default class GlobalHeader extends PureComponent {
     render() {
         const { collapsed, } = this.props;
         return (
-            <div className={styles.header}>                
+            <div className={styles.header}>
                 <span className={styles.trigger} onClick={this.toggle} >
-                    { collapsed ? (<MenuUnfoldOutlined/>) : (<MenuFoldOutlined/>) }                    
+                    { collapsed ? (<MenuUnfoldOutlined/>) : (<MenuFoldOutlined/>) }
                 </span>
                 <Link to="/" className={styles.logo} key="logo">
                     <h1>Ui</h1>

@@ -43,6 +43,13 @@ export default class SiderMenu extends PureComponent {
         return false;
     }
 
+    handleOpenChange = openKeys => {
+        const moreThanOne = openKeys.filter(openKey => this.isMainMenu(openKey)).length > 1;
+        this.setState({
+            openKeys: moreThanOne ? [openKeys.pop()] : [...openKeys],
+        });
+    };
+
     render() {
         const { collapsed, onCollapse, isMobile} = this.props;
         const { openKeys } = this.state;
@@ -68,6 +75,8 @@ export default class SiderMenu extends PureComponent {
                     <BaseMenu
                         {...this.props}
                         mode="inline"
+                        handleOpenChange={this.handleOpenChange}
+                        onOpenChange={this.handleOpenChange}
                         style={{ padding: '0px 0', width: '100%' }}
                         {...defaultProps}
                     />

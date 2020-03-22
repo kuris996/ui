@@ -142,6 +142,7 @@ export default class BaseMenu extends PureComponent {
                     key="Menu"
                     mode={mode}
                     theme="dark"
+                    onOpenChange={handleOpenChange}
                     selectedKeys={selectedKeys}
                     style={style}
                     className={cls}
