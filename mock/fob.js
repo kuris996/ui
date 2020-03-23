@@ -5,7 +5,8 @@ for (let i = 0; i < 46; ++i) {
     tableListDataSource.push({
         id: i,
         product: "НИТРОАММОФОСКА",
-        date: "2014/1",
+        year: 2014,
+        month: i,
         seller: "АЗОТНАЯ",
         foreign_price: 329.5,
         foreign_costs: 41.085

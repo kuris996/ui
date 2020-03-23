@@ -48,7 +48,7 @@ export default [
                     {
                         path: '/database/logistics-table',
                         name: 'Logistics',
-                        //component: './Database/FOBTable',
+                        component: './Database/LogisticsTable',
                     },
                     {
                         path: '/database/consignee-table',
