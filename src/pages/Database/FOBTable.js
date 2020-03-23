@@ -31,119 +31,135 @@ const FormItem = Form.Item;
 
 const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 
-const CreateForm = props => {
-    const { modalVisible, modalTitle, handleAdd, handleModalVisible } = props;
-    const [form] = Form.useForm();
-    const okHandle = () => {
-        form.validateFields()
-        .then(values => {
-            form.resetFields();
-        })
-        .catch(errorInfo => {
-        })
-    };
-    return (
-        <Modal
-            destroyOnClose
-            title={modalTitle}
-            visible={modalVisible}
-            onOk={okHandle}
-            onCancel={() => handleModalVisible()}
-        >
-            <Form form={form}>
-                <FormItem
-                    labelCol={{ span: 5 }} 
-                    wrapperCol={{ span: 15 }} 
-                    label="Год"
-                    name="year"
-                    hasFeedback
-                    rules={[
-                        {
-                          required: true,
-                          message: "Необходимо указать 'год'",
-                        },
-                    ]}
+class CreateForm extends React.Component {
+    static defaultProps = {
+        modalVisible: false,
+        modalTitle: 'Добавить FOB',
+        handleAdd: () => {},
+        handleUpdate: () => {},
+        handleUpdateModalVisible: () => {},
+    }
+
+    formRef = React.createRef();
+    
+    render() {
+        const { modalVisible, modalTitle, handleAdd, handleUpdate, handleModalVisible } = this.props;
+        const okHandle = () => {
+            this.formRef.current.validateFields()
+            .then(values => {
+                this.formRef.current.resetFields();
+                if (this.props.values && Object.keys(this.props.values).length)
+                    handleUpdate()
+                else
+                    handleAdd();
+            })
+            .catch(errorInfo => {
+            })
+        };
+        const formLayout = {
+            labelCol: { span: 7 },
+            wrapperCol: { span: 13 },
+        };
+        return (
+            <Modal
+                destroyOnClose
+                title={modalTitle}
+                visible={modalVisible}
+                onOk={okHandle}
+                onCancel={() => handleModalVisible()}
+            >
+                <Form ref={this.formRef}
+                    initialValues={ this.props.values }
                 >
-                    <InputNumber />
-                </FormItem>
-                <FormItem 
-                    labelCol={{ span: 5 }} 
-                    wrapperCol={{ span: 15 }} 
-                    label="Месяц"
-                    name="month"
-                    hasFeedback
-                    rules={[
-                        {
-                          required: true,
-                          message: "Необходимо указать 'месяц'",
-                        },
-                    ]}
-                >
-                    <InputNumber />
-                </FormItem>
-                <FormItem 
-                    labelCol={{ span: 5 }} 
-                    wrapperCol={{ span: 15 }} 
-                    label="Продукт"
-                    name="product"
-                    hasFeedback
-                    rules={[
-                        {
-                          required: true,
-                          message: "Необходимо указать 'продукт'",
-                        },
-                    ]}
-                >
-                    <Input />
-                </FormItem>
-                <FormItem 
-                    labelCol={{ span: 5 }} 
-                    wrapperCol={{ span: 15 }} 
-                    label="Продавец"
-                    name="seller"
-                    hasFeedback
-                    rules={[
-                        {
-                          required: true,
-                          message: "Необходимо указать 'продавца'",
-                        },
-                    ]}
-                >
-                    <Input />
-                </FormItem>
-                <FormItem
-                    labelCol={{ span: 5 }} 
-                    wrapperCol={{ span: 15 }} 
-                    label="Цена"
-                    name="foreignPrice"
-                    hasFeedback
-                    rules={[
-                        {
-                          required: true,
-                          message: "Необходимо указать 'цену'",
-                        },
-                    ]}
-                >
-                    <InputNumber />
-                </FormItem>
-                <FormItem 
-                    labelCol={{ span: 5 }} 
-                    wrapperCol={{ span: 15 }} 
-                    label="Расходы"
-                    name="foreignCosts"
-                    hasFeedback
-                    rules={[
-                        {
-                          required: true,
-                          message: "Необходимо указать 'расходы'",
-                        },
-                    ]}
-                >
-                    <InputNumber />
-                </FormItem>
-            </Form>
-        </Modal>
-    )
+                    <FormItem
+                        {...formLayout}
+                        
+                        label="Год"
+                        name="year"
+                        hasFeedback
+                        rules={[
+                            {
+                            required: true,
+                            message: "Необходимо указать 'год'",
+                            },
+                        ]}
+                    >
+                        <InputNumber />
+                    </FormItem>
+                    <FormItem 
+                        {...formLayout}
+                        label="Месяц"
+                        name="month"
+                        hasFeedback
+                        rules={[
+                            {
+                            required: true,
+                            message: "Необходимо указать 'месяц'",
+                            },
+                        ]}
+                    >
+                        <InputNumber />
+                    </FormItem>
+                    <FormItem 
+                        {...formLayout}
+                        label="Продукт"
+                        name="product"
+                        hasFeedback
+                        rules={[
+                            {
+                            required: true,
+                            message: "Необходимо указать 'продукт'",
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </FormItem>
+                    <FormItem 
+                    {...formLayout}
+                        label="Продавец"
+                        name="seller"
+                        hasFeedback
+                        rules={[
+                            {
+                            required: true,
+                            message: "Необходимо указать 'продавца'",
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </FormItem>
+                    <FormItem
+                        {...formLayout}
+                        label="Цена"
+                        name="foreign_price"
+                        hasFeedback
+                        rules={[
+                            {
+                            required: true,
+                            message: "Необходимо указать 'цену'",
+                            },
+                        ]}
+                    >
+                        <InputNumber />
+                    </FormItem>
+                    <FormItem 
+                        {...formLayout}
+                        label="Расходы"
+                        name="foreign_costs"
+                        hasFeedback
+                        rules={[
+                            {
+                            required: true,
+                            message: "Необходимо указать 'расходы'",
+                            },
+                        ]}
+                    >
+                        <InputNumber />
+                    </FormItem>
+                </Form>
+            </Modal>
+        )
+    }
 };
 
 class FOBTable extends PureComponent {
@@ -158,6 +174,11 @@ class FOBTable extends PureComponent {
             dataIndex: 'year',
             sorter: true,
             render: (text, row) => <span>{text + '/' + row.month}</span>
+        },
+        {
+            title: 'Месяц',
+            dataIndex: 'month',
+            sorter: true,
         },
         {
             title: 'Продукт',
@@ -182,20 +203,33 @@ class FOBTable extends PureComponent {
         {
             render: (text, record) => (
                 <Fragment>
-                  <a onClick={() => this.handleModalVisible(true, "Изменить FOB") }>Изменить</a>
+                  <a onClick={() => this.handleUpdateModalVisible(true, record) }>Изменить</a>
                 </Fragment>
             ),
         }
     ];
 
-    handleModalVisible = (visible, title) => {
+    handleModalVisible = (visible) => {
         this.setState({
             modalVisible: !!visible,
-            modalTitle: title
+            modalTitle: "Добавить FOB",
+            formValues: {},
         });
     };
 
+    handleUpdateModalVisible = (visible, record) => {
+        this.setState({
+            modalVisible: !!visible,
+            modalTitle: "Изменить FOB",
+            formValues: record || {},
+        });
+    }
+
     handleAdd = fields => {
+        this.handleModalVisible();
+    };
+
+    handleUpdate = fields => {
         this.handleModalVisible();
     };
 
@@ -241,10 +275,11 @@ class FOBTable extends PureComponent {
             fob: { data },
             loading,
         } = this.props;
-        const { selectedRows, modalVisible, modalTitle } = this.state;
+        const { selectedRows, modalVisible, modalTitle, formValues } = this.state;
 
         const parentMethods = {
             handleAdd: this.handleAdd,
+            handleUpdate: this.handleUpdate,
             handleModalVisible: this.handleModalVisible,
         };
 
@@ -256,7 +291,7 @@ class FOBTable extends PureComponent {
                             <Button 
                                 icon={<PlusOutlined/>} 
                                 type="primary" 
-                                onClick={() => this.handleModalVisible(true, "Добавить FOB")}
+                                onClick={() => this.handleModalVisible(true)}
                             >
                                 Добавить
                             </Button>
@@ -276,7 +311,7 @@ class FOBTable extends PureComponent {
                         />
                     </div>
                 </Card>
-                <CreateForm {...parentMethods} modalVisible={modalVisible} modalTitle={modalTitle} />
+                <CreateForm {...parentMethods} modalVisible={modalVisible} modalTitle={modalTitle} values={formValues} />
             </PageHeaderWrapper>
         )
     }
