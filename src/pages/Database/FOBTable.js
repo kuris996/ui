@@ -46,12 +46,21 @@ class CreateForm extends React.Component {
         const { modalVisible, modalTitle, handleAdd, handleUpdate, handleModalVisible } = this.props;
         const okHandle = () => {
             this.formRef.current.validateFields()
-            .then(values => {
+            .then(fields => {
                 this.formRef.current.resetFields();
-                if (this.props.values && Object.keys(this.props.values).length)
-                    handleUpdate(values)
-                else
-                    handleAdd(values);
+                const { values } = this.props
+                if (values && Object.keys(values).length) {
+                    const formVals = { ...values, ...fields };
+                    this.setState(
+                        {
+                            formVals,
+                        },
+                        () => {
+                            handleUpdate(formVals)
+                        }
+                    )
+                } else
+                    handleAdd(fields);
             })
             .catch(errorInfo => {
             })
@@ -173,7 +182,6 @@ class FOBTable extends PureComponent {
             title: 'Год',
             dataIndex: 'year',
             sorter: true,
-            render: (text, row) => <span>{text + '/' + row.month}</span>
         },
         {
             title: 'Месяц',
@@ -226,12 +234,48 @@ class FOBTable extends PureComponent {
     }
 
     handleAdd = fields => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: 'fob/add',
+            payload: {
+                ...fields,
+            }
+        })
+        message.success('FOB успешно добавлен')
         this.handleModalVisible();
     };
 
     handleUpdate = fields => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: 'fob/update',
+            payload: {
+                ...fields,
+            }
+        })
+        message.success('FOB успешно обновлен')
         this.handleModalVisible();
     };
+
+    handleRemove = () => {
+        const { dispatch } = this.props;
+        const { selectedRows } = this.state;
+        
+        if (selectedRows.length === 0)
+            return;
+
+        dispatch({
+            type: 'fob/remove',
+            payload: {
+                id: selectedRows.map(row => row.id),
+            },
+            callback: () => {
+                this.setState({
+                    selectedRows: [],
+                })
+            }
+        })
+    }
 
     componentDidMount() {
         const { dispatch } = this.props;
@@ -297,7 +341,7 @@ class FOBTable extends PureComponent {
                             </Button>
                             {selectedRows.length > 0 && (
                                 <span>
-                                <Button>Удалить</Button>
+                                <Button onClick={() => this.handleRemove()}>Удалить</Button>
                                 </span>
                             )}
                         </div>

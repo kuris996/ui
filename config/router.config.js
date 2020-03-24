@@ -38,7 +38,7 @@ export default [
             {
                 path: '/database',
                 icon: 'database',
-                name: 'База Данных',
+                name: 'Справочник',
                 routes: [
                     {
                         path: '/database/fob-table',

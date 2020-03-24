@@ -31,7 +31,7 @@ function getTaskList(req, res) {
 
     const count = params.count * 1 || 20
 
-    const result = taskList(count);
+    const result = taskList(2);
     sourceData = result;
     return res.json(result);
 }

@@ -40,7 +40,7 @@ class TaskList extends PureComponent {
 
     render() {
         const {
-            task: { taskList },
+            task: { task },
             loading,
         } = this.props
 
@@ -86,7 +86,7 @@ class TaskList extends PureComponent {
               }
             >
               <a>
-                <DownOutlined />
+                Действие <DownOutlined />
               </a>
             </Dropdown>
           );
@@ -113,7 +113,7 @@ class TaskList extends PureComponent {
                             rowKey="id"
                             loading={loading}
                             pagination={paginationProps}
-                            dataSource={taskList}
+                            dataSource={task}
                             renderItem={item => (
                                 <List.Item
                                     actions={[
