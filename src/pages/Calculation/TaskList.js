@@ -31,7 +31,7 @@ class TaskList extends PureComponent {
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch({
-            type: 'taskList/fetch',
+            type: 'task/fetch',
             payload: {
                 count: 5,
             },
@@ -40,7 +40,7 @@ class TaskList extends PureComponent {
 
     render() {
         const {
-            taskList: { taskList },
+            task: { taskList },
             loading,
         } = this.props
 
@@ -135,7 +135,7 @@ class TaskList extends PureComponent {
     }
 }
 
-export default connect(({ taskList, loading }) => ({
-    taskList,
-    loading: loading.models.taskList
+export default connect(({ task, loading }) => ({
+    task,
+    loading: loading.models.task
 }))(TaskList);

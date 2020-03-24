@@ -1,27 +1,27 @@
-import { queryFakeTaskList } from '@/services/api'
+import { queryTask } from '@/services/api'
 
 export default {
-    namespace: 'taskList',
+    namespace: 'task',
 
     state: {
-        taskList: [],
+        task: [],
     },
 
     effects: {
         *fetch({payload}, { call, put }) {
-            const response = yield call(queryFakeTaskList, payload);
+            const response = yield call(queryTask, payload);
             yield put({
-                type: 'queryTaskList',
+                type: 'queryTask',
                 payload: Array.isArray(response) ? response : [],
             })
         },
     },
 
     reducers: {
-        queryTaskList(state, action) {
+        queryTask(state, action) {
             return {
                 ...state,
-                taskList: action.payload
+                task: action.payload
             }
         },
     },

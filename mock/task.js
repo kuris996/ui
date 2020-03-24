@@ -1,4 +1,3 @@
-import mockjs from 'mockjs'
 
 const calculationTypes = [
     'Ценовые войны',
@@ -10,7 +9,7 @@ const calculationTypes = [
 
 let sourceData;
 
-function fakeTaskList(count) {
+function taskList(count) {
     const list = [];
     for (let i = 0; i < count; ++i) {
         list.push({
@@ -27,16 +26,16 @@ function fakeTaskList(count) {
     return list;
 }
 
-function getFakeTaskList(req, res) {
+function getTaskList(req, res) {
     const params = req.query;
 
     const count = params.count * 1 || 20
 
-    const result = fakeTaskList(3);
+    const result = taskList(count);
     sourceData = result;
     return res.json(result);
 }
 
 export default {
-    'GET /api/fake_task_list': getFakeTaskList,
+    'GET /api/task': getTaskList,
 }

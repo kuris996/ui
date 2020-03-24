@@ -49,9 +49,9 @@ class CreateForm extends React.Component {
             .then(values => {
                 this.formRef.current.resetFields();
                 if (this.props.values && Object.keys(this.props.values).length)
-                    handleUpdate()
+                    handleUpdate(values)
                 else
-                    handleAdd();
+                    handleAdd(values);
             })
             .catch(errorInfo => {
             })
