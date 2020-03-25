@@ -3,8 +3,6 @@ import pathToRegexp from 'path-to-regexp'
 import Link from 'umi/link'
 import { formatMessage } from 'umi-plugin-react/locale'
 import { urlToList } from '../_utils/pathTools'
-import { router } from 'dva'
-import { render } from 'react-dom'
 import { menu } from '../../defaultSettings'
 
 // Render the Breadcrumb child node

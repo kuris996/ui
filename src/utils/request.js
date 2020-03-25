@@ -1,5 +1,4 @@
 import { extend } from 'umi-request'
-import { notification } from 'antd'
 import router from 'umi/router'
 
 const codeMessage = {

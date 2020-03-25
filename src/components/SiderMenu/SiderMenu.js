@@ -2,7 +2,6 @@ import React, { PureComponent, Suspense } from 'react';
 import { Layout } from 'antd';
 import classNames from 'classnames';
 import { getDefaultCollapsedSubMenus } from '../_utils/menuTools'
-import Link from 'umi/link';
 import styles from './index.less';
 
 const BaseMenu = React.lazy(() => import('../BaseMenu'));

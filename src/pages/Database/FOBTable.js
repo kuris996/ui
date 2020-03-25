@@ -1,26 +1,13 @@
 import React, { PureComponent, Fragment } from 'react'
 import { connect } from 'dva'
-import moment from 'moment';
-import Link from 'umi/link';
 import {
-    Row,
-    Col,
     Card,
     Form,
     Input,
-    Select,
-    Icon,
     Button,
-    Dropdown,
-    Menu,
     InputNumber,
-    DatePicker,
     Modal,
-    message,
-    Badge,
-    Divider,
-    Steps,
-    Radio,
+    message
 } from 'antd';
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
@@ -80,58 +67,15 @@ class CreateForm extends React.Component {
                 <Form ref={this.formRef}
                     initialValues={ this.props.values }
                 >
-                    <FormItem
-                        {...formLayout}
-                        
-                        label="Год"
-                        name="year"
-                        hasFeedback
-                        rules={[
-                            {
-                            required: true,
-                            message: "Необходимо указать 'год'",
-                            },
-                        ]}
-                    >
-                        <InputNumber />
-                    </FormItem>
                     <FormItem 
                         {...formLayout}
-                        label="Месяц"
-                        name="month"
-                        hasFeedback
-                        rules={[
-                            {
-                            required: true,
-                            message: "Необходимо указать 'месяц'",
-                            },
-                        ]}
-                    >
-                        <InputNumber />
-                    </FormItem>
-                    <FormItem 
-                        {...formLayout}
-                        label="Продукт"
+                        label="product"
                         name="product"
                         hasFeedback
                         rules={[
                             {
                             required: true,
-                            message: "Необходимо указать 'продукт'",
-                            },
-                        ]}
-                    >
-                        <Input />
-                    </FormItem>
-                    <FormItem 
-                    {...formLayout}
-                        label="Продавец"
-                        name="seller"
-                        hasFeedback
-                        rules={[
-                            {
-                            required: true,
-                            message: "Необходимо указать 'продавца'",
+                            message: "Необходимо указать 'product'",
                             },
                         ]}
                     >
@@ -139,13 +83,14 @@ class CreateForm extends React.Component {
                     </FormItem>
                     <FormItem
                         {...formLayout}
-                        label="Цена"
-                        name="foreign_price"
+                        
+                        label="year"
+                        name="year"
                         hasFeedback
                         rules={[
                             {
                             required: true,
-                            message: "Необходимо указать 'цену'",
+                            message: "Необходимо указать 'year'",
                             },
                         ]}
                     >
@@ -153,17 +98,59 @@ class CreateForm extends React.Component {
                     </FormItem>
                     <FormItem 
                         {...formLayout}
-                        label="Расходы"
+                        label="month"
+                        name="month"
+                        hasFeedback
+                        rules={[
+                            {
+                            required: true,
+                            message: "Необходимо указать 'month'",
+                            },
+                        ]}
+                    >
+                        <InputNumber />
+                    </FormItem>
+                    <FormItem 
+                    {...formLayout}
+                        label="seller"
+                        name="seller"
+                        hasFeedback
+                        rules={[
+                            {
+                            required: true,
+                            message: "Необходимо указать 'seller'",
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </FormItem>
+                    <FormItem
+                        {...formLayout}
+                        label="foreign_price"
+                        name="foreign_price"
+                        hasFeedback
+                        rules={[
+                            {
+                            required: true,
+                            message: "Необходимо указать 'foreign_price'",
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </FormItem>
+                    <FormItem 
+                        {...formLayout}
+                        label="foreign_costs"
                         name="foreign_costs"
                         hasFeedback
                         rules={[
                             {
                             required: true,
-                            message: "Необходимо указать 'расходы'",
+                            message: "Необходимо указать 'foreign_costs'",
                             },
                         ]}
                     >
-                        <InputNumber />
+                        <Input />
                     </FormItem>
                 </Form>
             </Modal>
@@ -179,32 +166,32 @@ class FOBTable extends PureComponent {
 
     columns = [
         {
-            title: 'Год',
-            dataIndex: 'year',
-            sorter: true,
-        },
-        {
-            title: 'Месяц',
-            dataIndex: 'month',
-            sorter: true,
-        },
-        {
-            title: 'Продукт',
+            title: 'product',
             dataIndex: 'product',
             sorter: true,
         },
         {
-            title: 'Продавец',
+            title: 'year',
+            dataIndex: 'year',
+            sorter: true,
+        },
+        {
+            title: 'month',
+            dataIndex: 'month',
+            sorter: true,
+        },
+        {
+            title: 'seller',
             dataIndex: 'seller',
             sorter: true,
         },
         {
-            title: 'Цена',
+            title: 'foreign_price',
             dataIndex: 'foreign_price',
             sorter: true,
         },
         {
-            title: 'Расходы',
+            title: 'foreign_costs',
             dataIndex: 'foreign_costs',
             sorter: true,
         },
@@ -305,7 +292,7 @@ class FOBTable extends PureComponent {
         };
 
         if (sorter.field) {
-            params.sorter = `${sorter.field}_${sorter.order}`;
+            params.sorter = `${sorter.field}-${sorter.order}`;
         }
         
         dispatch({

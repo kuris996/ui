@@ -1,8 +1,5 @@
 import React, { PureComponent } from 'react';
-import { FormattedMessage, formatMessage } from 'umi-plugin-react/locale';
-import { Spin, Tag, Menu, Icon, Avatar, Tooltip, message } from 'antd';
-import moment from 'moment';
-import groupBy from 'lodash/groupBy';
+import { Spin} from 'antd';
 import styles from './index.less';
 
 export default class RightContent extends PureComponent {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { FormattedMessage } from 'umi-plugin-react/locale';
 import Link from 'umi/link'
-import { PageHeader, Tabs, Typography } from 'antd'
+import { PageHeader, Typography } from 'antd'
 import { connect } from 'dva'
 import classNames from 'classnames'
 import GridContent from '@/components/GridContent'
@@ -32,7 +32,7 @@ const PageHeaderWrapper = ({
                        <div className={styles.wrapper}>
                             <div
                                 className={classNames({
-                                    [styles.wide]: true
+                                    [styles.wide]: false
                                 })}
                             >
                                 <PageHeader

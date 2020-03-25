@@ -4,16 +4,13 @@ let tableListDataSource = [];
 for (let i = 0; i < 1; ++i) {
     tableListDataSource.push({
         id: i,
-        product: "НИТРОАММОФОСКА",
-        year: 2014,
-        month: i,
-        seller: "АЗОТНАЯ",
-        foreign_price: 329.5,
-        foreign_costs: 41.085
+        product: "АММОНИЯ СУЛЬФАТ",
+        seller: "ОБШАРОВКА",
+        factory: "КУАЗ"
     })
 }
 
-function getFob(req, res, u) {
+function getFactory(req, res, u) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
         url = req.url; // eslint-disable-line
@@ -64,14 +61,14 @@ function getFob(req, res, u) {
     return res.json(result);
 }
 
-function postFob(req, res, u, b) {
+function postFactory(req, res, u, b) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
         url = req.url; // eslint-disable-line
     }
 
     const body = (b && b.body) || req.body;
-    const { method, id, product, year, month, seller, foreign_price, foreign_costs } = body;
+    const { method, id, product, seller, factory } = body;
 
     switch (method) {
     case 'remove':
@@ -82,11 +79,8 @@ function postFob(req, res, u, b) {
         tableListDataSource.push({
             id: i,
             product,
-            year,
-            month,
             seller,
-            foreign_price,
-            foreign_costs
+            factory
         })
         break;
     case 'update':
@@ -94,11 +88,8 @@ function postFob(req, res, u, b) {
             if (item.id === id) {
                 Object.assign(item, { 
                     product,
-                    year,
-                    month,
                     seller,
-                    foreign_price,
-                    foreign_costs
+                    factory
                 })
                 return item;
             }
@@ -109,10 +100,10 @@ function postFob(req, res, u, b) {
         break;
     }
 
-    return getFob(req, res, u)
+    return getFactory(req, res, u)
 }
 
 export default {
-    'GET /api/fob': getFob,
-    'POST /api/fob': postFob,
+    'GET /api/factory': getFactory,
+    'POST /api/factory': postFactory,
 };

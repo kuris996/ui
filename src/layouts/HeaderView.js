@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Layout, message } from 'antd';
+import { Layout } from 'antd';
 import Animate from 'rc-animate';
 import { connect } from 'dva';
-import router from 'umi/router';
 import styles from './HeaderView.less';
-import TopNavHeader from '@/components/TopNavHeader';
 import GlobalHeader from '@/components/GlobalHeader';
 
 const { Header } = Layout;

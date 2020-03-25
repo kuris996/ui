@@ -5,6 +5,7 @@ import {
     Form,
     Input,
     Button,
+    InputNumber,
     Modal,
     message
 } from 'antd';
@@ -20,7 +21,7 @@ const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
 class CreateForm extends React.Component {
     static defaultProps = {
         modalVisible: false,
-        modalTitle: 'Добавить Region',
+        modalTitle: 'Добавить perevalka_upakovka',
         handleAdd: () => {},
         handleUpdate: () => {},
         handleUpdateModalVisible: () => {},
@@ -68,13 +69,56 @@ class CreateForm extends React.Component {
                 >
                     <FormItem 
                         {...formLayout}
-                        label="station"
-                        name="station"
+                        label="year"
+                        name="year"
                         hasFeedback
                         rules={[
                             {
                             required: true,
-                            message: "Необходимо указать 'station'",
+                            message: "Необходимо указать 'year'",
+                            },
+                        ]}
+                    >
+                        <InputNumber />
+                    </FormItem>
+                    <FormItem
+                        {...formLayout}
+                        
+                        label="month"
+                        name="month"
+                        hasFeedback
+                        rules={[
+                            {
+                            required: true,
+                            message: "Необходимо указать 'month'",
+                            },
+                        ]}
+                    >
+                        <InputNumber />
+                    </FormItem>
+                    <FormItem 
+                        {...formLayout}
+                        label="perevalka_rub"
+                        name="perevalka_rub"
+                        hasFeedback
+                        rules={[
+                            {
+                            required: true,
+                            message: "Необходимо указать 'perevalka_rub'",
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </FormItem>
+                    <FormItem 
+                    {...formLayout}
+                        label="perevalka_dollar"
+                        name="perevalka_dollar"
+                        hasFeedback
+                        rules={[
+                            {
+                            required: true,
+                            message: "Необходимо указать 'perevalka_dollar'",
                             },
                         ]}
                     >
@@ -82,14 +126,27 @@ class CreateForm extends React.Component {
                     </FormItem>
                     <FormItem
                         {...formLayout}
-                        
-                        label="region"
-                        name="region"
+                        label="upakovka_rub"
+                        name="upakovka_rub"
                         hasFeedback
                         rules={[
                             {
                             required: true,
-                            message: "Необходимо указать 'region'",
+                            message: "Необходимо указать 'upakovka_rub'",
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </FormItem>
+                    <FormItem 
+                        {...formLayout}
+                        label="upakovka_dollar"
+                        name="upakovka_dollar"
+                        hasFeedback
+                        rules={[
+                            {
+                            required: true,
+                            message: "Необходимо указать 'upakovka_dollar'",
                             },
                         ]}
                     >
@@ -101,7 +158,7 @@ class CreateForm extends React.Component {
     }
 };
 
-class RegionTable extends PureComponent {
+class PerevalkaUpakovkaTable extends PureComponent {
     state = {
         modalVisible: false,
         selectedRows: [],
@@ -109,13 +166,33 @@ class RegionTable extends PureComponent {
 
     columns = [
         {
-            title: 'station',
-            dataIndex: 'station',
+            title: 'year',
+            dataIndex: 'year',
             sorter: true,
         },
         {
-            title: 'region',
-            dataIndex: 'region',
+            title: 'month',
+            dataIndex: 'month',
+            sorter: true,
+        },
+        {
+            title: 'perevalka_rub',
+            dataIndex: 'perevalka_rub',
+            sorter: true,
+        },
+        {
+            title: 'perevalka_dollar',
+            dataIndex: 'perevalka_dollar',
+            sorter: true,
+        },
+        {
+            title: 'upakovka_rub',
+            dataIndex: 'upakovka_rub',
+            sorter: true,
+        },
+        {
+            title: 'upakovka_dollar',
+            dataIndex: 'upakovka_dollar',
             sorter: true,
         },
         {
@@ -130,7 +207,7 @@ class RegionTable extends PureComponent {
     handleModalVisible = (visible) => {
         this.setState({
             modalVisible: !!visible,
-            modalTitle: "Добавить Region",
+            modalTitle: "Добавить perevalka_upakovka",
             formValues: {},
         });
     };
@@ -138,7 +215,7 @@ class RegionTable extends PureComponent {
     handleUpdateModalVisible = (visible, record) => {
         this.setState({
             modalVisible: !!visible,
-            modalTitle: "Изменить Region",
+            modalTitle: "Изменить perevalka_upakovka",
             formValues: record || {},
         });
     }
@@ -146,24 +223,24 @@ class RegionTable extends PureComponent {
     handleAdd = fields => {
         const { dispatch } = this.props;
         dispatch({
-            type: 'region/add',
+            type: 'perevalka_upakovka/add',
             payload: {
                 ...fields,
             }
         })
-        message.success('Region успешно добавлен')
+        message.success('perevalka_upakovka успешно добавлен')
         this.handleModalVisible();
     };
 
     handleUpdate = fields => {
         const { dispatch } = this.props;
         dispatch({
-            type: 'region/update',
+            type: 'perevalka_upakovka/update',
             payload: {
                 ...fields,
             }
         })
-        message.success('Region успешно обновлен')
+        message.success('perevalka_upakovka успешно обновлен')
         this.handleModalVisible();
     };
 
@@ -175,7 +252,7 @@ class RegionTable extends PureComponent {
             return;
 
         dispatch({
-            type: 'region/remove',
+            type: 'perevalka_upakovka/remove',
             payload: {
                 id: selectedRows.map(row => row.id),
             },
@@ -190,7 +267,7 @@ class RegionTable extends PureComponent {
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch({
-            type: 'region/fetch',
+            type: 'perevalka_upakovka/fetch',
         });
     }
 
@@ -219,14 +296,14 @@ class RegionTable extends PureComponent {
         }
         
         dispatch({
-            type: 'region/fetch',
+            type: 'perevalka_upakovka/fetch',
             payload: params,
         });
     }
 
     render() {
         const {
-            region: { data },
+            perevalka_upakovka: { data },
             loading,
         } = this.props;
         const { selectedRows, modalVisible, modalTitle, formValues } = this.state;
@@ -238,7 +315,7 @@ class RegionTable extends PureComponent {
         };
 
         return (
-            <PageHeaderWrapper title="Region">
+            <PageHeaderWrapper title="perevalka_upakovka">
                 <Card bordered={false}>
                     <div className={styles.tableList}>
                         <div className={styles.tableListOperator}>
@@ -271,7 +348,7 @@ class RegionTable extends PureComponent {
     }
 }
 
-export default connect(({ region, loading }) => ({
-    region,
-    loading: loading.models.region
-}))(RegionTable)
+export default connect(({ perevalka_upakovka, loading }) => ({
+    perevalka_upakovka,
+    loading: loading.models.perevalka_upakovka
+}))(PerevalkaUpakovkaTable)

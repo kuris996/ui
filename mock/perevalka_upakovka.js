@@ -4,16 +4,16 @@ let tableListDataSource = [];
 for (let i = 0; i < 1; ++i) {
     tableListDataSource.push({
         id: i,
-        product: "НИТРОАММОФОСКА",
         year: 2014,
-        month: i,
-        seller: "АЗОТНАЯ",
-        foreign_price: 329.5,
-        foreign_costs: 41.085
+        month: 1,
+        perevalka_rub: 400,
+        perevalka_dollar: 11.839784042339069,
+        upakovka_rub: 300,
+        upakovka_dollar: 8.879838031754302
     })
 }
 
-function getFob(req, res, u) {
+function getPerevalkaUpakovka(req, res, u) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
         url = req.url; // eslint-disable-line
@@ -64,14 +64,14 @@ function getFob(req, res, u) {
     return res.json(result);
 }
 
-function postFob(req, res, u, b) {
+function postPerevalkaUpakovka(req, res, u, b) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
         url = req.url; // eslint-disable-line
     }
 
     const body = (b && b.body) || req.body;
-    const { method, id, product, year, month, seller, foreign_price, foreign_costs } = body;
+    const { method, id, year, month, perevalka_rub, perevalka_dollar, upakovka_rub, upakovka_dollar } = body;
 
     switch (method) {
     case 'remove':
@@ -81,24 +81,24 @@ function postFob(req, res, u, b) {
         const i = tableListDataSource.length + 1;
         tableListDataSource.push({
             id: i,
-            product,
             year,
             month,
-            seller,
-            foreign_price,
-            foreign_costs
+            perevalka_rub,
+            perevalka_dollar,
+            upakovka_rub,
+            upakovka_dollar
         })
         break;
     case 'update':
         tableListDataSource = tableListDataSource.map(item => {
             if (item.id === id) {
                 Object.assign(item, { 
-                    product,
                     year,
                     month,
-                    seller,
-                    foreign_price,
-                    foreign_costs
+                    perevalka_rub,
+                    perevalka_dollar,
+                    upakovka_rub,
+                    upakovka_dollar
                 })
                 return item;
             }
@@ -109,10 +109,10 @@ function postFob(req, res, u, b) {
         break;
     }
 
-    return getFob(req, res, u)
+    return getPerevalkaUpakovka(req, res, u)
 }
 
 export default {
-    'GET /api/fob': getFob,
-    'POST /api/fob': postFob,
+    'GET /api/perevalka_upakovka': getPerevalkaUpakovka,
+    'POST /api/perevalka_upakovka': postPerevalkaUpakovka,
 };

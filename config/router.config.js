@@ -47,24 +47,35 @@ export default [
                     },
                     {
                         path: '/database/logistics-table',
-                        name: 'Logistics',
+                        name: 'logistics',
                         component: './Database/LogisticsTable',
                     },
                     {
                         path: '/database/consignee-table',
-                        name: 'Consignee',
-                        //component: './Database/FOBTable',
+                        name: 'consignee',
+                        component: './Database/ConsigneeTable',
                     },
                     {
+                        path: '/database/region-table',
+                        name: 'region',
+                        component: './Database/RegionTable',
+                    },
+                    {
+                        path: '/database/perevalka_upakovka-table',
+                        name: 'perevalka_upakovka',
+                        component: './Database/PerevalkaUpakovkaTable',
+                    },
+
+                    {
                         path: '/database/factory-table',
-                        name: 'Factory',
-                        //component: './Database/FOBTable',
+                        name: 'factory',
+                        component: './Database/FactoryTable',
                     },
                     {
                         path: '/database/holding-table',
-                        name: 'Holding',
-                        //component: './Database/FOBTable',
-                    }
+                        name: 'holding',
+                        component: './Database/HoldingTable',
+                    },
                 ]
             }
         ]

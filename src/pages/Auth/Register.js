@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'dva';
 import Link from 'umi/link';
-import router from 'umi/router';
-import { Form, Input, Button, Modal, Select, Row, Col, Popover, Progress } from 'antd';
+import { Form, Input, Button } from 'antd';
 import styles from './Register.less';
 
 const FormItem = Form.Item;

@@ -4,16 +4,17 @@ let tableListDataSource = [];
 for (let i = 0; i < 1; ++i) {
     tableListDataSource.push({
         id: i,
-        product: "НИТРОАММОФОСКА",
-        year: 2014,
-        month: i,
-        seller: "АЗОТНАЯ",
-        foreign_price: 329.5,
-        foreign_costs: 41.085
+        consignee: "ООО \"Агрохимия\"",
+        station: "АЗОВ",
+        region: "Ростовская область",
+        holding: "Независимый посредник",
+        GPS_latitude: 47.098506,
+        GPS_longitude: 39.41732,
+        year: 2014
     })
 }
 
-function getFob(req, res, u) {
+function getConsignee(req, res, u) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
         url = req.url; // eslint-disable-line
@@ -64,14 +65,14 @@ function getFob(req, res, u) {
     return res.json(result);
 }
 
-function postFob(req, res, u, b) {
+function postConsignee(req, res, u, b) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
         url = req.url; // eslint-disable-line
     }
 
     const body = (b && b.body) || req.body;
-    const { method, id, product, year, month, seller, foreign_price, foreign_costs } = body;
+    const { method, id, consignee, station, region, holding, GPS_latitude, GPS_longitude, year } = body;
 
     switch (method) {
     case 'remove':
@@ -81,24 +82,26 @@ function postFob(req, res, u, b) {
         const i = tableListDataSource.length + 1;
         tableListDataSource.push({
             id: i,
-            product,
-            year,
-            month,
-            seller,
-            foreign_price,
-            foreign_costs
+            consignee,
+            station,
+            region,
+            holding,
+            GPS_latitude,
+            GPS_longitude,
+            year
         })
         break;
     case 'update':
         tableListDataSource = tableListDataSource.map(item => {
             if (item.id === id) {
                 Object.assign(item, { 
-                    product,
-                    year,
-                    month,
-                    seller,
-                    foreign_price,
-                    foreign_costs
+                    consignee,
+                    station,
+                    region,
+                    holding,
+                    GPS_latitude,
+                    GPS_longitude,
+                    year
                 })
                 return item;
             }
@@ -109,10 +112,10 @@ function postFob(req, res, u, b) {
         break;
     }
 
-    return getFob(req, res, u)
+    return getConsignee(req, res, u)
 }
 
 export default {
-    'GET /api/fob': getFob,
-    'POST /api/fob': postFob,
+    'GET /api/consignee': getConsignee,
+    'POST /api/consignee': postConsignee,
 };

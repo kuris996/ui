@@ -8,12 +8,15 @@ for (let i = 0; i < 1; ++i) {
         year: 2014,
         month: i,
         seller: "АЗОТНАЯ",
-        foreign_price: 329.5,
-        foreign_costs: 41.085
+        buyer: "АБАЗА",
+        tarif_zd_indexed: 74.82952404411724,
+        tarif_auto_indexex: 13658.959252436203,
+        logistics: 74.82952404411724,
+        logistics_no_perevalka: 65.94968601236293,
     })
 }
 
-function getFob(req, res, u) {
+function getLogistics(req, res, u) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
         url = req.url; // eslint-disable-line
@@ -64,14 +67,26 @@ function getFob(req, res, u) {
     return res.json(result);
 }
 
-function postFob(req, res, u, b) {
+function postLogistics(req, res, u, b) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
         url = req.url; // eslint-disable-line
     }
 
     const body = (b && b.body) || req.body;
-    const { method, id, product, year, month, seller, foreign_price, foreign_costs } = body;
+    const {
+        method, 
+        id, 
+        product, 
+        year, 
+        month, 
+        seller, 
+        buyer,
+        tarif_zd_indexed, 
+        tarif_auto_indexex, 
+        logistics, 
+        logistics_no_perevalka
+    } = body;
 
     switch (method) {
     case 'remove':
@@ -85,8 +100,11 @@ function postFob(req, res, u, b) {
             year,
             month,
             seller,
-            foreign_price,
-            foreign_costs
+            buyer,
+            tarif_zd_indexed,
+            tarif_auto_indexex,
+            logistics,
+            logistics_no_perevalka,
         })
         break;
     case 'update':
@@ -97,8 +115,11 @@ function postFob(req, res, u, b) {
                     year,
                     month,
                     seller,
-                    foreign_price,
-                    foreign_costs
+                    buyer,
+                    tarif_zd_indexed,
+                    tarif_auto_indexex,
+                    logistics,
+                    logistics_no_perevalka,
                 })
                 return item;
             }
@@ -109,10 +130,10 @@ function postFob(req, res, u, b) {
         break;
     }
 
-    return getFob(req, res, u)
+    return getLogistics(req, res, u)
 }
 
 export default {
-    'GET /api/fob': getFob,
-    'POST /api/fob': postFob,
+    'GET /api/logistics': getLogistics,
+    'POST /api/logistics': postLogistics,
 };
