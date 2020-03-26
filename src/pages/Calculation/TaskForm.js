@@ -98,7 +98,7 @@ class TaskForm extends PureComponent {
             >
                 <Form ref={this.formRef} layout="vertical" 
                     initialValues={{
-                        PRODUCT : "PRODUCT",
+                        PRODUCT : "СЕЛИТРА АММИАЧНАЯ",
                         DELTAS_STORAGE: "1, 0.5",
                         DELTA_RAILWAY: "1, 0.5",
                         YEARS: "2014, 2015, 2016, 2017, 2018, 2019",

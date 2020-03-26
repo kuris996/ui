@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, createElement } from 'react'
 import moment from 'moment';
 import { connect } from 'dva'
 import {
@@ -11,9 +11,10 @@ import {
 } from 'antd'
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
-import { PlusOutlined, DownOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import styles from './TaskList.less'
-import Redirect from 'umi/redirect';
+import Link from 'umi/link';
+
 
 class TaskList extends PureComponent {
     state = { visible: false, done: false }
@@ -29,6 +30,7 @@ class TaskList extends PureComponent {
         const {
             task: { task },
             loading,
+            linkElement = 'a',
         } = this.props
 
         const { visible, done, current ={} } = this.state;
@@ -57,7 +59,7 @@ class TaskList extends PureComponent {
                 </div>
                 <div className={styles.listContentItem}>
                     <span>Статус</span>
-        <           p>{status}</p>
+                    <p>{status}</p>
                 </div>
             </div>
         );
@@ -72,14 +74,9 @@ class TaskList extends PureComponent {
                         style={{ marginTop: 24 }}
                         bodyStyle={{ padding: '0 32px 40px 32px' }}
                     >
-                        <Button
-                            type="dashed"
-                            style={{ width: '100%', marginBottom: 8 }}
-                            icon={<PlusOutlined/>}
-                            href="task-form"
-                        >
-                            Добавить
-                        </Button>
+                        <Link to={"/calculation/task-form"} style={{ width: '100%', marginBottom: 8 }}>
+                            <PlusOutlined/>  Добавить
+                        </Link>
                         <List
                             size="large"
                             rowKey="id"
