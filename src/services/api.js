@@ -270,6 +270,16 @@ export async function updateHolding(params) {
     task
 */
 
+export async function addTask(params) {
+    return request('/api/task', {
+        method: 'POST',
+        data: {
+            ...params,
+            method: 'add',
+        },
+    });
+}
+
 export async function queryTask(params) {
     return request(`/api/task?${stringify(params)}`)
 }

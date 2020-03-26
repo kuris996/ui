@@ -13,6 +13,7 @@ import {
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import { PlusOutlined, DownOutlined } from '@ant-design/icons';
 import styles from './TaskList.less'
+import Redirect from 'umi/redirect';
 
 class TaskList extends PureComponent {
     state = { visible: false, done: false }
@@ -21,9 +22,6 @@ class TaskList extends PureComponent {
         const { dispatch } = this.props;
         dispatch({
             type: 'task/fetch',
-            payload: {
-                count: 5,
-            },
         });
     }
 
@@ -35,14 +33,9 @@ class TaskList extends PureComponent {
 
         const { visible, done, current ={} } = this.state;
 
-        const editAndDelete = (key, currentItem) => {
-            
-        };
-
         const paginationProps = {
             showSizeChanger: true,
             showQuickJumper: true,
-            pageSize: 5
         };
 
         const ListContent = ({ data: { createdAt, startedAt, finishedAt, percent, status } }) => (
@@ -62,23 +55,12 @@ class TaskList extends PureComponent {
                 <div className={styles.listContentItem}>
                     <Progress percent={percent} status={status} strokeWidth={6} style={{ width: 180 }} />
                 </div>
+                <div className={styles.listContentItem}>
+                    <span>Статус</span>
+        <           p>{status}</p>
+                </div>
             </div>
         );
-
-        const ActionMenu = props => (
-            <Dropdown
-              overlay={
-                <Menu onClick={({ key }) => editAndDelete(key, props.current)}>
-                  <Menu.Item key="edit">Изменить</Menu.Item>
-                  <Menu.Item key="delete">Удалить</Menu.Item>
-                </Menu>
-              }
-            >
-              <a>
-                Действие <DownOutlined />
-              </a>
-            </Dropdown>
-          );
 
         return (
             <PageHeaderWrapper title="Расчеты" >
@@ -94,6 +76,7 @@ class TaskList extends PureComponent {
                             type="dashed"
                             style={{ width: '100%', marginBottom: 8 }}
                             icon={<PlusOutlined/>}
+                            href="task-form"
                         >
                             Добавить
                         </Button>
@@ -101,17 +84,12 @@ class TaskList extends PureComponent {
                             size="large"
                             rowKey="id"
                             loading={loading}
-                            pagination={paginationProps}
                             dataSource={task}
                             renderItem={item => (
-                                <List.Item
-                                    actions={[
-                                        <ActionMenu current={item} />,
-                                    ]}
-                                >
+                                <List.Item>
                                     <List.Item.Meta
                                         style={{ fontWeight: 900 }}
-                                        title={<p>{item.calculationType}</p>}
+                                        title={<p>{item.product}</p>}
                                     />
                                     <ListContent data={item} />
                                 </List.Item>

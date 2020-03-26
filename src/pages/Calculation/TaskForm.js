@@ -7,172 +7,279 @@ import {
     Row,
     Input,
     Select,
+    Checkbox,
+    InputNumber
 } from 'antd';
-import { InboxOutlined } from '@ant-design/icons';
+import { ExclamationCircleOutlined, InboxOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
+import FooterToolbar from '@/components/FooterToolbar'
 import styles from './TaskForm.less'
 import Dragger from 'antd/lib/upload/Dragger';
+import Redirect from 'umi/redirect'
 
 const { Option } = Select;
 
 const fieldLabels = {
-    calculationType: "Расчет:",
-    delta: "Значение дельты:",
-    startPrice: "Стартовая цена:",
-    periodCount: "Количество периодов:",
-    storageCost: "Стоимость хранения на складе:",
-    warehouseAvailabilityRadius: "Радиус доступности клиента до склада:",
-    intialPrice: "Начальная цена:",
-    warehouseMinimumRadius: "Минимальный радиус до склада:",
-    customersDistance: "Расстояние между клиентами:",
-    sigmaRatio: "Коэффициент сигма:",
-    warehouseMaximumRadius: "Максимальный радиус до склада:",
-    shippingRage: "Коэффициент перевозки:",
-    clientsCalculation: "Рсчёт клиентов:",
-    clients: "Клиенты:",
-    warehouseOptimization: "Оптимизация складов:"
+    PRODUCT: "PRODUCT:",
+    DELTAS_STORAGE: "DELTAS_STORAGE:",
+    DELTA_RAILWAY: "DELTA_RAILWAY:",
+    YEARS: "YEARS:",
+    FOB_PRICES: "FOB_PRICES:",
+    RAILWAY_INITIAL_PRICE: "RAILWAY_INITIAL_PRICE:",
+    MAX_RATIO_RAILWAY: "MAX_RATIO_RAILWAY:",
+    STORAGES_BUY_ON_MARKET: "STORAGES_BUY_ON_MARKET:",
+    WH_PREMIUM_RAILWAY: "WH_PREMIUM_RAILWAY:",
+    OVERALL_PREMIA_ADDITION: "OVERALL_PREMIA_ADDITION:",
+    MIN_RADIUS: "MIN_RADIUS:",
+    MAX_RADIUS: "MAX_RADIUS:",
+    CUSTOMER_DISTANCE: "CUSTOMER_DISTANCE:",
+    AVAILABILITY_RADIUS: "AVAILABILITY_RADIUS:",
+    STORAGE_PRICE: "STORAGE_PRICE:",
+    BALANCE_RATIO: "BALANCE_RATIO:",
+    REARRANGE_HOLDINGS: "REARRANGE_HOLDINGS:",
+    SHUFFLE_STORAGE: "SHUFFLE_STORAGE:",
+    SHUFFLE_RAILWAY: "SHUFFLE_RAILWAY:",
+    CORRECTION_FLAG: "CORRECTION_FLAG:",
+    CORRECTION_CORIDOR: "CORRECTION_CORIDOR:"
 }
 
 class TaskForm extends PureComponent {
+    state = {
+        width: '100%'
+    };
+
+    formRef = React.createRef();
+
+    componentDidMount() {
+        window.addEventListener('resize', this.resizeFooterToolbar, { passive: true });
+    }
+    
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.resizeFooterToolbar);
+    }
+
+    resizeFooterToolbar = () => {
+        requestAnimationFrame(() => {
+            const sider = document.querySelectorAll('.ant-layout-sider')[0];
+            if (sider) {
+                const width = `calc(100% - ${sider.style.width})`;
+                const { width: stateWidth } = this.state;
+                if (stateWidth !== width)
+                    this.setState({ width });
+            }
+        });
+    };
+
+    validate = () => {
+        const {
+            dispatch,
+        } = this.props;
+        this.formRef.current.validateFields()
+        .then(fields => {
+            this.formRef.current.resetFields();
+            dispatch({
+                type: 'task/submit',
+                payload: fields,
+            });
+        })
+        .catch(errorInfo => {
+        })
+    };
+
     render() {
+        const { submitting } = this.props;
+        const { width } = this.state;
+
         return (
             <PageHeaderWrapper
                 title="Задача"
+                wrapperClassName={styles.form}
             >
-                <Card className={styles.card} bordered={false}>
-                    <Form layout="vertical" hideRequiredMark>
+                <Form ref={this.formRef} layout="vertical" 
+                    initialValues={{
+                        PRODUCT : "PRODUCT",
+                        DELTAS_STORAGE: "1, 0.5",
+                        DELTA_RAILWAY: "1, 0.5",
+                        YEARS: "2014, 2015, 2016, 2017, 2018, 2019",
+                        FOB_PRICES: "600, 700, 740, 740, 600",
+                        RAILWAY_INITIAL_PRICE: "280",
+                        MAX_RATIO_RAILWAY: "1",
+                        STORAGES_BUY_ON_MARKET: true,
+                        WH_PREMIUM_RAILWAY: "16",
+                        OVERALL_PREMIA_ADDITION: "0",
+                        MIN_RADIUS: 2,
+                        MAX_RADIUS: 2,
+                        CUSTOMER_DISTANCE: "1.8",
+                        AVAILABILITY_RADIUS: 400,
+                        STORAGE_PRICE: 1000000,
+                        BALANCE_RATIO: 1.02,
+                        REARRANGE_HOLDINGS: false,
+                        SHUFFLE_STORAGE: false,
+                        SHUFFLE_RAILWAY: false,
+                        CORRECTION_FLAG: false,
+                        CORRECTION_CORIDOR: "0.075, 0.068, 0.054, 0.056, 0.08, 0.072, 0.067, 0.054, 0.058, 0.062, 0.061, 0.063"
+                    }}
+                >
+                    <Card className={styles.card} bordered={false}>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.calculationType} rules={[{ required: true }]}>
-                                    <Select placeholder="Выберите тип расчета">
-                                        <Option value="1">Ценовые войны</Option>
-                                        <Option value="2">Коалиции</Option>
-                                        <Option value="3">Оптимизация с учётом складов и коалиций</Option>
-                                        <Option value="4">Оптимизация с учётом складов</Option>
-                                        <Option value="5">Оптимизация</Option>
-                                    </Select>
+                                <Form.Item name="PRODUCT" label={fieldLabels.PRODUCT} rules={[{ required: true }]}>
+                                    <Input placeholder="" />
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.delta} rules={[{ required: true }]}>
-                                    <Input placeholder="" prefix="$" />
+                                <Form.Item name="DELTAS_STORAGE" label={fieldLabels.DELTAS_STORAGE} rules={[{ required: true }]}>
+                                    <Input placeholder="" />
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.startPrice} rules={[{ required: true }]}>
-                                    <Input placeholder="" prefix="$"/>
+                                <Form.Item name="DELTA_RAILWAY" label={fieldLabels.YEARS} rules={[{ required: true }]}>
+                                    <Input placeholder="" />
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item rules={[{ required: true }]}>
-                                    <Dragger multiple={false}>
-                                        <Button type="dashed" className={styles.uploadButton}>
-                                            <InboxOutlined style={{fontSize: '28px'}} /> 
-                                            <p>Кликните или перетащите файл</p>
-                                        </Button>
-                                    </Dragger>
+                                <Form.Item name="FOB_PRICES" label={fieldLabels.FOB_PRICES} rules={[{ required: true }]}>
+                                    <Input placeholder="" />
+                                </Form.Item>
+                            </Col>
+                            <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
+                                <Form.Item name="YEARS" label={fieldLabels.YEARS} rules={[{ required: true }]}>
+                                    <Input placeholder="" />
                                 </Form.Item>
                             </Col>
                         </Row>
-                    </Form>
-                </Card>
-                <Card className={styles.card} bordered={false}>
-                    <Form layout="vertical" hideRequiredMark>
+                    </Card>
+                    <Card className={styles.card} bordered={false}>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.periodCount} rules={[{ required: true }]}>
-                                    <Input placeholder="" suffix="месяцы"/>
+                                <Form.Item name="RAILWAY_INITIAL_PRICE" label={fieldLabels.RAILWAY_INITIAL_PRICE} rules={[{ required: true }]}>
+                                    <Input placeholder=""/>
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.storageCost} rules={[{ required: true }]}>
-                                    <Input placeholder="" prefix="$" />
+                                <Form.Item name="MAX_RATIO_RAILWAY" label={fieldLabels.MAX_RATIO_RAILWAY} rules={[{ required: true }]}>
+                                    <Input placeholder="" />
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.warehouseAvailabilityRadius} rules={[{ required: true }]}>
-                                    <Input placeholder="" suffix="км."/>
+                                <Form.Item name="STORAGES_BUY_ON_MARKET" label={fieldLabels.STORAGES_BUY_ON_MARKET}
+                                    valuePropName="checked"
+                                >
+                                    <Checkbox/>
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.intialPrice} rules={[{ required: true }]}>
-                                    <Input placeholder="" prefix="$" />
+                                <Form.Item name="WH_PREMIUM_RAILWAY" label={fieldLabels.WH_PREMIUM_RAILWAY} rules={[{ required: true }]}>
+                                    <InputNumber placeholder="" />
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.warehouseMinimumRadius} rules={[{ required: true }]}>
-                                    <Input placeholder="" suffix="км." />
-                                </Form.Item>
-                            </Col>
-                            <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.customersDistance} rules={[{ required: true }]}>
-                                    <Input placeholder="" suffix="км."/>
+                                <Form.Item name="OVERALL_PREMIA_ADDITION" label={fieldLabels.OVERALL_PREMIA_ADDITION} rules={[{ required: true }]}>
+                                    <InputNumber placeholder=""/>
                                 </Form.Item>
                             </Col>
                         </Row>
+                    </Card>
+                    <Card className={styles.card} bordered={false}>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.sigmaRatio} rules={[{ required: true }]}>
-                                    <Input placeholder=""  suffix="км." />
+                                <Form.Item name="MIN_RADIUS" label={fieldLabels.MIN_RADIUS} rules={[{ required: true }]}>
+                                    <InputNumber placeholder=""/>
                                 </Form.Item>
                             </Col>
-                            <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.warehouseMaximumRadius} rules={[{ required: true }]}>
-                                    <Input placeholder=""  suffix="км." />
+                            <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
+                                <Form.Item name="MAX_RADIUS" label={fieldLabels.MAX_RADIUS} rules={[{ required: true }]}>
+                                    <InputNumber placeholder="" />
                                 </Form.Item>
                             </Col>
-                            <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.shippingRage} rules={[{ required: true }]}>
-                                    <Input placeholder="" prefix="$"/>
+                            <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
+                                <Form.Item name="CUSTOMER_DISTANCE" label={fieldLabels.CUSTOMER_DISTANCE}>
+                                    <Input />
                                 </Form.Item>
                             </Col>
                         </Row>
-                    </Form>
-                </Card>
-                <Card className={styles.card} bordered={false}>
-                    <Form layout="vertical" hideRequiredMark>
-                    <Row gutter={16}>
+
+                        <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.clientsCalculation} rules={[{ required: true }]}>
-                                    <Dragger multiple={false}>
-                                        <Button type="dashed" className={styles.uploadButton}>
-                                            <InboxOutlined style={{fontSize: '28px'}} /> 
-                                            <p>Кликните или перетащите файл</p>
-                                        </Button>
-                                    </Dragger>
+                                <Form.Item name="AVAILABILITY_RADIUS" label={fieldLabels.AVAILABILITY_RADIUS} rules={[{ required: true }]}>
+                                    <InputNumber placeholder="" />
                                 </Form.Item>
                             </Col>
-                            <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.clients} rules={[{ required: true }]}>
-                                    <Dragger multiple={false}>
-                                        <Button type="dashed" className={styles.uploadButton}>
-                                            <InboxOutlined style={{fontSize: '28px'}} /> 
-                                            <p>Кликните или перетащите файл</p>
-                                        </Button>
-                                    </Dragger>
-                                </Form.Item>
-                            </Col>
-                            <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
-                                <Form.Item label={fieldLabels.warehouseOptimization} rules={[{ required: true }]}>
-                                    <Dragger multiple={false}>
-                                        <Button type="dashed" className={styles.uploadButton}>
-                                            <InboxOutlined style={{fontSize: '28px'}} /> 
-                                            <p>Кликните или перетащите файл</p>
-                                        </Button>
-                                    </Dragger>
+                            <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
+                                <Form.Item name="STORAGE_PRICE" label={fieldLabels.STORAGE_PRICE}>
+                                    <InputNumber />
                                 </Form.Item>
                             </Col>
                         </Row>
-                    </Form>
-                </Card>
+
+                        <Row gutter={16}>
+                            <Col xl={6} lg={8} md={12} sm={24}>
+                                <Form.Item name="BALANCE_RATIO" label={fieldLabels.BALANCE_RATIO} rules={[{ required: true }]}>
+                                    <InputNumber placeholder=""/>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Card>
+
+                    <Card className={styles.card} bordered={false}>
+                        <Row gutter={16}>
+                            <Col xl={6} lg={8} md={12} sm={24}>
+                                <Form.Item name="REARRANGE_HOLDINGS" label={fieldLabels.REARRANGE_HOLDINGS}
+                                    valuePropName="checked"
+                                >
+                                    <Checkbox/>
+                                </Form.Item>
+                            </Col>
+                            <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
+                                <Form.Item name="SHUFFLE_STORAGE" label={fieldLabels.SHUFFLE_STORAGE}
+                                    valuePropName="checked"
+                                >
+                                    <Checkbox/>
+                                </Form.Item>
+                            </Col>
+                            <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
+                                <Form.Item name="SHUFFLE_RAILWAY" label={fieldLabels.SHUFFLE_RAILWAY}
+                                    valuePropName="checked"
+                                >
+                                    <Checkbox/>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={16}>
+                            <Col xl={6} lg={8} md={12} sm={24}>
+                                <Form.Item name="CORRECTION_FLAG" label={fieldLabels.CORRECTION_FLAG}
+                                    valuePropName="checked"
+                                >
+                                    <Checkbox/>
+                                </Form.Item>
+                            </Col>
+                            <Col xl={{ span: 14, offset: 2 }} lg={{ span: 14 }} md={12} sm={24}>
+                                <Form.Item name="CORRECTION_CORIDOR" label={fieldLabels.CORRECTION_CORIDOR} rules={[{ required: true }]}>
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Card>
+
+                    <FooterToolbar style={{ width }}>
+                        <Button type="primary" onClick={this.validate} loading={submitting}>
+                            Создать
+                        </Button>
+                    </FooterToolbar>
+                </Form>
+                
             </PageHeaderWrapper>
         )
     }
 }
 
-export default connect()(TaskForm);
+export default connect(({ loading }) => ({
+    submitting: loading.effects['task/submit'],
+}))(TaskForm);
+
