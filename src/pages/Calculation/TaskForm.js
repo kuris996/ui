@@ -6,19 +6,13 @@ import {
     Col,
     Row,
     Input,
-    Select,
     Checkbox,
     InputNumber
 } from 'antd';
-import { ExclamationCircleOutlined, InboxOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import FooterToolbar from '@/components/FooterToolbar'
 import styles from './TaskForm.less'
-import Dragger from 'antd/lib/upload/Dragger';
-import Redirect from 'umi/redirect'
-
-const { Option } = Select;
 
 const fieldLabels = {
     PRODUCT: "PRODUCT:",

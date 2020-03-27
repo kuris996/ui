@@ -1,5 +1,6 @@
 export default [
     // user
+    /*
     {
         path: '/user',
         component: '../layouts/UserLayout',
@@ -9,6 +10,7 @@ export default [
             { path: '/user/register', name: 'Регистрация', component: './Auth/Register' },
         ],
     },
+    */
     // app
     {
         path: '/',
@@ -105,5 +107,4 @@ export default [
             },
         ]
     },
-    
 ]

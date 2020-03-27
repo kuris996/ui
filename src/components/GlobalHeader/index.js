@@ -1,16 +1,11 @@
 import React, { PureComponent } from 'react';
 import Link from 'umi/link';
-import Debounce from 'lodash-decorators/debounce';
 import styles from './index.less';
 import RightContent from '../RightContent';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 
 export default class GlobalHeader extends PureComponent {
-    componentWillUnmount() {
-        this.triggerResizeEvent.cancel();
-    }
     /* eslint-disable*/
-    @Debounce(600)
     triggerResizeEvent() {
         // eslint-disable-line
         const event = document.createEvent('HTMLEvents');
@@ -21,7 +16,6 @@ export default class GlobalHeader extends PureComponent {
     toggle = () => {
         const { collapsed, onCollapse } = this.props;
         onCollapse(!collapsed);
-        this.triggerResizeEvent();
     };
 
     render() {

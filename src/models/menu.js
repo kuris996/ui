@@ -1,6 +1,5 @@
 import memoizeOne from 'memoize-one'
 import isEqual from 'lodash/isEqual'
-import { menu } from '../defaultSettings'
 
 function formatter(data, parentName) {
     if (!data)

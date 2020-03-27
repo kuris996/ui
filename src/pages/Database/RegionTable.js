@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'dva'
 import {
     Card,
@@ -120,9 +120,7 @@ class RegionTable extends PureComponent {
         },
         {
             render: (text, record) => (
-                <Fragment>
                   <a onClick={() => this.handleUpdateModalVisible(true, record) }>Изменить</a>
-                </Fragment>
             ),
         }
     ];

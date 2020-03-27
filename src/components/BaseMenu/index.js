@@ -114,13 +114,10 @@ export default class BaseMenu extends PureComponent {
     render() {
         const {
             openKeys,
-            theme,
             mode,
             location: { pathname },
             className,
             collapsed,
-            layout,
-            flatMenuKeys
         } = this.props;
 
         let selectedKeys = this.getSelectedMenuKeys(pathname);

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Layout } from 'antd';
 import Animate from 'rc-animate';
-import { connect } from 'dva';
 import styles from './HeaderView.less';
 import GlobalHeader from '@/components/GlobalHeader';
 
@@ -24,8 +23,7 @@ class HeaderView extends Component {
         return '100%'
     }
 
-    handScroll = () => {
-        const { visible } = this.state;    
+    handScroll = () => { 
     };
 
     render() {
@@ -36,7 +34,7 @@ class HeaderView extends Component {
             <Header 
                 style={{ padding: 0, width, zIndex: 3 }}
                 className={styles.fixedHeader}
-            >               
+            > 
                 <GlobalHeader 
                     onCollapse={handleMenuCollapse}
                     {...this.props} />
@@ -50,4 +48,4 @@ class HeaderView extends Component {
     }
 }
 
-export default connect(({ }) => ({}))(HeaderView);
+export default (HeaderView);

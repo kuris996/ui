@@ -1,11 +1,14 @@
-import { queryTask, addTask } from '@/services/api'
-import { routerRedux } from 'dva/router';
+import { queryTask, addTask, removeTask } from '@/services/api'
+import { routerRedux } from 'dva';
 
 export default {
     namespace: 'task',
 
     state: {
-        task: [],
+        data: {
+            list: [],
+            pagination: {},
+        },
     },
 
     effects: {
@@ -13,14 +16,14 @@ export default {
             const response = yield call(queryTask, payload);
             yield put({
                 type: 'queryTask',
-                payload: Array.isArray(response) ? response : [],
+                payload: response,
             });
         },
         *appendFetch({payload}, { call, put}) {
             const response = yield call(queryTask, payload);
             yield put({
                 type: 'appendTask',
-                payload: Array.isArray(response) ? response: [],
+                payload: response,
             });
         },
         *submit({ payload }, { call, put }) {
@@ -30,6 +33,15 @@ export default {
                 payload: response
             })
             yield put(routerRedux.push('/calculation/task-list'));
+        },
+        *remove({ payload, callback } , { call, put }) {
+            const response = yield call(removeTask, payload);
+            yield put({
+                type: 'queryTask',
+                payload: response
+            })
+            if (callback)
+                callback();
         }
     },
 

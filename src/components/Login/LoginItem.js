@@ -13,12 +13,6 @@ class WrapFormItem extends Component {
         };
     }
 
-    componentDidMount() {
-    }
-
-    componentWillMount() {
-    }
-
     render() {
         const { count } = this.state;
 

@@ -1,6 +1,7 @@
 import { extend } from 'umi-request'
 import router from 'umi/router'
 
+/*
 const codeMessage = {
     200: 'Хорошо. ',
     201: 'Cоздано.',
@@ -18,11 +19,11 @@ const codeMessage = {
     503: 'Сервис недоступен. ',
     504: 'Шлюз не отвечает. ',
 };
+*/
 
 const errorHandler = error => {
     const { response = {} } = error;
-    const errortext = codeMessage[response.status] || response.statusText;
-    const { status, url } = response;
+    const { status } = response;
 
     if (status === 401) {
         return;

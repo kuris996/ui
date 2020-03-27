@@ -120,9 +120,7 @@ class HoldingTable extends PureComponent {
         },
         {
             render: (text, record) => (
-                <Fragment>
-                  <a onClick={() => this.handleUpdateModalVisible(true, record) }>Изменить</a>
-                </Fragment>
+                <a onClick={() => this.handleUpdateModalVisible(true, record) }>Изменить</a>
             ),
         }
     ];
