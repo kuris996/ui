@@ -128,7 +128,7 @@ class TaskForm extends PureComponent {
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
-                                <Form.Item name="DELTA_RAILWAY" label={fieldLabels.YEARS} rules={[{ required: true }]}>
+                                <Form.Item name="DELTA_RAILWAY" label={fieldLabels.DELTA_RAILWAY} rules={[{ required: true }]}>
                                     <Input placeholder="" />
                                 </Form.Item>
                             </Col>
