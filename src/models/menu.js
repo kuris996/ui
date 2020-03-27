@@ -1,6 +1,5 @@
 import memoizeOne from 'memoize-one'
 import isEqual from 'lodash/isEqual'
-import { formatMessage } from 'umi-plugin-react/locale'
 import { menu } from '../defaultSettings'
 
 function formatter(data, parentName) {
@@ -17,9 +16,7 @@ function formatter(data, parentName) {
             else
                 locale = `menu.${item.name}`;
 
-            const name = menu.disableLocal
-                ? item.name
-                : formatMessage({ id: locale, defaultMessage: item.name });
+            const name = item.name
             const result = {
                 ...item,
                 name,

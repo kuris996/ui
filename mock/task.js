@@ -1,12 +1,4 @@
 
-const calculationTypes = [
-    'Ценовые войны',
-    'Коалиции',
-    'Оптимизация с учётом складов и коалиций',
-    'Оптимизация с учётом складов',
-    'Оптимизация'
-]
-
 let sourceData;
 
 function taskList(count) {
@@ -14,7 +6,7 @@ function taskList(count) {
     for (let i = 0; i < count; ++i) {
         list.push({
             id: `fake-task-list-${i}`,
-            calculationType: calculationTypes[i % 5],
+            product: "НИТРОАММОФОСКА",
             status: ['idle', 'running', 'error', 'finished'][i % 4],
             percent: Math.ceil(Math.random() * 50) + 50,
             updatedAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
