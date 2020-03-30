@@ -20,12 +20,12 @@ export default [
             // calculation
             {
                 path: '/calculation',
-                name: 'Расчеты',
+                name: 'Расчет',
                 icon: 'calculator',
                 routes: [
                     {
                         path: '/calculation/task-list',
-                        name: 'Список',
+                        name: 'Задачи',
                         component: './Calculation/TaskList',
                     },
                     {
@@ -33,53 +33,21 @@ export default [
                         path: '/calculation/task-form',
                         name: 'Задача',
                         component: './Calculation/TaskForm',
-                    }
+                    },
+                    {
+                        path: '/calculation/kit-list',
+                        name: 'Наборы',
+                        component: './Calculation/KitList',
+                    },
+                    {
+                        hideInMenu: true,
+                        path: '/calculation/kit-form',
+                        name: 'Задача',
+                        component: './Calculation/KitForm',
+                    },
                 ],
             },
-            // database
-            {
-                path: '/database',
-                icon: 'database',
-                name: 'Справочник',
-                routes: [
-                    {
-                        path: '/database/fob-table',
-                        name: 'FOB',
-                        component: './Database/FOBTable',
-                    },
-                    {
-                        path: '/database/logistics-table',
-                        name: 'logistics',
-                        component: './Database/LogisticsTable',
-                    },
-                    {
-                        path: '/database/consignee-table',
-                        name: 'consignee',
-                        component: './Database/ConsigneeTable',
-                    },
-                    {
-                        path: '/database/region-table',
-                        name: 'region',
-                        component: './Database/RegionTable',
-                    },
-                    {
-                        path: '/database/perevalka_upakovka-table',
-                        name: 'perevalka_upakovka',
-                        component: './Database/PerevalkaUpakovkaTable',
-                    },
-
-                    {
-                        path: '/database/factory-table',
-                        name: 'factory',
-                        component: './Database/FactoryTable',
-                    },
-                    {
-                        path: '/database/holding-table',
-                        name: 'holding',
-                        component: './Database/HoldingTable',
-                    },
-                ]
-            },
+            
             // exception
             {
                 name: 'exception',

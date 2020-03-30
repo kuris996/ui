@@ -1,20 +1,18 @@
+
 import { parse } from 'url';
 
-let tableListDataSource = [];
+let tableListDataSource = []
 for (let i = 0; i < 1; ++i) {
     tableListDataSource.push({
-        id: i,
-        consignee: "ООО \"Агрохимия\"",
-        station: "АЗОВ",
-        region: "Ростовская область",
-        holding: "Независимый посредник",
-        GPS_latitude: 47.098506,
-        GPS_longitude: 39.41732,
-        year: 2014
+        id: `fake-kit-list-${i}`,
+        status: ['idle', 'running', 'error', 'finished'][i % 4],
+        createdAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
+        startedAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
+        finishedAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
     })
 }
 
-function getConsignee(req, res, u) {
+function getKit(req, res, u) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
         url = req.url; // eslint-disable-line
@@ -45,10 +43,6 @@ function getConsignee(req, res, u) {
         dataSource = filterDataSource;
     }
 
-    if (params.name) {
-        dataSource = dataSource.filter(data => data.name.indexOf(params.name) > -1);
-    }
-
     let pageSize = 10;
     if (params.pageSize) {
         pageSize = params.pageSize * 1;
@@ -58,21 +52,21 @@ function getConsignee(req, res, u) {
         pagination: {
           total: dataSource.length,
           pageSize,
-          current: parseInt(params.currentPage, 10) || 1,
+          currentPage: parseInt(params.currentPage, 10) || 1,
         },
     };
     
     return res.json(result);
 }
 
-function postConsignee(req, res, u, b) {
+function postKit(req, res, u, b) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
         url = req.url; // eslint-disable-line
     }
 
     const body = (b && b.body) || req.body;
-    const { method, id, consignee, station, region, holding, GPS_latitude, GPS_longitude, year } = body;
+    const { method, id,  status, createdAt, startedAt, finishedAt } = body;
 
     switch (method) {
     case 'remove':
@@ -81,29 +75,22 @@ function postConsignee(req, res, u, b) {
     case 'add':
         const i = tableListDataSource.length + 1;
         tableListDataSource.push({
-            id: i,
-            consignee,
-            station,
-            region,
-            holding,
-            GPS_latitude,
-            GPS_longitude,
-            year
+            id: `fake-kit-list-${i}`,
+            status,
+            createdAt,
+            startedAt,
+            finishedAt
         })
         break;
     case 'update':
         tableListDataSource = tableListDataSource.map(item => {
             if (item.id === id) {
                 Object.assign(item, { 
-                    consignee,
-                    station,
-                    region,
-                    holding,
-                    GPS_latitude,
-                    GPS_longitude,
-                    year
+                    status,
+                    createdAt,
+                    startedAt,
+                    finishedAt
                 })
-                return item;
             }
             return item;
         })
@@ -112,10 +99,10 @@ function postConsignee(req, res, u, b) {
         break;
     }
 
-    return getConsignee(req, res, u)
+    return getKit(req, res, u)
 }
 
 export default {
-    'GET /api/consignee': getConsignee,
-    'POST /api/consignee': postConsignee,
-};
+    'GET /api/kit': getKit,
+    'POST /api/kit': postKit,
+}

@@ -12,7 +12,7 @@ import {
 import { connect } from 'dva';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import FooterToolbar from '@/components/FooterToolbar'
-import styles from './TaskForm.less'
+import styles from './styles.less'
 
 const fieldLabels = {
     PRODUCT: "PRODUCT:",
@@ -39,31 +39,7 @@ const fieldLabels = {
 }
 
 class TaskForm extends PureComponent {
-    state = {
-        width: '100%'
-    };
-
     formRef = React.createRef();
-
-    componentDidMount() {
-        window.addEventListener('resize', this.resizeFooterToolbar, { passive: true });
-    }
-    
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.resizeFooterToolbar);
-    }
-
-    resizeFooterToolbar = () => {
-        requestAnimationFrame(() => {
-            const sider = document.querySelectorAll('.ant-layout-sider')[0];
-            if (sider) {
-                const width = `calc(100% - ${sider.style.width})`;
-                const { width: stateWidth } = this.state;
-                if (stateWidth !== width)
-                    this.setState({ width });
-            }
-        });
-    };
 
     validate = () => {
         const {
@@ -83,7 +59,6 @@ class TaskForm extends PureComponent {
 
     render() {
         const { submitting } = this.props;
-        const { width } = this.state;
 
         return (
             <PageHeaderWrapper
@@ -261,7 +236,7 @@ class TaskForm extends PureComponent {
                         </Row>
                     </Card>
 
-                    <FooterToolbar style={{ width }}>
+                    <FooterToolbar>
                         <Button type="primary" onClick={this.validate} loading={submitting}>
                             Создать
                         </Button>
