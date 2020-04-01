@@ -34,12 +34,12 @@ class DraggerWrapper extends PureComponent {
 
                 const { file } = _file
 
-                formData.append('key', 'test/' + file.name)
-                formData.append('file',file);
+                formData.append('key', file.name)
+                formData.append('file', file);
                 
                 reqwest({
                     url: 'https://storage.yandexcloud.net/ui-test',
-                    method: 'post',
+                    method: 'POST',
                     processData: false,
                     data: formData,
                     success: () => {
