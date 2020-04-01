@@ -19,9 +19,7 @@ class UserLayout extends Component {
 
     render() {
         const {
-            children,
-            location: { pathname },
-            breadcrumbNameMap,
+            children
         } = this.props;
         return (
             <DocumentTitle title="User">
@@ -45,6 +43,5 @@ class UserLayout extends Component {
 }
 
 export default connect(({ menu: menuModel }) => ({
-    menuData: menuModel.menuData,
-    breadcrumbNameMap: menuModel.breadcrumbNameMap,
+    menuData: menuModel.menuData
 }))(UserLayout);

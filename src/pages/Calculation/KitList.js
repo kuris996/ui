@@ -142,7 +142,7 @@ class KitList extends PureComponent {
                 <Card bordered={false}>
                     <div className={styles.tableList}>
                         <div className={styles.tableListOperator}>
-                            <Link style={{ marginRight:16 }}>
+                            <Link  to={"/calculation/kit-form"} style={{ marginRight:16 }}>
                                 <PlusOutlined/>  Добавить
                             </Link>
                             {selectedRows.length > 0 && (

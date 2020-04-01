@@ -87,5 +87,4 @@ const PageHeaderWrapper = ({
     )
 }
 
-export default connect(({ }) => ({
-}))(PageHeaderWrapper)
+export default PageHeaderWrapper

@@ -42,7 +42,7 @@ export default [
                     {
                         hideInMenu: true,
                         path: '/calculation/kit-form',
-                        name: 'Задача',
+                        name: 'Набор',
                         component: './Calculation/KitForm',
                     },
                 ],
