@@ -8,6 +8,9 @@ export default {
         data: {
             list: [],
             pagination: {},
+            filters: {
+                status: []
+            }
         },
     },
 
@@ -49,13 +52,13 @@ export default {
         queryTask(state, action) {
             return {
                 ...state,
-                task: action.payload
+                data: action.payload
             }
         },
         appendTask(state, action) {
             return {
                 ...state,
-                task: state.task.concat(action.payload)
+                data: state.task.concat(action.payload)
             }
         }
     },

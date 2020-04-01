@@ -8,6 +8,9 @@ export default {
         data: {
             list: [],
             pagination: {},
+            filters: {
+                status: []
+            }
         },
     },
 
@@ -25,7 +28,7 @@ export default {
                 type: 'save',
                 payload: response
             })
-            yield put(routerRedux.push('/kit/kit-list'));
+            yield put(routerRedux.push('/calculation/kit-list'));
         },
         *remove({ payload, callback } , { call, put }) {
             const response = yield call(removeKit, payload);
@@ -42,7 +45,7 @@ export default {
         save(state, action) {
             return {
                 ...state,
-                kit: action.payload
+                data: action.payload
             }
         },
     },

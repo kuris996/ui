@@ -15,6 +15,27 @@ for (let i = 0; i < 1; ++i) {
     })
 }
 
+let filters = {
+    status: [
+        {
+            text: "idle",
+            value: 'idle'
+        },
+        {
+            text: "running",
+            value: 'running'
+        },
+        {
+            text: "finished",
+            value: 'finished'
+        },
+        {
+            text: "error",
+            value: 'error'
+        },
+    ]
+}
+
 function getTask(req, res, u) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
@@ -61,6 +82,7 @@ function getTask(req, res, u) {
           pageSize,
           current: parseInt(params.currentPage, 10) || 1,
         },
+        filters: filters
     };
     
     return res.json(result);
@@ -74,6 +96,8 @@ function postTask(req, res, u, b) {
 
     const body = (b && b.body) || req.body;
     const { method, id, product, status, percent, updatedAt, createdAt, startedAt, finishedAt } = body;
+
+    console.log("BODY", status, createdAt)
 
     switch (method) {
     case 'remove':

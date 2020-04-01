@@ -242,7 +242,6 @@ class TaskForm extends PureComponent {
                         </Button>
                     </FooterToolbar>
                 </Form>
-                
             </PageHeaderWrapper>
         )
     }

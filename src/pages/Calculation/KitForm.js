@@ -14,6 +14,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import FooterToolbar from '@/components/FooterToolbar'
 import styles from './styles.less'
 import reqwest from 'reqwest';
+import uuid from 'react-uuid'
 
 const { Dragger } = Upload;
 
@@ -75,29 +76,39 @@ class DraggerWrapper extends PureComponent {
 class KitForm extends PureComponent {
     formRef = React.createRef();
 
+    state = {
+        uuid: uuid()
+    }
+
     validate = () => {
-        const {
-            dispatch
-        } = this.props;
+        const { dispatch } = this.props;
+        const { uuid } = this.state;
         this.formRef.current.validateFields()
         .then(fields => {
             this.formRef.current.resetFields();
+            dispatch({
+                type: 'kit/submit',
+                payload: { ...fields, uuid }
+            })
         })
         .catch(errorInfo => {
         })
     }
 
     render() {
+        const { submitting } = this.props;
+        const { uuid } = this.state
         return (
             <PageHeaderWrapper
                 title="Набор"
                 wrapperClassName={styles.form}
+                content={uuid}
             >
                 <Form ref={this.formRef}>
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16} >
                             <Col xl={{ span: 6, offset: 1 }} lg={{ span: 8 }} sm={12} xs={{ span: 24 }}>
-                                <Form.Item name="logistics" label={fieldLabels.logistics} rules={[{ required: true }]}>
+                                <Form.Item name="logistics" label={fieldLabels.logistics} rules={[{ required: false }]}>
                                     <DraggerWrapper>
                                         <p className="ant-upload-drag-icon">
                                             <InboxOutlined />
@@ -109,7 +120,7 @@ class KitForm extends PureComponent {
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} sm={12} xs={{ span: 24 }}>
-                                <Form.Item name="factory" label={fieldLabels.factory} rules={[{ required: true }]}>
+                                <Form.Item name="factory" label={fieldLabels.factory} rules={[{ required: false }]}>
                                     <DraggerWrapper>
                                         <p className="ant-upload-drag-icon">
                                             <InboxOutlined />
@@ -121,7 +132,7 @@ class KitForm extends PureComponent {
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} sm={12} xs={{ span: 24 }}>
-                                <Form.Item name="holding" label={fieldLabels.holding} rules={[{ required: true }]}>
+                                <Form.Item name="holding" label={fieldLabels.holding} rules={[{ required: false }]}>
                                     <DraggerWrapper>
                                         <p className="ant-upload-drag-icon">
                                             <InboxOutlined />
@@ -136,15 +147,16 @@ class KitForm extends PureComponent {
                     </Card>
 
                     <FooterToolbar>
-                        <Button type="primary" onClick={this.validate}>
+                        <Button type="primary" onClick={this.validate} loading={submitting}>
                             Создать
                         </Button>
                     </FooterToolbar>
                 </Form>
             </PageHeaderWrapper>
-            
         )
     }
 }
 
-export default KitForm
+export default connect(({ loading }) => ({
+    submitting: loading.effects['kit/submit'],
+}))(KitForm)

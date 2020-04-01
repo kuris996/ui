@@ -3,25 +3,20 @@ import moment from 'moment';
 import { connect } from 'dva'
 import {
     Card,
-    Dropdown,
-    Button,
-    Menu
+    Button
 } from 'antd'
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
-import { PlusOutlined, DownOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.less'
 import Link from 'umi/link';
 
-const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
+const getValue = obj => Object.keys(obj).map(key => `'${obj[key]}'`).join(',');
 
 class KitList extends PureComponent {
     state = { 
-        visible: false, 
         selectedRows: [] 
     }
-
-    
 
     handleRemove = () => {
         const { dispatch } = this.props;
@@ -59,9 +54,11 @@ class KitList extends PureComponent {
     handleStandardTableChange=(pagination, filtersArg, sorter) => {
         const { dispatch } = this.props;
 
-        let filters = {}
-        Object.keys(filtersArg).reduce((obj, key) => {
-            filters[key] = getValue(filtersArg[key]);
+        const filters = Object.keys(filtersArg).reduce((obj, key) => {
+            const newObj = { ...obj };
+            if (filtersArg[key])
+                newObj[key] = getValue(filtersArg[key]);
+            return newObj;
         }, {})
 
         const params = {
@@ -82,16 +79,16 @@ class KitList extends PureComponent {
     
     render() {
         const {
-            kit: { kit },
+            kit: { data },
             loading,
         } = this.props
         const { selectedRows } = this.state;
 
         const columns = [
             {
-                title: 'ID',
-                dataIndex: 'id',
-                key: 'id',
+                title: 'UUID',
+                dataIndex: 'uuid',
+                key: 'uuid',
                 sorter: true,
             },
             {
@@ -125,13 +122,14 @@ class KitList extends PureComponent {
                 title: 'Статус',
                 dataIndex: 'status',
                 key: 'status',
-                sorter: true
+                sorter: true,
+                filters: data.filters.status
             },
             {
                 key: 'action',
                 render: (text, record) => (
                     <span>
-                        <Link>Подробнее</Link>
+                        <Link to="">Подробнее</Link>
                     </span>
                 )
             }
@@ -154,7 +152,7 @@ class KitList extends PureComponent {
 
                         <StandardTable
                             loading={loading}
-                            data={kit}
+                            data={data}
                             selectedRows={selectedRows}
                             columns={columns}
                             onSelectRow={this.handleSelectRows}

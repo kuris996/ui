@@ -11,47 +11,10 @@ import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.less'
 import Link from 'umi/link';
 
-const getValue = obj => Object.keys(obj).map(key => obj[key]).join(',');
+const getValue = obj => Object.keys(obj).map(key => `'${obj[key]}'`).join(',');
 
 class TaskList extends PureComponent {
     state = { visible: false, selectedRows: [] }
-
-    columns = [
-        {
-            title: 'Продукт',
-            dataIndex: 'product',
-            sorter: true,
-        },
-        {
-            title: 'Создан',
-            dataIndex: 'createdAt',
-            sorter: true,
-            render: (text, record) => (
-                <p>{moment(text).format('YYYY-MM-DD HH:mm')}</p>
-            ),
-        },
-        {
-            title: 'Начал',
-            dataIndex: 'startedAt',
-            sorter: true,
-            render: (text, record) => (
-                <p>{moment(text).format('YYYY-MM-DD HH:mm')}</p>
-            ),
-        },
-        {
-            title: 'Закончил',
-            dataIndex: 'finishedAt',
-            sorter: true,
-            render: (text, record) => (
-                <p>{moment(text).format('YYYY-MM-DD HH:mm')}</p>
-            ),
-        },
-        {
-            title: 'Статус',
-            dataIndex: 'status',
-            sorter: true,
-        }
-    ];
 
     handleRemove = () => {
         const { dispatch } = this.props;
@@ -89,9 +52,11 @@ class TaskList extends PureComponent {
     handleStandardTableChange=(pagination, filtersArg, sorter) => {
         const { dispatch } = this.props;
 
-        let filters = {}
-        Object.keys(filtersArg).reduce((obj, key) => {
-            filters[key] = getValue(filtersArg[key]);
+        const filters = Object.keys(filtersArg).reduce((obj, key) => {
+            const newObj = { ...obj };
+            if (filtersArg[key])
+                newObj[key] = getValue(filtersArg[key]);
+            return newObj;
         }, {})
 
         const params = {
@@ -112,10 +77,49 @@ class TaskList extends PureComponent {
 
     render() {
         const {
-            task: { task },
+            task: { data },
             loading,
         } = this.props
         const { selectedRows } = this.state;
+
+        const columns = [
+            {
+                title: 'Продукт',
+                dataIndex: 'product',
+                sorter: true,
+            },
+            {
+                title: 'Создан',
+                dataIndex: 'createdAt',
+                sorter: true,
+                render: (text, record) => (
+                    <p>{moment(text).format('YYYY-MM-DD HH:mm')}</p>
+                ),
+            },
+            {
+                title: 'Начал',
+                dataIndex: 'startedAt',
+                sorter: true,
+                render: (text, record) => (
+                    <p>{moment(text).format('YYYY-MM-DD HH:mm')}</p>
+                ),
+            },
+            {
+                title: 'Закончил',
+                dataIndex: 'finishedAt',
+                sorter: true,
+                render: (text, record) => (
+                    <p>{moment(text).format('YYYY-MM-DD HH:mm')}</p>
+                ),
+            },
+            {
+                title: 'Статус',
+                dataIndex: 'status',
+                sorter: true,
+                filters: data.filters.status
+            }
+        ];
+
         return (
             <PageHeaderWrapper title="Расчеты" >
                 <Card bordered={false}>
@@ -133,9 +137,9 @@ class TaskList extends PureComponent {
 
                         <StandardTable
                             loading={loading}
-                            data={task}
+                            data={data}
                             selectedRows={selectedRows}
-                            columns={this.columns}
+                            columns={columns}
                             onSelectRow={this.handleSelectRows}
                             onChange={this.handleStandardTableChange}
                         />
