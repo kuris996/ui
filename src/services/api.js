@@ -58,6 +58,14 @@ export async function addKit(params) {
 }
 
 /*
+    input
+*/
+
+export async function queryInput(params) {
+    return request(`/api/input?${stringify(params)}`);
+}
+
+/*
     login
 */
 

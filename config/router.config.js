@@ -45,6 +45,12 @@ export default [
                         name: 'Набор',
                         component: './Calculation/KitForm',
                     },
+                    {
+                        hideInMenu: true,
+                        path: '/calculation/input-list',
+                        name: 'Вводные',
+                        component: './Calculation/InputList',
+                    },
                 ],
             },
             // exception

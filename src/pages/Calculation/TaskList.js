@@ -86,11 +86,13 @@ class TaskList extends PureComponent {
             {
                 title: 'Продукт',
                 dataIndex: 'product',
+                key: 'product',
                 sorter: true,
             },
             {
                 title: 'Создан',
                 dataIndex: 'createdAt',
+                key: 'createdAt',
                 sorter: true,
                 render: (text, record) => (
                     <p>{moment(text).format('YYYY-MM-DD HH:mm')}</p>
@@ -99,6 +101,7 @@ class TaskList extends PureComponent {
             {
                 title: 'Начал',
                 dataIndex: 'startedAt',
+                key: 'startedAt',
                 sorter: true,
                 render: (text, record) => (
                     <p>{moment(text).format('YYYY-MM-DD HH:mm')}</p>
@@ -107,6 +110,7 @@ class TaskList extends PureComponent {
             {
                 title: 'Закончил',
                 dataIndex: 'finishedAt',
+                key: 'finishedAt',
                 sorter: true,
                 render: (text, record) => (
                     <p>{moment(text).format('YYYY-MM-DD HH:mm')}</p>
@@ -115,6 +119,7 @@ class TaskList extends PureComponent {
             {
                 title: 'Статус',
                 dataIndex: 'status',
+                key: 'status',
                 sorter: true,
                 filters: data.filters.status
             }
