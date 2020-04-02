@@ -86,6 +86,12 @@ class KitList extends PureComponent {
 
         const columns = [
             {
+                title: 'Название',
+                dataIndex: 'name',
+                key: 'name',
+                sorter: true
+            },
+            {
                 title: 'UUID',
                 dataIndex: 'uuid',
                 key: 'uuid',

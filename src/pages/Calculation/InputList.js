@@ -51,7 +51,7 @@ class InputList extends PureComponent {
 
         return (
             <PageHeaderWrapper title="Вводные">
-                <Card bordered={false}>
+                <Card className={styles.card} bordered={false}>
                     <div className={styles.tableList}>
                         <Table 
                             loading={loading}

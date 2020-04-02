@@ -15,6 +15,7 @@ import FooterToolbar from '@/components/FooterToolbar'
 import styles from './styles.less'
 
 const fieldLabels = {
+    kit: "Набор",
     PRODUCT: "PRODUCT:",
     DELTAS_STORAGE: "DELTAS_STORAGE:",
     DELTA_RAILWAY: "DELTA_RAILWAY:",
@@ -91,6 +92,16 @@ class TaskForm extends PureComponent {
                     }}
                 >
                     <Card className={styles.card} bordered={false}>
+                        <Row gutter={16} >
+                            <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }}>
+                                <Form.Item name="kit" label={fieldLabels.kit} rules={[{ required: true }]}>
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Card>
+                    
+                    <Card className={styles.card} bordered={false} style={{ marginTop: 24 }}>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
                                 <Form.Item name="PRODUCT" label={fieldLabels.PRODUCT} rules={[{ required: true }]}>

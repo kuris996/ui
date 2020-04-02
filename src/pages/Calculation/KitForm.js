@@ -6,7 +6,8 @@ import {
     Col,
     Row,
     message,
-    Upload
+    Upload,
+    Input
 } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
@@ -19,6 +20,7 @@ import uuid from 'react-uuid'
 const { Dragger } = Upload;
 
 const fieldLabels = {
+    name: "Название:",
     logistics: "logistics:",
     holding: "holding:",
     factory: "factory:"
@@ -104,10 +106,20 @@ class KitForm extends PureComponent {
                 wrapperClassName={styles.form}
                 content={uuid}
             >
-                <Form ref={this.formRef}>
+                <Form ref={this.formRef} layout="vertical" >
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16} >
-                            <Col xl={{ span: 6, offset: 1 }} lg={{ span: 8 }} sm={12} xs={{ span: 24 }}>
+                            <Col xl={{ span: 6, offset: 1 }} lg={8} md={{ span: 12 }} sm={{ span: 24 }}>
+                                <Form.Item name="name" label={fieldLabels.name} rules={[{ required: true }]}>
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Card>
+
+                    <Card className={styles.card} bordered={false} style={{ marginTop: 24 }}>
+                        <Row gutter={16} >
+                            <Col xl={{ span: 6, offset: 1 }} lg={{ span: 8 }} sm={{ span: 12 }} xs={{ span: 24 }}>
                                 <Form.Item name="logistics" label={fieldLabels.logistics} rules={[{ required: false }]}>
                                     <DraggerWrapper>
                                         <p className="ant-upload-drag-icon">
