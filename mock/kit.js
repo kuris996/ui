@@ -5,6 +5,7 @@ let tableListDataSource = []
 for (let i = 0; i < 1; ++i) {
     tableListDataSource.push({
         id: `fake-kit-list-${i}`,
+        name: `name-${1}`,
         uuid: 'uuid',
         status: ['idle', 'running', 'error', 'finished'][i % 4],
         createdAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),

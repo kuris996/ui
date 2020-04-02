@@ -7,12 +7,15 @@ import {
     Row,
     Input,
     Checkbox,
-    InputNumber
+    InputNumber,
+    Select,
 } from 'antd';
 import { connect } from 'dva';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import FooterToolbar from '@/components/FooterToolbar'
 import styles from './styles.less'
+
+const { Option } = Select;
 
 const fieldLabels = {
     kit: "Набор",
@@ -58,8 +61,19 @@ class TaskForm extends PureComponent {
         })
     };
 
+    componentDidMount() {
+        const { dispatch } = this.props;
+        dispatch({
+            type: 'kit/fetch',
+        });
+    }
+
     render() {
-        const { submitting } = this.props;
+        const { 
+            kit: { data }, 
+            loading, 
+            submitting 
+        } = this.props;
 
         return (
             <PageHeaderWrapper
@@ -95,7 +109,13 @@ class TaskForm extends PureComponent {
                         <Row gutter={16} >
                             <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }}>
                                 <Form.Item name="kit" label={fieldLabels.kit} rules={[{ required: true }]}>
-                                    <Input />
+                                    <Select loading={loading}>
+                                        {data.list.map(kit => (
+                                            <Option key={kit.id} value={kit.id}>
+                                                {kit.name}
+                                            </Option>
+                                        ))}
+                                    </Select>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -258,7 +278,9 @@ class TaskForm extends PureComponent {
     }
 }
 
-export default connect(({ loading }) => ({
+export default connect(({kit, loading }) => ({
+    kit,
+    loading: loading.models.kit,
     submitting: loading.effects['task/submit'],
 }))(TaskForm);
 
