@@ -4,7 +4,7 @@ function list() {
     for (let i = 0; i < 5; ++i) {
         list.push({
             key: `fake-list-key-${i}`,
-            size: 1000,
+            size: Math.pow(4 * 1024, i),
             lastModified: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
             url: ""
         })

@@ -7,12 +7,18 @@ import styles from './index.less';
 const BaseMenu = React.lazy(() => import('../BaseMenu'));
 const { Sider } = Layout;
 
+let firstMount = true;
+
 export default class SiderMenu extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
             openKeys: getDefaultCollapsedSubMenus(props)
         }
+    }
+
+    componentDidMount() {
+        firstMount = false;
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -44,7 +50,7 @@ export default class SiderMenu extends PureComponent {
     };
 
     render() {
-        const { collapsed } = this.props;
+        const { collapsed, onCollapse, isMobile } = this.props;
         const { openKeys } = this.state;
         const defaultProps = collapsed ? {} : { openKeys }
 
@@ -59,6 +65,10 @@ export default class SiderMenu extends PureComponent {
                 collapsible
                 collapsed={collapsed}
                 breakpoint="lg"
+                onCollapse={collapse => {
+                    if (firstMount || !isMobile)
+                        onCollapse(collapse);
+                }}
                 width={256}
                 theme={'dark'}
                 className={siderClassName}

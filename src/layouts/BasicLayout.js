@@ -85,7 +85,10 @@ class BasicLayout extends React.Component {
         const contentStyle = { }
         const layout = (
             <Layout>
-                <SiderMenu 
+                <SiderMenu
+                    onCollapse={this.handleMenuCollapse}
+                    menuData={menuData}
+                    isMobile={isMobile}
                     {...this.props}
                 />
                 <Layout style={{

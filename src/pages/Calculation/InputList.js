@@ -25,6 +25,19 @@ class InputList extends PureComponent {
             loading,
         } = this.props
 
+        const renderSize = (value) => {
+            let size = parseInt(value)
+            if (size < 1024)
+                return size + " Б"
+            if (size < 1024 * 1024)
+                return (size / 1024.0).toString() + " КБ"
+            if (size < 1024 * 1024 * 1024)
+                return (size / 1024.0 / 1024.0).toString() + " ГБ"
+            if (size < 1024 * 1024 * 1024 * 1024)
+                return (size / 1024.0 / 1024.0 / 1024.0).toString() + " TБ"
+            return size.toString()
+        }
+
         const columns = [
             {
                 title: 'Имя',
@@ -37,7 +50,10 @@ class InputList extends PureComponent {
             {
                 title: 'Размер',
                 dataIndex: 'size',
-                key: 'size'
+                key: 'size',
+                render: (text, recored) => (
+                    <p>{renderSize(text)}</p>
+                )
             },
             {
                 title: 'Последнее изменение',

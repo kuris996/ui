@@ -11,20 +11,9 @@ class HeaderView extends Component {
         visible: true,
     };
 
-    componentDidMount() {
-        document.addEventListener('scroll', this.handScroll, { passive: true });
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('scroll', this.handScroll);
-    }
-
     getHeadWidth = () => {
         return '100%'
     }
-
-    handScroll = () => { 
-    };
 
     render() {
         const { handleMenuCollapse } = this.props;
