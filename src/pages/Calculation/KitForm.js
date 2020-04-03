@@ -21,9 +21,7 @@ const { Dragger } = Upload;
 
 const fieldLabels = {
     name: "Название:",
-    logistics: "logistics:",
-    holding: "holding:",
-    factory: "factory:"
+    inputs: "Инпуты:",
 }
 
 class DraggerWrapper extends PureComponent {
@@ -54,13 +52,18 @@ class DraggerWrapper extends PureComponent {
                 });
             },
             onRemove: file => {
-                this.setState(state => ({
-                    fileList: [],
-                }));
+                this.setState(state => {
+                    const index = state.fileList.indexOf(file);
+                    const newFileList = state.fileList.slice();
+                    newFileList.splice(index, 1);
+                    return {
+                        fileList: newFileList,
+                    };
+                });
             },
             beforeUpload: file => {
                 this.setState(state => ({
-                    fileList: [file],
+                    fileList: [...state.fileList, file],
                 }));
                 return true;
             },
@@ -99,17 +102,15 @@ class KitForm extends PureComponent {
 
     render() {
         const { submitting } = this.props;
-        const { uuid } = this.state
         return (
             <PageHeaderWrapper
                 title="Набор"
                 wrapperClassName={styles.form}
-                content={uuid}
             >
                 <Form ref={this.formRef} layout="vertical" >
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16} >
-                            <Col xl={{ span: 6, offset: 1 }} lg={8} md={{ span: 12 }} sm={{ span: 24 }}>
+                            <Col xl={{ span: 6, offset: 1 }} lg={{ span: 8 }} sm={{ span: 12 }} xs={{ span: 24 }}>
                                 <Form.Item name="name" label={fieldLabels.name} rules={[{ required: true }]}>
                                     <Input />
                                 </Form.Item>
@@ -120,31 +121,7 @@ class KitForm extends PureComponent {
                     <Card className={styles.card} bordered={false} style={{ marginTop: 24 }}>
                         <Row gutter={16} >
                             <Col xl={{ span: 6, offset: 1 }} lg={{ span: 8 }} sm={{ span: 12 }} xs={{ span: 24 }}>
-                                <Form.Item name="logistics" label={fieldLabels.logistics} rules={[{ required: false }]}>
-                                    <DraggerWrapper>
-                                        <p className="ant-upload-drag-icon">
-                                            <InboxOutlined />
-                                        </p>
-                                        <p className="ant-upload-hint">
-                                            Кликните или перетащите файл в область
-                                        </p>
-                                    </DraggerWrapper>
-                                </Form.Item>
-                            </Col>
-                            <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} sm={12} xs={{ span: 24 }}>
-                                <Form.Item name="factory" label={fieldLabels.factory} rules={[{ required: false }]}>
-                                    <DraggerWrapper>
-                                        <p className="ant-upload-drag-icon">
-                                            <InboxOutlined />
-                                        </p>
-                                        <p className="ant-upload-hint">
-                                            Кликните или перетащите файл в область
-                                        </p>
-                                    </DraggerWrapper>
-                                </Form.Item>
-                            </Col>
-                            <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} sm={12} xs={{ span: 24 }}>
-                                <Form.Item name="holding" label={fieldLabels.holding} rules={[{ required: false }]}>
+                                <Form.Item name="inputs" label={fieldLabels.inputs} rules={[{ required: true }]}>
                                     <DraggerWrapper>
                                         <p className="ant-upload-drag-icon">
                                             <InboxOutlined />

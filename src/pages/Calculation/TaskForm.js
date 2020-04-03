@@ -125,9 +125,7 @@ class TaskForm extends PureComponent {
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16} >
                             <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }}>
-                                <Form.Item name="kit" label={fieldLabels.kit} rules={[{ required: true }]}
-                                    help={uuid}
-                                >
+                                <Form.Item name="kit" label={fieldLabels.kit} rules={[{ required: true }]}>
                                     <Select loading={loading} onChange={this.handleKitChange} >
                                         { data.list.map(kit => (
                                             <Option key={kit.id} value={kit.id}>

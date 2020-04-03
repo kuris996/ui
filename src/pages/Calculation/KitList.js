@@ -92,12 +92,6 @@ class KitList extends PureComponent {
                 sorter: true
             },
             {
-                title: 'UUID',
-                dataIndex: 'uuid',
-                key: 'uuid',
-                sorter: true,
-            },
-            {
                 title: 'Создан',
                 dataIndex: 'createdAt',
                 key: 'createdAt',
