@@ -45,6 +45,10 @@ const fieldLabels = {
 class TaskForm extends PureComponent {
     formRef = React.createRef();
 
+    state = {
+        uuid: ""
+    }
+
     validate = () => {
         const {
             dispatch,
@@ -62,18 +66,31 @@ class TaskForm extends PureComponent {
     };
 
     componentDidMount() {
-        const { dispatch } = this.props;
+        const { dispatch, kit } = this.props;
+        const { data } = kit 
         dispatch({
             type: 'kit/fetch',
         });
     }
 
+    handleKitChange = (value) => {
+        const { kit : {data} } = this.props;
+        const k = data.list.find( n => n.id === value )
+        this.setState({
+            uuid: k.uuid
+        });
+    }
+
     render() {
         const { 
-            kit: { data }, 
+            kit : { data }, 
             loading, 
             submitting 
         } = this.props;
+
+        const {
+            uuid
+        } = this.state;
 
         return (
             <PageHeaderWrapper
@@ -108,9 +125,11 @@ class TaskForm extends PureComponent {
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16} >
                             <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }}>
-                                <Form.Item name="kit" label={fieldLabels.kit} rules={[{ required: true }]}>
-                                    <Select loading={loading}>
-                                        {data.list.map(kit => (
+                                <Form.Item name="kit" label={fieldLabels.kit} rules={[{ required: true }]}
+                                    help={uuid}
+                                >
+                                    <Select loading={loading} onChange={this.handleKitChange} >
+                                        { data.list.map(kit => (
                                             <Option key={kit.id} value={kit.id}>
                                                 {kit.name}
                                             </Option>

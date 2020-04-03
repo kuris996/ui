@@ -135,7 +135,7 @@ class KitList extends PureComponent {
                 key: 'action',
                 render: (text, record) => (
                     <span>
-                        <Link to="">Подробнее</Link>
+                        <Link to="/calculation/input-list">Подробнее</Link>
                     </span>
                 )
             }
