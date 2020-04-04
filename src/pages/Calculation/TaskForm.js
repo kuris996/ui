@@ -14,6 +14,7 @@ import { connect } from 'dva';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import FooterToolbar from '@/components/FooterToolbar'
 import styles from './styles.less'
+import uuid from 'react-uuid'
 
 const { Option } = Select;
 
@@ -46,19 +47,22 @@ class TaskForm extends PureComponent {
     formRef = React.createRef();
 
     state = {
-        uuid: ""
+        uuid: uuid()
     }
 
     validate = () => {
         const {
             dispatch,
         } = this.props;
+        const {
+            uuid,
+        } = this.state;
         this.formRef.current.validateFields()
         .then(fields => {
             this.formRef.current.resetFields();
             dispatch({
                 type: 'task/submit',
-                payload: fields,
+                payload: { ...fields, uuid},
             });
         })
         .catch(errorInfo => {
@@ -67,17 +71,8 @@ class TaskForm extends PureComponent {
 
     componentDidMount() {
         const { dispatch, kit } = this.props;
-        const { data } = kit 
         dispatch({
             type: 'kit/fetch',
-        });
-    }
-
-    handleKitChange = (value) => {
-        const { kit : {data} } = this.props;
-        const k = data.list.find( n => n.id === value )
-        this.setState({
-            uuid: k.uuid
         });
     }
 
@@ -87,10 +82,6 @@ class TaskForm extends PureComponent {
             loading, 
             submitting 
         } = this.props;
-
-        const {
-            uuid
-        } = this.state;
 
         return (
             <PageHeaderWrapper
@@ -126,9 +117,9 @@ class TaskForm extends PureComponent {
                         <Row gutter={16} >
                             <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }}>
                                 <Form.Item name="kit" label={fieldLabels.kit} rules={[{ required: true }]}>
-                                    <Select loading={loading} onChange={this.handleKitChange} >
+                                    <Select loading={loading}>
                                         { data.list.map(kit => (
-                                            <Option key={kit.id} value={kit.id}>
+                                            <Option key={kit.uuid} value={kit.uuid}>
                                                 {kit.name}
                                             </Option>
                                         ))}

@@ -10,6 +10,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.less'
 import Link from 'umi/link';
+import { getModelsPath } from '@/utils/paths'
 
 const getValue = obj => Object.keys(obj).map(key => `'${obj[key]}'`).join(',');
 
@@ -122,7 +123,21 @@ class TaskList extends PureComponent {
                 key: 'status',
                 sorter: true,
                 filters: data.filters.status
-            }
+            },
+            {
+                key: 'models',
+                render: (text, record) => (
+                    <span>
+                       <Link to={{
+                                pathname: "/bucket/models-list",
+                                state: getModelsPath(record.kit, record.uuid)
+                           }}
+                        >
+                            Расчет
+                        </Link>
+                    </span>
+                )
+            },
         ];
 
         return (

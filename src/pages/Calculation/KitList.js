@@ -10,6 +10,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.less'
 import Link from 'umi/link';
+import { getInputsPath, getOutputsPath } from '@/utils/paths'
 
 const getValue = obj => Object.keys(obj).map(key => `'${obj[key]}'`).join(',');
 
@@ -126,13 +127,33 @@ class KitList extends PureComponent {
                 filters: data.filters.status
             },
             {
-                key: 'action',
+                key: 'inputs',
                 render: (text, record) => (
                     <span>
-                        <Link to="/calculation/input-list">Подробнее</Link>
+                        <Link to={{
+                                pathname: "/bucket/input-list",
+                                state: getInputsPath(record.uuid)
+                           }}
+                        >
+                            Вводные
+                        </Link>
                     </span>
                 )
-            }
+            },
+            {
+                key: 'outputs',
+                render: (text, record) => (
+                    <span>
+                       <Link to={{
+                                pathname: "/bucket/output-list",
+                                state: getOutputsPath(record.uuid)
+                           }}
+                        >
+                            Расчет
+                        </Link>
+                    </span>
+                )
+            },
         ]
 
         return (

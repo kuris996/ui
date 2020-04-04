@@ -5,17 +5,16 @@ import {
     Table
 } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
-import styles from './styles.less'
-import Link from 'umi/link';
-
 import moment from 'moment';
 
-class InputList extends PureComponent {
-
+class List extends PureComponent {
     componentDidMount() {
-        const { dispatch } = this.props;
+        const { dispatch, location: { state } } = this.props;
         dispatch({
-            type: 'input/fetch'
+            type: 'input/fetch',
+            payload: { 
+                prefix: state
+             }
         })
     }
 
@@ -23,18 +22,21 @@ class InputList extends PureComponent {
         const {
             input: { list },
             loading,
+            title,
         } = this.props
 
         const renderSize = (value) => {
             let size = parseInt(value)
             if (size < 1024)
                 return size + " Б"
-            if (size < 1024 * 1024)
-                return (size / 1024.0).toString() + " КБ"
+            if (size < 1024 * 1024) 
+                return (size / 1024.0).toFixed(2).toString() + " КБ"
             if (size < 1024 * 1024 * 1024)
-                return (size / 1024.0 / 1024.0).toString() + " ГБ"
+                return (size / 1024.0 / 1024.0).toFixed(2).toString() + " МБ"
             if (size < 1024 * 1024 * 1024 * 1024)
-                return (size / 1024.0 / 1024.0 / 1024.0).toString() + " TБ"
+                return (size / 1024.0 / 1024.0 / 1024.0).toFixed(2).toString() + " ГБ"
+            if (size < 1024 * 1024 * 1024 * 1024 * 1024)
+                return (size / 1024.0 / 1024.0 / 1024.0 / 1024.0).toFixed(2).toString() + " ТБ"
             return size.toString()
         }
 
@@ -66,15 +68,13 @@ class InputList extends PureComponent {
         ]
 
         return (
-            <PageHeaderWrapper title="Вводные">
-                <Card className={styles.card} bordered={false}>
-                    <div className={styles.tableList}>
-                        <Table 
-                            loading={loading}
-                            columns={columns}
-                            dataSource={list}
-                        />
-                    </div>
+            <PageHeaderWrapper title={title}>
+                <Card bordered={false}>
+                    <Table 
+                        loading={loading}
+                        columns={columns}
+                        dataSource={list}
+                    />
                 </Card>
 
             </PageHeaderWrapper>
@@ -85,4 +85,4 @@ class InputList extends PureComponent {
 export default connect(({ input, loading }) => ({
     input,
     loading: loading.models.input
-}))(InputList);
+}))(List);

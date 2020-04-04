@@ -16,30 +16,34 @@ import FooterToolbar from '@/components/FooterToolbar'
 import styles from './styles.less'
 import reqwest from 'reqwest';
 import uuid from 'react-uuid'
+import { bucketUrl } from '../../defaultSettings'
+import { getInputsPath } from '@/utils/paths'
 
 const { Dragger } = Upload;
 
 const fieldLabels = {
     name: "Название:",
-    inputs: "Инпуты:",
+    inputs: "Вводные:",
 }
 
 class DraggerWrapper extends PureComponent {
     state = { fileList: [] }
     render() {
         const { fileList } = this.state
-        const { children } = this.props
+        const { children, uuid } = this.props
         const props = {
             customRequest: _file => {
                 const formData = new FormData();
 
                 const { file } = _file
 
-                formData.append('key', file.name)
+                const fileName = getInputsPath(uuid) + file.name
+
+                formData.append('key', fileName)
                 formData.append('file', file);
                 
                 reqwest({
-                    url: 'https://storage.yandexcloud.net/ui-test',
+                    url: bucketUrl,
                     method: 'POST',
                     processData: false,
                     data: formData,
@@ -102,6 +106,7 @@ class KitForm extends PureComponent {
 
     render() {
         const { submitting } = this.props;
+        const { uuid } = this.state;
         return (
             <PageHeaderWrapper
                 title="Набор"
@@ -110,7 +115,7 @@ class KitForm extends PureComponent {
                 <Form ref={this.formRef} layout="vertical" >
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16} >
-                            <Col xl={{ span: 6, offset: 1 }} lg={{ span: 8 }} sm={{ span: 12 }} xs={{ span: 24 }}>
+                            <Col xl={{ span: 10, offset: 1 }} lg={{ span: 12 }} sm={{ span: 18 }} xs={{ span: 24 }}>
                                 <Form.Item name="name" label={fieldLabels.name} rules={[{ required: true }]}>
                                     <Input />
                                 </Form.Item>
@@ -120,9 +125,9 @@ class KitForm extends PureComponent {
 
                     <Card className={styles.card} bordered={false} style={{ marginTop: 24 }}>
                         <Row gutter={16} >
-                            <Col xl={{ span: 6, offset: 1 }} lg={{ span: 8 }} sm={{ span: 12 }} xs={{ span: 24 }}>
-                                <Form.Item name="inputs" label={fieldLabels.inputs} rules={[{ required: true }]}>
-                                    <DraggerWrapper>
+                            <Col xl={{ span: 10, offset: 1 }} lg={{ span: 12 }} sm={{ span: 18 }} xs={{ span: 24 }}>
+                                <Form.Item name="inputs" label={fieldLabels.inputs} rules={[{ required: false }]}>
+                                    <DraggerWrapper uuid={uuid}>
                                         <p className="ant-upload-drag-icon">
                                             <InboxOutlined />
                                         </p>

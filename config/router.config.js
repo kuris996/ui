@@ -45,17 +45,33 @@ export default [
                         name: 'Набор',
                         component: './Calculation/KitForm',
                     },
-                    {
-                        hideInMenu: true,
-                        path: '/calculation/input-list',
-                        name: 'Вводные',
-                        component: './Calculation/InputList',
-                    },
                 ],
             },
+            {
+                name: 'Корзина',
+                path: '/bucket',
+                hideInMenu: true,
+                routes: [
+                    {
+                        path: '/bucket/input-list',
+                        name: 'Вводные',
+                        component: './Bucket/Inputs',
+                    },
+                    {
+                        path: '/bucket/output-list',
+                        name: 'Расчет',
+                        component: './Bucket/Outputs',
+                    },
+                    {
+                        path: '/bucket/models-list',
+                        name: 'Модели',
+                        component: './Bucket/Models',
+                    },
+                ]
+            },  
             // exception
             {
-                name: 'exception',
+                name: 'Ошибка',
                 icon: 'warning',
                 path: '/exception',
                 hideInMenu: true,

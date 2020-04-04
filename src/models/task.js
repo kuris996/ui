@@ -50,13 +50,17 @@ export default {
 
     reducers: {
         queryTask(state, action) {
-            return {
+            if (!action.payload)
+                return { ...state }
+            else return {
                 ...state,
                 data: action.payload
             }
         },
         appendTask(state, action) {
-            return {
+            if (!action.payload)
+                return { ...state }
+            else return {
                 ...state,
                 data: state.task.concat(action.payload)
             }

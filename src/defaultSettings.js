@@ -4,4 +4,5 @@ module.exports = {
     },
     title: 'Ui',
     iconfontUrl: '',
+    bucketUrl: 'https://storage.yandexcloud.net/ui-test',
 };

@@ -43,7 +43,9 @@ export default {
 
     reducers: {
         save(state, action) {
-            return {
+            if (!action.payload)
+                return { ...state }
+            else return {
                 ...state,
                 data: action.payload
             }
