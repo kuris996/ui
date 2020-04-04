@@ -1,18 +1,20 @@
 version: '3.5'
 
 services:
-  ui_build:
-    build: ../
-    container_name: 'ui_build'
-    volumes:
-      - dist:/usr/src/app/dist
- 
   ui_ws:
     build: ../../ws
     container_name: 'ui_ws'
     ports:
-      - 8080:8080
+        - 8080:8080
+    command:
+        "python3 -u main.py --ee http://192.168.0.59:6000"
 
+  ui_build:
+    build: ../
+    container_name: 'ui_build'
+    volumes:
+      - dist:/usr/src/app/dist 
+  
   ui_web:
     image: nginx
     ports:
