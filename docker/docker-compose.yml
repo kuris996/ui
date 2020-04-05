@@ -3,29 +3,32 @@ version: '3.5'
 services:
   backend:
     build: ../../eurochem_advanced
-    image: backend
-    container_name: backend
+    container_name: 'backend'
     ports:
       - 5000:5000
-    command: python3 app.py
+    command: 
+        "python3 app.py"
     volumes:
-      - .:/usr/src/eurochem_advanced
+       - ../../eurochem_advanced:/usr/src/eurochem_advanced
 
   ui_ws:
     build: ../../ws
-    image: ui_ws
     container_name: 'ui_ws'
     ports:
         - 8080:8080
     command:
         "python3 -u main.py --ee http://backend:5000"
 
-  ui_build:
-    build: ../
-    image: ui_build
-    container_name: 'ui_build'
+  ui_dev:
+    ports:
+        - 8000:8000
+    build:
+        context: ../
+        dockerfile: Dockerfile.dev
+    container_name: "ui_dev"
     volumes:
-      - dist:/usr/src/app/dist 
+        - ../src:/usr/src/app/src
+        - ../config:/usr/src/app/config
   
   ui_web:
     image: nginx
