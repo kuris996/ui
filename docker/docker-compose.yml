@@ -19,11 +19,16 @@ services:
     command:
         "python3 -u main.py --ee http://backend:5000"
 
-  ui_build:
-    build: ../
-    container_name: 'ui_build'
+  ui_dev:
+    ports:
+        - 8000:8000
+    build:
+        context: ../
+        dockerfile: Dockerfile.dev
+    container_name: "ui_dev"
     volumes:
-      - dist:/usr/src/app/dist 
+        - ../src:/usr/src/app/src
+        - ../config:/usr/src/app/config
   
   ui_web:
     image: nginx
