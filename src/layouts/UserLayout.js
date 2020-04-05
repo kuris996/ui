@@ -13,10 +13,6 @@ const copyright = (
   );
 
 class UserLayout extends Component {
-    componentDidMount() {
-
-    }
-
     render() {
         const {
             children
