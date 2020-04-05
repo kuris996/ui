@@ -7,7 +7,7 @@ services:
     ports:
         - 8080:8080
     command:
-        "python3 -u main.py --ee http://192.168.0.59:6000"
+        "python3 -u main.py --ee http://192.168.0.59:5000"
 
   ui_build:
     build: ../
