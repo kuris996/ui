@@ -14,7 +14,6 @@ import { connect } from 'dva';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import FooterToolbar from '@/components/FooterToolbar'
 import styles from './styles.less'
-import reqwest from 'reqwest';
 import uuid from 'react-uuid'
 import { bucketUrl } from '../../defaultSettings'
 import { getInputsPath } from '@/utils/paths'
