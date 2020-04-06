@@ -1,6 +1,16 @@
 version: '3.5'
 
 services:
+  backend:
+    build: ../../eurochem_advanced
+    container_name: 'backend'
+    ports:
+        - 5000:5000
+    command: 
+        "python3 app.py"
+    volumes:
+        - ../../eurochem_advanced:/usr/src/eurochem_advanced
+
   ui_ws:
     build: ../../ws
     container_name: 'ui_ws'
