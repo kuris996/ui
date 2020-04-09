@@ -9,11 +9,11 @@ import moment from 'moment';
 
 class List extends PureComponent {
     componentDidMount() {
-        const { dispatch, location: { state } } = this.props;
+        const { dispatch, location: { kit, uuid } } = this.props;
         dispatch({
             type: 'input/fetch',
             payload: { 
-                prefix: state
+                kit, uuid
              }
         })
     }
@@ -43,18 +43,29 @@ class List extends PureComponent {
         const columns = [
             {
                 title: 'Имя',
-                dataIndex: 'key',
+                dataIndex: 'name',
                 key: 'key',
                 render: (text, record) => (
-                    <a href={record.url}>{text}</a>
+                    <>
+                    { record.url ? (
+                        <a href={record.url}>{text}</a>
+                    ) : <span>{text}</span>
+                    }
+                    </>
+                    
                 )
             },
             {
                 title: 'Размер',
                 dataIndex: 'size',
                 key: 'size',
-                render: (text, recored) => (
-                    <p>{renderSize(text)}</p>
+                render: (text, record) => (
+                    <>
+                    { record.size ? (
+                        <p>{renderSize(text)}</p>
+                    ) : null
+                    }
+                    </>
                 )
             },
             {
@@ -68,7 +79,7 @@ class List extends PureComponent {
         ]
 
         return (
-            <PageHeaderWrapper title={title}>
+            <PageHeaderWrapper title="Подробнее">
                 <Card bordered={false}>
                     <Table 
                         loading={loading}
@@ -76,7 +87,6 @@ class List extends PureComponent {
                         dataSource={list}
                     />
                 </Card>
-
             </PageHeaderWrapper>
         )
     }

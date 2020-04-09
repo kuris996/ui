@@ -131,25 +131,11 @@ class KitList extends PureComponent {
                 render: (text, record) => (
                     <span>
                         <Link to={{
-                                pathname: "/bucket/input-list",
-                                state: getInputsPath(record.uuid)
+                                pathname: "/calculation/kit-inputs",
+                                kit: record.uuid
                            }}
                         >
-                            Вводные
-                        </Link>
-                    </span>
-                )
-            },
-            {
-                key: 'outputs',
-                render: (text, record) => (
-                    <span>
-                       <Link to={{
-                                pathname: "/bucket/output-list",
-                                state: getOutputsPath(record.uuid)
-                           }}
-                        >
-                            Расчет
+                            Подробнее
                         </Link>
                     </span>
                 )

@@ -2,7 +2,7 @@ import React from 'react';
 import List from './List';
 
 const InputsList = (props) => (
-  <List {...props} title="Вводные" />
+  <List {...props} />
 );
 
 export default InputsList;

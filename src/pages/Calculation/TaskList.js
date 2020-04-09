@@ -129,11 +129,12 @@ class TaskList extends PureComponent {
                 render: (text, record) => (
                     <span>
                        <Link to={{
-                                pathname: "/bucket/models-list",
-                                state: getModelsPath(record.kit, record.uuid)
+                                pathname: "/calculation/task-inputs",
+                                kit: record.kit,
+                                uuid: record.uuid
                            }}
                         >
-                            Расчет
+                            Подробнее
                         </Link>
                     </span>
                 )

@@ -18,6 +18,12 @@ export default [
                     },
                     {
                         hideInMenu: true,
+                        path: '/calculation/task-inputs',
+                        name: 'Подробнее',
+                        component: './Bucket/InputsList'
+                    },
+                    {
+                        hideInMenu: true,
                         path: '/calculation/task-form',
                         name: 'Задача',
                         component: './Calculation/TaskForm',
@@ -29,34 +35,18 @@ export default [
                     },
                     {
                         hideInMenu: true,
+                        path: '/calculation/kit-inputs',
+                        name: 'Подробнее',
+                        component: './Bucket/InputsList'
+                    },
+                    {
+                        hideInMenu: true,
                         path: '/calculation/kit-form',
                         name: 'Набор',
                         component: './Calculation/KitForm',
                     },
                 ],
             },
-            {
-                name: 'Корзина',
-                path: '/bucket',
-                hideInMenu: true,
-                routes: [
-                    {
-                        path: '/bucket/input-list',
-                        name: 'Вводные',
-                        component: './Bucket/Inputs',
-                    },
-                    {
-                        path: '/bucket/output-list',
-                        name: 'Расчет',
-                        component: './Bucket/Outputs',
-                    },
-                    {
-                        path: '/bucket/models-list',
-                        name: 'Модели',
-                        component: './Bucket/Models',
-                    },
-                ]
-            },  
             // exception
             {
                 name: 'Ошибка',
