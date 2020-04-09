@@ -7,7 +7,7 @@ export default class RightContent extends PureComponent {
         let className = styles.right
         return (
             <div className={className}>
-                <Spin size="small" style={{ marginLeft: 8, marginRight: 16 }} />
+                <div style={{ marginLeft: 8, marginRight: 16 }} />
             </div>
         )
     }
