@@ -1,17 +1,15 @@
 export default {
     'POST /api/login/account': (req, res) => {
-        const { password, userName, type } = req.body;
-        if (password === 'ui' && userName === 'admin') {
+        const { password, userName } = req.body;
+        if (password === 'ui' && userName === 'user') {
             res.send({
                 status: 'ok',
-                type,
-                currentAuthority: 'admin'
+                currentAuthority: 'user',
             });
             return;
         }
         res.send({
             status: 'error',
-            type,
             currentAuthority: 'guest',
         })
     },

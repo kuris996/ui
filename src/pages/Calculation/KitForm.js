@@ -16,13 +16,15 @@ import FooterToolbar from '@/components/FooterToolbar'
 import styles from './styles.less'
 import uuid from 'react-uuid'
 import { bucketUrl } from '../../defaultSettings'
-import { getInputsPath } from '@/utils/paths'
-
 const { Dragger } = Upload;
 
 const fieldLabels = {
     name: "Название:",
     inputs: "Вводные:",
+}
+
+function getInputsPath(uuid) {
+    return `data/Inputs/${uuid}/Input_inputs/Excels/`
 }
 
 class DraggerWrapper extends PureComponent {

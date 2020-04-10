@@ -31,7 +31,7 @@ class UserLayout extends Component {
                                     <span className={styles.title}>Ui</span>
                                 </Link>
                             </div>
-                            <div className={styles.desc}>Здесь какое-то интересное описание.</div>
+                            <div className={styles.desc}></div>
                         </div>
                         {children}
                     </div>

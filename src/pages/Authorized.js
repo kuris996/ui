@@ -4,6 +4,7 @@ import pathToRegexp from 'path-to-regexp'
 import { connect } from 'dva'
 import { getAuthority } from '@/utils/authority'
 import Authorized from '@/utils/Authorized';
+import Exception403 from '@/pages/Exception/403';
 
 function AuthComponent({children, location, routerData}) {
     const auth = getAuthority()
@@ -23,7 +24,7 @@ function AuthComponent({children, location, routerData}) {
     return (
         <Authorized
             authority={getRouteAuthority(location.pathname, routerData)}
-            noMatch={isLogin ? <div/> : <Redirect to="/user/login" />}
+            noMatch={isLogin ? <Exception403/> : <Redirect to="/auth/login" />}
         >
             {children}
         </Authorized>

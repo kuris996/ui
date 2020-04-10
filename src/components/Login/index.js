@@ -1,41 +1,34 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Tabs } from 'antd'
+import { Form } from 'antd'
 import classNames from 'classnames'
 import LoginSubmit from './LoginSubmit'
 import LoginItem from './LoginItem'
 import styles from './index.less'
 
 class Login extends Component {
+    formRef = React.createRef();
+    
     static propTypes = {
         className: PropTypes.string,
-        defaultActiveKey: PropTypes.string,
         onSubmit: PropTypes.func,
     };
 
     static defaultProps = {
         className: '',
-        defaultActiveKey: '',
         onSubmit: () => {},
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            type: props.defaultActiveKey,
-            active: {},
-        }
-    }
-
-    handleSubmit = e => {
-        e.preventDefault();
+    handleSubmit = values => {
+        const { onSubmit } = this.props;
+        onSubmit(values);
     }
 
     render() {
         const { className, children } = this.props;
         return (
             <div className={classNames(className, styles.login)}>
-                <Form>
+                <Form ref={this.formRef} onFinish={this.handleSubmit}>
                     {children}
                 </Form>
             </div>

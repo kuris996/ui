@@ -1,10 +1,22 @@
 export default [
+    {
+        path: '/auth',
+        component: '../layouts/UserLayout',
+        routes: [
+          { path: '/auth', redirect: '/auth/login' },
+          { path: '/auth/login', name: 'login', component: './Auth/Login' },
+          {
+            component: '404',
+          },
+        ],
+      },
     // app
     {
         path: '/',
         component: '../layouts/BasicLayout',
+        Routes: ['src/pages/Authorized'],
         routes: [
-            { path: '/', redirect: '/calculation/task-list', },
+            { path: '/', redirect: '/calculation/task-list', authority: ['user'] },
             // calculation
             {
                 path: '/calculation',

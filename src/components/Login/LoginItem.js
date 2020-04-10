@@ -1,34 +1,25 @@
 import React, { Component } from 'react'
-import { Form, Input, Button, Row, Col } from 'antd'
+import { Form, Input } from 'antd'
 import styles from './index.less'
 import ItemMap from './map'
-
 const FormItem = Form.Item;
 
 class WrapFormItem extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            count: 0,
-        };
+
+    componentDidMount() {
+        const { updateActive, name } = this.props;
+        if (updateActive)
+            updateActive(name)
     }
 
     render() {
-        const { count } = this.state;
-
         const {
             customprops,
-            defaultValue,
-            rules,
-            name,
-            type,
-            ...restProps
         } = this.props;
 
-        const otherProps = restProps || {};
         return (
-            <FormItem>
-                <Input {...customprops} {...otherProps} />
+            <FormItem {...customprops} >
+                <Input {...customprops}  />
             </FormItem>
         )
     }
@@ -41,9 +32,7 @@ Object.keys(ItemMap).forEach(key => {
     LoginItem[key] = props => (
         <WrapFormItem
             customprops={item.props}
-            rules={item.rules}
             {...props}
-            type={key}
         />
     );
 });

@@ -6,30 +6,30 @@ export default {
     UserName: {
         props: {
             size: 'large',
-            id: 'userName',
+            name: 'userName',
             prefix: <UserOutlined className={styles.prefixIcon} />,
-            placeholder: 'admin',
+            placeholder: 'user',
+            rules: [
+                {
+                    required: true,
+                    message: 'Please enter username!',
+                },
+            ],
         },
-        rules: [
-            {
-                required: true,
-                message: 'Please enter username!',
-            },
-        ],
     },
     Password: {
         props: {
             size: 'large',
             prefix: <LockOutlined className={styles.prefixIcon} />,
             type: 'password',
-            id: 'password',
+            name: 'password',
             placeholder: '888888',
-        },
-        rules: [
-            {
-                required: true,
-                message: 'Please enter password!',
-            },
-        ],
+            rules: [
+                {
+                    required: true,
+                    message: 'Please enter password!',
+                },
+            ],
+        },        
     },
 }

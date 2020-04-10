@@ -10,7 +10,6 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import { PlusOutlined } from '@ant-design/icons';
 import styles from './styles.less'
 import Link from 'umi/link';
-import { getModelsPath } from '@/utils/paths'
 
 const getValue = obj => Object.keys(obj).map(key => `'${obj[key]}'`).join(',');
 

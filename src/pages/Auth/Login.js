@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import Link from 'umi/link';
-import { Checkbox } from 'antd';
+import { Checkbox, Alert } from 'antd';
 import Login  from '@/components/Login';
 import styles from './Login.less'
 
@@ -9,39 +9,62 @@ const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 
 class LoginPage extends Component {
     state = {
-        type: 'account',
         autoLogin: true,
     }
 
+    changeAutoLogin = e => {
+        this.setState({
+            autoLogin: e.target.checked
+        })
+    }
+
+    handleSubmit = values => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: 'login/login',
+            payload: {
+                ...values
+            }
+        })
+    }
+
+    renderMessage = content => (
+        <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
+    );
+
     render() {
-        const { type, autoLogin } = this.state;
+        const { login, submitting } = this.props;
+        const { autoLogin } = this.state;
         return (
             <div className={styles.main}>
+                {login.status === 'error' &&
+                    !submitting &&
+                    this.renderMessage("Неверный Аккаунт или Пароль")}
                 <Login
+                    ref={form => {
+                        this.loginForm = form;
+                    }}
+                    onSubmit={this.handleSubmit}
                 >
-                    <UserName />
-                    <Password />
+                    <UserName name="userName" />
+                    <Password name="password" />
                     <div>
-                        <Checkbox>
+                        <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
                             Запомнить меня
                         </Checkbox>
-                        <a style={{ float: 'right' }} href="">
-                            Забыли свой пароль?
-                        </a>
                     </div>
                     <Submit>
                         Войти
                     </Submit>
                     <div className={styles.other}>
-                        <Link className={styles.register} to="/user/register">
-                            Зарегистрироваться
-                        </Link>
-                </div>
+                    </div>
                 </Login>
             </div>
         )
     }
 }
 
-export default connect(({}) => ({
+export default connect(({ login, loading }) => ({
+    login,
+    submitting: loading.effects['login/login'],
 }))(LoginPage)
