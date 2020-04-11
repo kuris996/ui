@@ -22,24 +22,31 @@ export default {
 
             if (response.status === 'ok') {
                 reloadAuthorized();
-                const urlParams = new URL(window.location.href);
-                const params = getPageQuery();
-                let { redirect } = params;
-                if (redirect) {
-                    const redirectUrlParams = new URL(redirect);
-                    if (redirectUrlParams.origin === urlParams.origin) {
-                        redirect = redirect.substr(urlParams.origin.length);
-                        if (window.routerBase !== '/')
-                            redirect = redirect.replace(window.routerBase, '/');
-                        if (redirect.match(/^\/.*#/))
-                            redirect = redirect.substr(redirect.indexOf('#') + 1);
-                    } else {
-                        redirect = null;
-                    }
-                }
-                yield put(routerRedux.replace(redirect || '/'));
+                yield put(routerRedux.replace('/'));
             }
-        }
+        },
+
+        *logout(_, { put }) {
+            yield put({
+                type: 'changeLoginStatus',
+                payload: {
+                    status: false,
+                    currentAuthority: 'guest',
+                },
+            });
+            reloadAuthorized();
+            const { redirect } = getPageQuery();
+            if (window.location.pathname !== '/auth/login' && !redirect) {
+                yield put(
+                    routerRedux.replace({
+                            pathname: '/auth/login',
+                            search: stringify({
+                            redirect: window.location.href,
+                        }),
+                    })
+                );
+            }
+        },
     },
 
     reducers: {

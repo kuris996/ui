@@ -115,7 +115,7 @@ class TaskForm extends PureComponent {
                 >
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16} >
-                            <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }}>
+                            <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }} xs={12}>
                                 <Form.Item name="kit" label={fieldLabels.kit} rules={[{ required: true }]}>
                                     <Select loading={loading}>
                                         { data.list.map(kit => (
@@ -267,7 +267,7 @@ class TaskForm extends PureComponent {
                                     <Checkbox/>
                                 </Form.Item>
                             </Col>
-                            <Col xl={{ span: 14, offset: 2 }} lg={{ span: 14 }} md={12} sm={24}>
+                            <Col xl={{ span: 14, offset: 2 }} lg={{ span: 14 }} md={12} sm={24} xs={24}>
                                 <Form.Item name="CORRECTION_CORIDOR" label={fieldLabels.CORRECTION_CORIDOR} rules={[{ required: true }]}>
                                     <Input />
                                 </Form.Item>

@@ -59,6 +59,13 @@ export default [
                     },
                 ],
             },
+            // logout
+            {
+                name: 'Выйти',
+                icon: 'logout',
+                path: '/logout',
+                component: './Auth/Logout',
+            },
             // exception
             {
                 name: 'Ошибка',
