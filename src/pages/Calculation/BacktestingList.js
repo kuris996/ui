@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import moment from 'moment';
 import { connect } from 'dva'
 import {
+    Table, Badge, Menu, Dropdown,
     Card,
     Button,
 } from 'antd'
@@ -13,7 +14,33 @@ import Link from 'umi/link';
 
 const getValue = obj => Object.keys(obj).map(key => `'${obj[key]}'`).join(',');
 
-class TaskList extends PureComponent {
+const expandedRowRender = (record) => {
+    const columns = [
+        { 
+            title: 'Продукт', 
+            dataIndex: 'product', 
+            key: 'product' 
+        },
+        { 
+            title: 'Набор', 
+            dataIndex: 'kitName', 
+            key: 'kitName' 
+        },
+        {
+            title: 'Создан',
+            dataIndex: 'createdAt',
+            key: 'createdAt',
+            sorter: true,
+            render: (text, record) => (
+                <p>{moment(text).format('YYYY-MM-DD HH:mm')}</p>
+            ),
+        },
+    ];
+
+    return <Table columns={columns} dataSource={record.tasks} pagination={false} />;
+};
+
+class BacktestingList extends PureComponent {
     state = { selectedRows: [] }
 
     handleRemove = () => {
@@ -24,7 +51,7 @@ class TaskList extends PureComponent {
             return;
 
         dispatch({
-            type: 'task/remove',
+            type: 'backtesting/remove',
             payload: {
                 id: selectedRows.map(row => row.id),
             },
@@ -39,7 +66,7 @@ class TaskList extends PureComponent {
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch({
-            type: 'task/fetch',
+            type: 'backtesting/fetch',
         });
     }
 
@@ -70,31 +97,19 @@ class TaskList extends PureComponent {
         }
         
         dispatch({
-            type: 'task/fetch',
+            type: 'backtesting/fetch',
             payload: params,
         });
     }
 
     render() {
         const {
-            task: { data },
+            backtesting: { data },
             loading,
         } = this.props
         const { selectedRows } = this.state;
 
-        const columns = [
-            {
-                title: 'Продукт',
-                dataIndex: 'product',
-                key: 'product',
-                sorter: true,
-            },
-            {
-                title: 'Набор',
-                dataIndex: 'kitName',
-                key: 'kitName',
-                sorter: true,
-            },
+        const columns = [            
             {
                 title: 'Создан',
                 dataIndex: 'createdAt',
@@ -129,29 +144,14 @@ class TaskList extends PureComponent {
                 sorter: true,
                 filters: data.filters.status
             },
-            {
-                key: 'models',
-                render: (text, record) => (
-                    <span>
-                       <Link to={{
-                                pathname: "/calculation/task-inputs",
-                                kit: record.kit,
-                                uuid: record.uuid
-                           }}
-                        >
-                            Подробнее
-                        </Link>
-                    </span>
-                )
-            },
         ];
 
         return (
-            <PageHeaderWrapper title="Задачи">
+            <PageHeaderWrapper title="Back-Testing">
                 <Card bordered={false}>
                     <div className={styles.tableList}>
                         <div className={styles.tableListOperator}>
-                            <Link to={"/calculation/task-form"} style={{ marginRight:16 }}>
+                            <Link to={"/calculation/backtesting-form"} style={{ marginRight:16 }}>
                                 <PlusOutlined/>  Добавить
                             </Link>
                             {selectedRows.length > 0 && (
@@ -160,12 +160,12 @@ class TaskList extends PureComponent {
                                 </span>
                             )}
                         </div>
-
                         <StandardTable
                             loading={loading}
                             data={data}
                             selectedRows={selectedRows}
                             columns={columns}
+                            expandedRowRender={record => expandedRowRender(record)}
                             onSelectRow={this.handleSelectRows}
                             onChange={this.handleStandardTableChange}
                         />
@@ -176,7 +176,7 @@ class TaskList extends PureComponent {
     }
 }
 
-export default connect(({ task, loading }) => ({
-    task,
-    loading: loading.models.task
-}))(TaskList);
+export default connect(({ backtesting, loading }) => ({
+    backtesting,
+    loading: loading.models.backtesting
+}))(BacktestingList)

@@ -86,7 +86,7 @@ class KitForm extends PureComponent {
         const { uuid } = this.state;
         return (
             <PageHeaderWrapper
-                title="Набор"
+                title="Новый Набор"
                 wrapperClassName={styles.form}
             >
                 <Form ref={this.formRef} layout="vertical" >

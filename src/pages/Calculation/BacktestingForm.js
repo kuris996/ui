@@ -7,32 +7,23 @@ import {
 } from 'antd'
 import StandardTable from '@/components/StandardTable';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
-import { PlusOutlined } from '@ant-design/icons';
+import FooterToolbar from '@/components/FooterToolbar'
 import styles from './styles.less'
-import Link from 'umi/link';
 
 const getValue = obj => Object.keys(obj).map(key => `'${obj[key]}'`).join(',');
 
-class TaskList extends PureComponent {
+class BacktestingForm extends PureComponent {
     state = { selectedRows: [] }
 
-    handleRemove = () => {
+    validate = () => {
         const { dispatch } = this.props;
         const { selectedRows } = this.state;
-        
-        if (selectedRows.length === 0)
-            return;
-
         dispatch({
-            type: 'task/remove',
-            payload: {
-                id: selectedRows.map(row => row.id),
-            },
-            callback: () => {
-                this.setState({
-                    selectedRows: [],
-                })
-            }
+            type: 'backtesting/submit',
+            payload: { ...selectedRows }
+        })
+        this.setState({
+            selectedRows: []
         })
     }
 
@@ -129,38 +120,15 @@ class TaskList extends PureComponent {
                 sorter: true,
                 filters: data.filters.status
             },
-            {
-                key: 'models',
-                render: (text, record) => (
-                    <span>
-                       <Link to={{
-                                pathname: "/calculation/task-inputs",
-                                kit: record.kit,
-                                uuid: record.uuid
-                           }}
-                        >
-                            Подробнее
-                        </Link>
-                    </span>
-                )
-            },
         ];
 
         return (
-            <PageHeaderWrapper title="Задачи">
+            <PageHeaderWrapper
+                    title="Новый Back-Testing"
+                    wrapperClassName={styles.form}
+                >
                 <Card bordered={false}>
                     <div className={styles.tableList}>
-                        <div className={styles.tableListOperator}>
-                            <Link to={"/calculation/task-form"} style={{ marginRight:16 }}>
-                                <PlusOutlined/>  Добавить
-                            </Link>
-                            {selectedRows.length > 0 && (
-                                <span>
-                                <Button onClick={() => this.handleRemove()}>Удалить</Button>
-                                </span>
-                            )}
-                        </div>
-
                         <StandardTable
                             loading={loading}
                             data={data}
@@ -171,6 +139,13 @@ class TaskList extends PureComponent {
                         />
                     </div>
                 </Card>
+                {selectedRows.length > 0 && (
+                    <FooterToolbar>
+                        <Button type="primary" onClick={this.validate}>
+                            Создать
+                        </Button>
+                    </FooterToolbar>
+                )}
             </PageHeaderWrapper>
         )
     }
@@ -179,4 +154,4 @@ class TaskList extends PureComponent {
 export default connect(({ task, loading }) => ({
     task,
     loading: loading.models.task
-}))(TaskList);
+}))(BacktestingForm);

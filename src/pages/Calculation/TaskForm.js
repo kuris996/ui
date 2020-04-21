@@ -60,9 +60,13 @@ class TaskForm extends PureComponent {
         this.formRef.current.validateFields()
         .then(fields => {
             this.formRef.current.resetFields();
+            const {
+                key : kit,
+                label : kitName,
+             } = fields.kit
             dispatch({
                 type: 'task/submit',
-                payload: { ...fields, uuid},
+                payload: { ...fields, uuid, kit, kitName},
             });
         })
         .catch(errorInfo => {
@@ -70,7 +74,7 @@ class TaskForm extends PureComponent {
     };
 
     componentDidMount() {
-        const { dispatch, kit } = this.props;
+        const { dispatch } = this.props;
         dispatch({
             type: 'kit/fetch',
         });
@@ -85,7 +89,7 @@ class TaskForm extends PureComponent {
 
         return (
             <PageHeaderWrapper
-                title="Задача"
+                title="Новая Задача"
                 wrapperClassName={styles.form}
             >
                 <Form ref={this.formRef} layout="vertical" 
@@ -117,7 +121,7 @@ class TaskForm extends PureComponent {
                         <Row gutter={16} >
                             <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }} xs={12}>
                                 <Form.Item name="kit" label={fieldLabels.kit} rules={[{ required: true }]}>
-                                    <Select loading={loading}>
+                                    <Select loading={loading} labelInValue>
                                         { data.list.map(kit => (
                                             <Option key={kit.uuid} value={kit.uuid}>
                                                 {kit.name}

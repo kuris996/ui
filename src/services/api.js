@@ -58,6 +58,34 @@ export async function addKit(params) {
 }
 
 /*
+    backtesting
+*/
+
+export async function queryBacktesting(params) {
+    return request(`/api/backtesting?${stringify(params)}`)
+}
+
+export async function removeBacktesting(params) {
+    return request('/api/backtesting', {
+        method: 'POST',
+        data: {
+            ...params,
+            method: 'remove'
+        }
+    })
+}
+
+export async function addBacktesting(params) {
+    return request('/api/backtesting', {
+        method: 'POST',
+        data: {
+            ...params,
+            method: 'add',
+        },
+    })
+}
+
+/*
     input
 */
 

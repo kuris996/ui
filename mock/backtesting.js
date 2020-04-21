@@ -3,15 +3,28 @@ import { parse } from 'url';
 
 let tableListDataSource = []
 for (let i = 0; i < 3; ++i) {
+    let tasks = []
+    for (let j = 0; j < 3; ++j) {
+        tasks.push({
+            id: `fake-task-list-${i}`,
+            product: `НИТРОАММОФОСКА-${i}`,
+            status: ['idle', 'running', 'error', 'finished'][i % 4],
+            createdAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
+            startedAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
+            finishedAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
+        })
+    }
     tableListDataSource.push({
-        id: `fake-task-list-${i}`,
-        product: `НИТРОАММОФОСКА-${i}`,
+        id: `fake-backtesting-list-${i}`,
+        name: `Backtesting-${i}`,
         status: ['idle', 'running', 'error', 'finished'][i % 4],
         createdAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
         startedAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
         finishedAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
+        tasks: tasks
     })
 }
+
 
 let filters = {
     status: [
@@ -34,7 +47,7 @@ let filters = {
     ]
 }
 
-function getTask(req, res, u) {
+function getBacktesting(req, res, u) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
         url = req.url; // eslint-disable-line
@@ -86,16 +99,14 @@ function getTask(req, res, u) {
     return res.json(result);
 }
 
-function postTask(req, res, u, b) {
+function postBacktesting(req, res, u, b) {
     let url = u;
     if (!url || Object.prototype.toString.call(url) !== '[object String]') {
         url = req.url; // eslint-disable-line
     }
 
     const body = (b && b.body) || req.body;
-    const { method, id, product, status, percent, updatedAt, createdAt, startedAt, finishedAt } = body;
-
-    console.log("BODY", status, createdAt)
+    const { method, id, name, status, createdAt, startedAt, finishedAt } = body;
 
     switch (method) {
     case 'remove':
@@ -105,10 +116,8 @@ function postTask(req, res, u, b) {
         const i = tableListDataSource.length + 1;
         tableListDataSource.push({
             id: i,
-            product,
+            name,
             status,
-            percent,
-            updatedAt,
             createdAt,
             startedAt,
             finishedAt
@@ -118,10 +127,8 @@ function postTask(req, res, u, b) {
         tableListDataSource = tableListDataSource.map(item => {
             if (item.id === id) {
                 Object.assign(item, { 
-                    product,
+                    name,
                     status,
-                    percent,
-                    updatedAt,
                     createdAt,
                     startedAt,
                     finishedAt
@@ -135,10 +142,10 @@ function postTask(req, res, u, b) {
         break;
     }
 
-    return getTask(req, res, u)
+    return getBacktesting(req, res, u)
 }
 
 export default {
-    'GET /api/task': getTask,
-    'POST /api/task': postTask,
+    'GET /api/backtesting': getBacktesting,
+    'POST /api/backtesting': postBacktesting,
 }
