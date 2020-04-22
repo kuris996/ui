@@ -2,18 +2,19 @@ import React from 'react'
 import pathToRegexp from 'path-to-regexp'
 import Link from 'umi/link'
 import { urlToList } from '../_utils/pathTools'
-import { menu } from '../../defaultSettings'
+import { Icon } from '@ant-design/compatible';
+import styles from './index.less'
 
 // Render the Breadcrumb child node
 const itemRender = (route, params, routes, paths) => {
     const last = routes.indexOf(route) === routes.length - 1;
     // if path is home, use Link
     if (route.path === '/')
-        return <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
+        return <Link to={paths.join('/')}><Icon type={route.icon} className={styles.icon}/>{route.breadcrumbName}</Link>
     return last || !route.component ? (
-        <span>{route.breadcrumbName}</span>
+        <span><Icon type={route.icon} className={styles.icon}/>{route.breadcrumbName}</span>
     ) : (
-        <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
+        <Link to={paths.join('/')}><Icon type={route.icon} className={styles.icon}/>{route.breadcrumbName}</Link>
     );
 };
 
@@ -70,11 +71,13 @@ const conversionFromLocation = (routerLocation, breadcrumbNameMap, props) => {
             if (currentBreadcrumb.inherited)
                 return null;
             const name = renderItemLocal(currentBreadcrumb);
+            const { icon} = currentBreadcrumb;
             const { hideInBreadcrumb } = currentBreadcrumb;
             return name && !hideInBreadcrumb
                 ? {
                     path: url,
-                    breadcrumbName: name
+                    breadcrumbName: name,
+                    icon: icon
                 }
                 : null;
         })
@@ -84,6 +87,7 @@ const conversionFromLocation = (routerLocation, breadcrumbNameMap, props) => {
         extraBreadcrumbItems.unshift({
             path: '/',
             breadcrumbName: home,
+            icon: 'home'
         });
     }
     return extraBreadcrumbItems;

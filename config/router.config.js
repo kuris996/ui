@@ -33,13 +33,15 @@ export default [
                         hideInMenu: true,
                         path: '/calculation/task-inputs',
                         name: 'Подробнее о Задаче',
-                        component: './Bucket/InputsList'
+                        component: './Bucket/InputsList',
+                        icon: 'info'
                     },
                     {
                         hideInMenu: true,
                         path: '/calculation/task-form',
                         name: 'Новая Задача',
                         component: './Calculation/TaskForm',
+                        icon: 'container'
                     },
                     {
                         path: '/calculation/kit-list',
@@ -52,12 +54,14 @@ export default [
                         path: '/calculation/kit-inputs',
                         name: 'Подробнее о Наборе',
                         component: './Bucket/InputsList',
+                        icon: 'info'
                     },
                     {
                         hideInMenu: true,
                         path: '/calculation/kit-form',
                         name: 'Новый Набор',
                         component: './Calculation/KitForm',
+                        icon: 'tool'
                     },
                     {
                         path: '/calculation/backtesting-list',
@@ -70,6 +74,7 @@ export default [
                         path: '/calculation/backtesting-form',
                         name: 'Новый Back-Testing',
                         component: './Calculation/BacktestingForm',
+                        icon: 'bug'
                     },
                 ],
             },
