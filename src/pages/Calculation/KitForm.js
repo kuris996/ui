@@ -7,7 +7,8 @@ import {
     Row,
     message,
     Upload,
-    Input
+    Input,
+    Radio
 } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import { connect } from 'dva';
@@ -27,10 +28,14 @@ function getInputsPath(uuid) {
     return `data/Inputs/${uuid}/Input_inputs/Excels/`
 }
 
+function getOutputsPath(uuid) {
+    return `data/Inputs/${uuid}/Input_outputs/`
+}
+
 class DraggerWrapper extends PureComponent {
     state = { currentFile: "" }
     render() {
-        const { children, uuid } = this.props
+        const { children, uuid, type } = this.props
         const props = {
             action: bucketUrl,
             data: { 
@@ -45,7 +50,8 @@ class DraggerWrapper extends PureComponent {
             },
             beforeUpload: file => {
                 this.setState(state => ({
-                    currentFile: getInputsPath(uuid) + file.name
+                    currentFile: type === 1 ? getInputsPath(uuid) + file.name :
+                                 type === 2 ? getOutputsPath(uuid) + file.name : ""
                 }));
                 return true;
             },
@@ -63,7 +69,8 @@ class KitForm extends PureComponent {
     formRef = React.createRef();
 
     state = {
-        uuid: uuid()
+        uuid: uuid(),
+        type: 1
     }
 
     validate = () => {
@@ -81,15 +88,25 @@ class KitForm extends PureComponent {
         })
     }
 
+    typeChange = e => {
+        this.setState({
+            type: e.target.value
+        })
+    }
+
     render() {
         const { submitting } = this.props;
-        const { uuid } = this.state;
+        const { uuid, type } = this.state;
         return (
             <PageHeaderWrapper
                 title="Новый Набор"
                 wrapperClassName={styles.form}
             >
-                <Form ref={this.formRef} layout="vertical" >
+                <Form ref={this.formRef} layout="vertical" 
+                        initialValues={{
+                            type : 1
+                        }}
+                    >
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16} >
                             <Col xl={{ span: 10, offset: 1 }} lg={{ span: 12 }} sm={{ span: 18 }} xs={{ span: 24 }}>
@@ -101,10 +118,20 @@ class KitForm extends PureComponent {
                     </Card>
 
                     <Card className={styles.card} bordered={false} style={{ marginTop: 24 }}>
+                        <Row gutter={16}>
+                            <Col xl={{ span: 10, offset: 1 }} lg={{ span: 12 }} sm={{ span: 18 }} xs={{ span: 24 }}>
+                                <Form.Item name="type" rules={[{ required: true }]}>
+                                    <Radio.Group onChange={this.typeChange} value={this.state.type}>
+                                        <Radio value={1}>Сгенерировать Модели</Radio>
+                                        <Radio value={2}>Готовые Модели</Radio>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Col>
+                        </Row>
                         <Row gutter={16} >
                             <Col xl={{ span: 10, offset: 1 }} lg={{ span: 12 }} sm={{ span: 18 }} xs={{ span: 24 }}>
                                 <Form.Item name="inputs" label={fieldLabels.inputs} rules={[{ required: false }]}>
-                                    <DraggerWrapper uuid={uuid}>
+                                    <DraggerWrapper uuid={uuid} type={type}>
                                         <p className="ant-upload-drag-icon">
                                             <InboxOutlined />
                                         </p>

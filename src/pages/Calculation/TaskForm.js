@@ -19,7 +19,8 @@ import uuid from 'react-uuid'
 const { Option } = Select;
 
 const fieldLabels = {
-    kit: "Набор",
+    kit: "Набор:",
+    taskType: "Вариант Расчета:",
     PRODUCT: "PRODUCT:",
     DELTAS_STORAGE: "DELTAS_STORAGE:",
     DELTA_RAILWAY: "DELTA_RAILWAY:",
@@ -40,14 +41,17 @@ const fieldLabels = {
     SHUFFLE_STORAGE: "SHUFFLE_STORAGE:",
     SHUFFLE_RAILWAY: "SHUFFLE_RAILWAY:",
     CORRECTION_FLAG: "CORRECTION_FLAG:",
-    CORRECTION_CORIDOR: "CORRECTION_CORIDOR:"
+    CORRECTION_CORIDOR: "CORRECTION_CORIDOR:",
+    DELTA: "DELTA:",
+    START_PRICE: "START_PRICE:",
 }
 
 class TaskForm extends PureComponent {
     formRef = React.createRef();
 
     state = {
-        uuid: uuid()
+        uuid: uuid(),
+        taskType: 1
     }
 
     validate = () => {
@@ -73,6 +77,10 @@ class TaskForm extends PureComponent {
         })
     };
 
+    taskTypeChange = (e) => {
+        this.setState({ taskType: e })
+    }
+
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch({
@@ -87,6 +95,10 @@ class TaskForm extends PureComponent {
             submitting 
         } = this.props;
 
+        const {
+            taskType
+        } = this.state;
+
         return (
             <PageHeaderWrapper
                 title="Новая Задача"
@@ -94,7 +106,10 @@ class TaskForm extends PureComponent {
             >
                 <Form ref={this.formRef} layout="vertical" 
                     initialValues={{
+                        taskType: 1,
                         PRODUCT : "СЕЛИТРА АММИАЧНАЯ",
+                        DELTA: 1,
+                        START_PRICE: 500,
                         DELTAS_STORAGE: "1, 0.5",
                         DELTA_RAILWAY: "1, 0.5",
                         YEARS: "2014, 2015, 2016, 2017, 2018, 2019",
@@ -114,7 +129,7 @@ class TaskForm extends PureComponent {
                         SHUFFLE_STORAGE: false,
                         SHUFFLE_RAILWAY: false,
                         CORRECTION_FLAG: false,
-                        CORRECTION_CORIDOR: "0.075, 0.068, 0.054, 0.056, 0.08, 0.072, 0.067, 0.054, 0.058, 0.062, 0.061, 0.063"
+                        CORRECTION_CORIDOR: "0.075, 0.068, 0.054, 0.056, 0.08, 0.072, 0.067, 0.054, 0.058, 0.062, 0.061, 0.063",
                     }}
                 >
                     <Card className={styles.card} bordered={false}>
@@ -131,8 +146,42 @@ class TaskForm extends PureComponent {
                                 </Form.Item>
                             </Col>
                         </Row>
+                        <Row gutter={16} >
+                            <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }} xs={12}>
+                                <Form.Item name="taskType" label={fieldLabels.taskType} rules={[{ required: true }]}>
+                                    <Select onChange={this.taskTypeChange}>
+                                        <Option key={1} value={1}>
+                                        Простая оптимизация
+                                        </Option>
+                                        <Option key={2} value={2}>
+                                        Ценовые войны
+                                        </Option>
+                                    </Select>
+                                </Form.Item>
+                            </Col>
+                        </Row>
                     </Card>
-                    
+                    { taskType === 1 &&
+                    <>
+                    <Card className={styles.card} bordered={false} style={{ marginTop: 24 }}>
+                        <Row gutter={16}>
+                            <Col xl={6} lg={8} md={12} sm={24}>
+                                <Form.Item name="DELTA" label={fieldLabels.DELTA} rules={[{ required: true }]}>
+                                    <Input placeholder="" />
+                                </Form.Item>
+                            </Col>
+                            <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
+                                <Form.Item name="START_PRICE" label={fieldLabels.START_PRICE} rules={[{ required: true }]}>
+                                    <Input placeholder="" />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Card>
+                    </>
+                    }
+
+                    { taskType === 2 &&
+                    <>
                     <Card className={styles.card} bordered={false} style={{ marginTop: 24 }}>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
@@ -196,7 +245,7 @@ class TaskForm extends PureComponent {
                                 </Form.Item>
                             </Col>
                         </Row>
-                    </Card>
+                    </Card>    
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
@@ -215,7 +264,6 @@ class TaskForm extends PureComponent {
                                 </Form.Item>
                             </Col>
                         </Row>
-
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
                                 <Form.Item name="AVAILABILITY_RADIUS" label={fieldLabels.AVAILABILITY_RADIUS} rules={[{ required: true }]}>
@@ -228,7 +276,6 @@ class TaskForm extends PureComponent {
                                 </Form.Item>
                             </Col>
                         </Row>
-
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
                                 <Form.Item name="BALANCE_RATIO" label={fieldLabels.BALANCE_RATIO} rules={[{ required: true }]}>
@@ -237,7 +284,6 @@ class TaskForm extends PureComponent {
                             </Col>
                         </Row>
                     </Card>
-
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
@@ -278,7 +324,8 @@ class TaskForm extends PureComponent {
                             </Col>
                         </Row>
                     </Card>
-
+                    </>
+                    }
                     <FooterToolbar>
                         <Button type="primary" onClick={this.validate} loading={submitting}>
                             Создать
