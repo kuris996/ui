@@ -113,13 +113,6 @@ class BacktestingForm extends PureComponent {
                     <p>{moment(text).format('YYYY-MM-DD HH:mm')}</p>
                 ),
             },
-            {
-                title: 'Статус',
-                dataIndex: 'status',
-                key: 'status',
-                sorter: true,
-                filters: data.filters.status
-            },
         ];
 
         return (
