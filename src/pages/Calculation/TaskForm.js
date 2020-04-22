@@ -20,7 +20,7 @@ const { Option } = Select;
 
 const fieldLabels = {
     kit: "Набор:",
-    taskType: "Вариант Расчета:",
+    CALCULATION_TYPE_ID: "Вариант Расчета:",
     PRODUCT: "PRODUCT:",
     DELTAS_STORAGE: "DELTAS_STORAGE:",
     DELTA_RAILWAY: "DELTA_RAILWAY:",
@@ -106,7 +106,7 @@ class TaskForm extends PureComponent {
             >
                 <Form ref={this.formRef} layout="vertical" 
                     initialValues={{
-                        taskType: 1,
+                        CALCULATION_TYPE_ID: 1,
                         PRODUCT : "СЕЛИТРА АММИАЧНАЯ",
                         DELTA: 1,
                         START_PRICE: 500,
@@ -148,7 +148,7 @@ class TaskForm extends PureComponent {
                         </Row>
                         <Row gutter={16} >
                             <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }} xs={12}>
-                                <Form.Item name="taskType" label={fieldLabels.taskType} rules={[{ required: true }]}>
+                                <Form.Item name="CALCULATION_TYPE_ID" label={fieldLabels.CALCULATION_TYPE_ID} rules={[{ required: true }]}>
                                     <Select onChange={this.taskTypeChange}>
                                         <Option key={1} value={1}>
                                         Простая оптимизация
@@ -157,6 +157,11 @@ class TaskForm extends PureComponent {
                                         Ценовые войны
                                         </Option>
                                     </Select>
+                                </Form.Item>
+                            </Col>
+                            <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
+                                <Form.Item name="PRODUCT" label={fieldLabels.PRODUCT} rules={[{ required: true }]}>
+                                    <Input placeholder="" />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -184,11 +189,6 @@ class TaskForm extends PureComponent {
                     <>
                     <Card className={styles.card} bordered={false} style={{ marginTop: 24 }}>
                         <Row gutter={16}>
-                            <Col xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item name="PRODUCT" label={fieldLabels.PRODUCT} rules={[{ required: true }]}>
-                                    <Input placeholder="" />
-                                </Form.Item>
-                            </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
                                 <Form.Item name="DELTAS_STORAGE" label={fieldLabels.DELTAS_STORAGE} rules={[{ required: true }]}>
                                     <Input placeholder="" />
