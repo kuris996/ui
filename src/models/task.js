@@ -29,13 +29,15 @@ export default {
                 payload: response,
             });
         },
-        *submit({ payload }, { call, put }) {
+        *submit({ payload, callback }, { call, put }) {
             const response = yield call(addTask, payload);
             yield put({
                 type: 'queryTask',
                 payload: response
             })
             yield put(routerRedux.push('/calculation/task-list'));
+            if (callback)
+                callback()
         },
         *remove({ payload, callback } , { call, put }) {
             const response = yield call(removeTask, payload);

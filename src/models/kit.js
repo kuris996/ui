@@ -22,13 +22,15 @@ export default {
                 payload: response,
             });
         },
-        *submit({ payload }, { call, put }) {
+        *submit({ payload, callback }, { call, put }) {
             const response = yield call(addKit, payload);
             yield put({
                 type: 'save',
                 payload: response
             })
             yield put(routerRedux.push('/calculation/kit-list'));
+            if (callback)
+                callback()
         },
         *remove({ payload, callback } , { call, put }) {
             const response = yield call(removeKit, payload);

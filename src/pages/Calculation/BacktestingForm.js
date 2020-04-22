@@ -20,7 +20,7 @@ class BacktestingForm extends PureComponent {
         const { selectedRows } = this.state;
         dispatch({
             type: 'backtesting/submit',
-            payload: { ...selectedRows }
+            payload: { ...selectedRows },
         })
         this.setState({
             selectedRows: []

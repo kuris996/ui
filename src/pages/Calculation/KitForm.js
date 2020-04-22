@@ -78,10 +78,9 @@ class KitForm extends PureComponent {
         const { uuid } = this.state;
         this.formRef.current.validateFields()
         .then(fields => {
-            this.formRef.current.resetFields();
             dispatch({
                 type: 'kit/submit',
-                payload: { ...fields, uuid }
+                payload: { ...fields, uuid },
             })
         })
         .catch(errorInfo => {

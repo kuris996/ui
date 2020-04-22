@@ -63,7 +63,6 @@ class TaskForm extends PureComponent {
         } = this.state;
         this.formRef.current.validateFields()
         .then(fields => {
-            this.formRef.current.resetFields();
             const {
                 key : kit,
                 label : kitName,
@@ -108,7 +107,7 @@ class TaskForm extends PureComponent {
                     initialValues={{
                         CALCULATION_TYPE_ID: 1,
                         PRODUCT : "СЕЛИТРА АММИАЧНАЯ",
-                        DELTA: 1,
+                        DELTA: '1',
                         START_PRICE: 500,
                         DELTAS_STORAGE: "1, 0.5",
                         DELTA_RAILWAY: "1, 0.5",
@@ -154,7 +153,7 @@ class TaskForm extends PureComponent {
                                         Простая оптимизация
                                         </Option>
                                         <Option key={2} value={2}>
-                                        Ценовые войны
+                                        Оптимизация со складами
                                         </Option>
                                     </Select>
                                 </Form.Item>
@@ -189,7 +188,7 @@ class TaskForm extends PureComponent {
                     <>
                     <Card className={styles.card} bordered={false} style={{ marginTop: 24 }}>
                         <Row gutter={16}>
-                            <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
+                            <Col xl={6} lg={8} md={12} sm={24}>
                                 <Form.Item name="DELTAS_STORAGE" label={fieldLabels.DELTAS_STORAGE} rules={[{ required: true }]}>
                                     <Input placeholder="" />
                                 </Form.Item>
