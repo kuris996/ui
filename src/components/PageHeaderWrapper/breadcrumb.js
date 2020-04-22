@@ -10,11 +10,20 @@ const itemRender = (route, params, routes, paths) => {
     const last = routes.indexOf(route) === routes.length - 1;
     // if path is home, use Link
     if (route.path === '/')
-        return <Link to={paths.join('/')}><Icon type={route.icon} className={styles.icon}/>{route.breadcrumbName}</Link>
+        return <Link to={paths.join('/')}>
+                    <Icon type={route.icon} className={styles.icon} />
+                    <span>{route.breadcrumbName}</span>
+               </Link>
     return last || !route.component ? (
-        <span><Icon type={route.icon} className={styles.icon}/>{route.breadcrumbName}</span>
+        <span>
+            <Icon type={route.icon} className={styles.icon}/>
+            <span>{route.breadcrumbName}</span>
+        </span>
     ) : (
-        <Link to={paths.join('/')}><Icon type={route.icon} className={styles.icon}/>{route.breadcrumbName}</Link>
+        <Link to={paths.join('/')}>
+            <Icon type={route.icon} className={styles.icon}/>
+            <span>{route.breadcrumbName}</span>
+        </Link>
     );
 };
 
