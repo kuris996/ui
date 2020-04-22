@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react'
 import moment from 'moment';
 import { connect } from 'dva'
 import {
-    Table, Badge, Menu, Dropdown,
+    Table, 
+    Badge,
     Card,
     Button,
 } from 'antd'
@@ -13,6 +14,19 @@ import styles from './styles.less'
 import Link from 'umi/link';
 
 const getValue = obj => Object.keys(obj).map(key => `'${obj[key]}'`).join(',');
+
+const statusMap = {
+    'idle' : 'default',
+    'running' : 'processing',
+    'finished' : 'success', 
+    'error' :'error'
+};
+
+const capitalize = (s) => {
+    if (typeof s !== 'string') 
+        return ''
+    return s.charAt(0).toUpperCase() + s.slice(1)
+}
 
 const expandedRowRender = (record) => {
     const columns = [
@@ -30,7 +44,6 @@ const expandedRowRender = (record) => {
             title: 'Создан',
             dataIndex: 'createdAt',
             key: 'createdAt',
-            sorter: true,
             render: (text, record) => (
                 <p>{moment(text).format('YYYY-MM-DD HH:mm')}</p>
             ),
@@ -142,7 +155,10 @@ class BacktestingList extends PureComponent {
                 dataIndex: 'status',
                 key: 'status',
                 sorter: true,
-                filters: data.filters.status
+                filters: data.filters.status,
+                render: (text, record) => (
+                    <Badge status={statusMap[text]} text={capitalize(text)} />
+                )
             },
         ];
 

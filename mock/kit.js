@@ -2,7 +2,7 @@
 import { parse } from 'url';
 
 let tableListDataSource = []
-for (let i = 0; i < 1; ++i) {
+for (let i = 0; i < 10; ++i) {
     tableListDataSource.push({
         id: `fake-kit-list-${i}`,
         name: `name-${1}`,

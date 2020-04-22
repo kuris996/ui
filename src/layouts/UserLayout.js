@@ -4,6 +4,7 @@ import Link from 'umi/link'
 import DocumentTitle from 'react-document-title'
 import { CopyrightOutlined } from '@ant-design/icons';
 import GlobalFooter from '@/components/GlobalFooter';
+import Logo from '@/components/Logo'
 import styles from './UserLayout.less'
 
 const copyright = (
@@ -13,10 +14,6 @@ const copyright = (
   );
 
 class UserLayout extends Component {
-    componentDidMount() {
-
-    }
-
     render() {
         const {
             children
@@ -28,7 +25,7 @@ class UserLayout extends Component {
                         <div className={styles.top}>
                             <div className={styles.header}>
                                 <Link to="/">
-                                    <span className={styles.title}>Ui</span>
+                                    <Logo/>
                                 </Link>
                             </div>
                             <div className={styles.desc}></div>

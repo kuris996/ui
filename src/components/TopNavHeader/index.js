@@ -32,7 +32,7 @@ export default class TopNavHeader extends PureComponent {
                     <div className={styles.left}>
                         <div className={styles.logo} key="logo" id="logo">
                             <Link to="/">
-                                <h1>Ui</h1>
+                                <h1>NH4NO3</h1>
                             </Link>
                         </div>
                         <div

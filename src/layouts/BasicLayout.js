@@ -8,6 +8,7 @@ import Media from 'react-media';
 import Context from './MenuContext';
 import HeaderView from './HeaderView'
 import SiderMenu from '@/components/SiderMenu';
+import Logo from '@/components/Logo'
 import styles from './BasicLayout.less';
 
 const { Content } = Layout;
@@ -111,7 +112,7 @@ class BasicLayout extends React.Component {
 
         return (
             <React.Fragment>
-                <DocumentTitle title={"Ui"}>
+                <DocumentTitle title={"NH4NO3"}>
                     <ContainerQuery query={query}>
                         {params => (
                             <Context.Provider value={this.getContext()}>
