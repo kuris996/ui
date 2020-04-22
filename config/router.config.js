@@ -27,6 +27,7 @@ export default [
                         path: '/calculation/task-list',
                         name: 'Задачи',
                         component: './Calculation/TaskList',
+                        icon: 'container'
                     },
                     {
                         hideInMenu: true,
@@ -44,12 +45,13 @@ export default [
                         path: '/calculation/kit-list',
                         name: 'Наборы',
                         component: './Calculation/KitList',
+                        icon: 'tool'
                     },
                     {
                         hideInMenu: true,
                         path: '/calculation/kit-inputs',
                         name: 'Подробнее о Наборе',
-                        component: './Bucket/InputsList'
+                        component: './Bucket/InputsList',
                     },
                     {
                         hideInMenu: true,
@@ -61,6 +63,7 @@ export default [
                         path: '/calculation/backtesting-list',
                         name: 'Back-Testing',
                         component: './Calculation/BacktestingList',
+                        icon: 'bug'
                     },
                     {
                         hideInMenu: true,
