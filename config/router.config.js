@@ -65,14 +65,14 @@ export default [
                     },
                     {
                         path: '/calculation/backtesting-list',
-                        name: 'Back-Testing',
+                        name: 'Backtesting',
                         component: './Calculation/BacktestingList',
                         icon: 'bug'
                     },
                     {
                         hideInMenu: true,
                         path: '/calculation/backtesting-form',
-                        name: 'Новый Back-Testing',
+                        name: 'Новый Backtesting',
                         component: './Calculation/BacktestingForm',
                         icon: 'bug'
                     },
