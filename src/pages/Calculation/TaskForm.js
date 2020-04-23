@@ -134,19 +134,6 @@ class TaskForm extends PureComponent {
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16} >
                             <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }} xs={12}>
-                                <Form.Item name="kit" label={fieldLabels.kit} rules={[{ required: true }]}>
-                                    <Select loading={loading} labelInValue>
-                                        { data.list.map(kit => (
-                                            <Option key={kit.uuid} value={kit.uuid}>
-                                                {kit.name}
-                                            </Option>
-                                        ))}
-                                    </Select>
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={16} >
-                            <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }} xs={12}>
                                 <Form.Item name="CALCULATION_TYPE_ID" label={fieldLabels.CALCULATION_TYPE_ID} rules={[{ required: true }]}>
                                     <Select onChange={this.taskTypeChange}>
                                         <Option key={1} value={1}>
@@ -161,6 +148,19 @@ class TaskForm extends PureComponent {
                             <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
                                 <Form.Item name="PRODUCT" label={fieldLabels.PRODUCT} rules={[{ required: true }]}>
                                     <Input placeholder="" />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={16} >
+                            <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }} xs={12}>
+                                <Form.Item name="kit" label={fieldLabels.kit} rules={[{ required: true }]}>
+                                    <Select loading={loading} labelInValue>
+                                        { data.list.map(kit => (
+                                            <Option key={kit.uuid} value={kit.uuid}>
+                                                {kit.name}
+                                            </Option>
+                                        ))}
+                                    </Select>
                                 </Form.Item>
                             </Col>
                         </Row>
