@@ -24,26 +24,6 @@ export default [
                 icon: 'calculator',
                 routes: [
                     {
-                        path: '/calculation/task-list',
-                        name: 'Задачи',
-                        component: './Calculation/TaskList',
-                        icon: 'container'
-                    },
-                    {
-                        hideInMenu: true,
-                        path: '/calculation/task-inputs',
-                        name: 'Подробнее о Задаче',
-                        component: './Bucket/InputsList',
-                        icon: 'info'
-                    },
-                    {
-                        hideInMenu: true,
-                        path: '/calculation/task-form',
-                        name: 'Новая Задача',
-                        component: './Calculation/TaskForm',
-                        icon: 'container'
-                    },
-                    {
                         path: '/calculation/kit-list',
                         name: 'Наборы',
                         component: './Calculation/KitList',
@@ -63,6 +43,26 @@ export default [
                         component: './Calculation/KitForm',
                         icon: 'tool'
                     },
+                    {
+                        path: '/calculation/task-list',
+                        name: 'Задачи',
+                        component: './Calculation/TaskList',
+                        icon: 'container'
+                    },
+                    {
+                        hideInMenu: true,
+                        path: '/calculation/task-inputs',
+                        name: 'Подробнее о Задаче',
+                        component: './Bucket/InputsList',
+                        icon: 'info'
+                    },
+                    {
+                        hideInMenu: true,
+                        path: '/calculation/task-form',
+                        name: 'Новая Задача',
+                        component: './Calculation/TaskForm',
+                        icon: 'container'
+                    },                    
                     {
                         path: '/calculation/backtesting-list',
                         name: 'Backtesting',
