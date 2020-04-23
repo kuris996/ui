@@ -34,7 +34,7 @@ export default [
                         path: '/calculation/kit-inputs',
                         name: 'Подробнее о Наборе',
                         component: './Bucket/InputsList',
-                        icon: 'info'
+                        icon: 'infoCircle'
                     },
                     {
                         hideInMenu: true,
@@ -54,7 +54,7 @@ export default [
                         path: '/calculation/task-inputs',
                         name: 'Подробнее о Задаче',
                         component: './Bucket/InputsList',
-                        icon: 'info'
+                        icon: 'infoCircle'
                     },
                     {
                         hideInMenu: true,
