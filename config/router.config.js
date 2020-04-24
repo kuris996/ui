@@ -31,7 +31,7 @@ export default [
                     },
                     {
                         hideInMenu: true,
-                        path: '/calculation/kit-inputs',
+                        path: '/calculation/kit-inputs/:kit',
                         name: 'Подробнее о Наборе',
                         component: './Bucket/InputsList',
                         icon: 'infoCircle'
@@ -51,7 +51,7 @@ export default [
                     },
                     {
                         hideInMenu: true,
-                        path: '/calculation/task-inputs',
+                        path: '/calculation/task-inputs/:kit/:uuid',
                         name: 'Подробнее о Задаче',
                         component: './Bucket/InputsList',
                         icon: 'infoCircle'

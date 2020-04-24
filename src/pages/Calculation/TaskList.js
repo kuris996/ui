@@ -151,9 +151,7 @@ class TaskList extends PureComponent {
                 render: (text, record) => (
                     <span>
                        <Link to={{
-                                pathname: "/calculation/task-inputs",
-                                kit: record.kit,
-                                uuid: record.uuid
+                                pathname: `/calculation/task-inputs/${record.kit}/${record.uuid}`,
                            }}
                         >
                             Подробнее

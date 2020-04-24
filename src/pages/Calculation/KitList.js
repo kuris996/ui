@@ -147,8 +147,7 @@ class KitList extends PureComponent {
                 render: (text, record) => (
                     <span>
                         <Link to={{
-                                pathname: "/calculation/kit-inputs",
-                                kit: record.uuid
+                                pathname: `/calculation/kit-inputs/${record.uuid}`,
                            }}
                         >
                             Подробнее

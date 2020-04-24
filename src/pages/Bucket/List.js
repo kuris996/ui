@@ -9,7 +9,8 @@ import moment from 'moment';
 
 class List extends PureComponent {
     componentDidMount() {
-        const { dispatch, location: { kit, uuid } } = this.props;
+        const { dispatch, match : { params } } = this.props;
+        const { kit, uuid} = params
         dispatch({
             type: 'input/fetch',
             payload: { 
