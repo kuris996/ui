@@ -160,6 +160,21 @@ class BacktestingList extends PureComponent {
                     <Badge status={statusMap[text]} text={capitalize(text)} />
                 )
             },
+            {
+                key: 'models',
+                render: (text, record) => (
+                    <span> 
+                    { record.tasks.length > 0 && 
+                        <Link to={{
+                                    pathname: `/calculation/kit-inputs/${record.tasks[0].kit}`,
+                            }}
+                            >
+                                Подробнее
+                        </Link>
+                    }
+                    </span>
+                )
+            },
         ];
 
         return (
