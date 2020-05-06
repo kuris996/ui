@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'dva'
 
 class LogoutPage extends PureComponent { 

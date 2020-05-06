@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import Link from 'umi/link';
 import { Checkbox, Alert } from 'antd';
 import Login  from '@/components/Login';
 import styles from './Login.less'
 
-const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
+const { UserName, Password, Submit } = Login;
 
 class LoginPage extends Component {
     state = {
