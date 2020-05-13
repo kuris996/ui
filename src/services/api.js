@@ -86,11 +86,27 @@ export async function addBacktesting(params) {
 }
 
 /*
+    chart
+*/
+
+export async function queryChartData() {
+    return request(`/api/chart_data`);
+}
+
+/*
     input
 */
 
 export async function queryInput(params) {
     return request(`/api/input?${stringify(params)}`);
+}
+
+/*
+    params
+*/
+
+export async function queryParams(params) {
+    return request(`/api/params?${stringify(params)}`);
 }
 
 /*

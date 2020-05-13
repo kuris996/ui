@@ -5,7 +5,7 @@ let tableListDataSource = []
 for (let i = 0; i < 10; ++i) {
     tableListDataSource.push({
         id: `fake-kit-list-${i}`,
-        name: `name-${1}`,
+        name: `name-${i}`,
         uuid: 'uuid',
         status: ['idle', 'running', 'error', 'finished'][i % 4],
         createdAt: new Date(new Date().getTime() - 1000 * 60 * 60 * 2 * i),
@@ -55,9 +55,14 @@ function getKit(req, res, u) {
         })
     }
 
+    
     if (params.status) {
         const status = params.status.split(',');
         let filterDataSource = [];
+
+        console.log(params.status)
+
+
         status.forEach(s => {
             filterDataSource = filterDataSource.concat(
                 dataSource.filter(data => parseInt(data.status, 10) == parseInt(s[0], 10))

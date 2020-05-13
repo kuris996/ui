@@ -35,7 +35,7 @@ function getOutputsPath(uuid) {
 class DraggerWrapper extends PureComponent {
     state = { currentFile: "" }
     render() {
-        const { children, uuid, type } = this.props
+        const { children, uuid, type, handleChange } = this.props
         const props = {
             action: bucketUrl,
             data: { 
@@ -47,6 +47,7 @@ class DraggerWrapper extends PureComponent {
                 } else if (info.file.status === 'error') {
                     message.error(`${info.file.name} ошибка загрузки.`);
                 }
+                handleChange(info)
             },
             beforeUpload: file => {
                 this.setState(state => ({
@@ -70,20 +71,35 @@ class KitForm extends PureComponent {
 
     state = {
         uuid: uuid(),
-        type: 1
+        type: 1,
+        fileList: [],
+        error: ""
     }
 
     validate = () => {
         const { dispatch } = this.props;
-        const { uuid, type } = this.state;
+        const { uuid, type, fileList } = this.state;
         this.formRef.current.validateFields()
         .then(fields => {
+            if (!fileList.length)
+                throw "Необходимо загрузить файл."
+            else if (type === 1 && fileList.length < 6)
+                throw "Необходимо загрузить больше файлов."
             dispatch({
                 type: 'kit/submit',
                 payload: { ...fields, uuid, type },
             })
         })
         .catch(errorInfo => {
+            this.setState({
+                error: errorInfo
+            })
+        })
+    }
+
+    handleUploadChange = info => {
+        this.setState({
+            fileList: info.fileList
         })
     }
 
@@ -129,8 +145,12 @@ class KitForm extends PureComponent {
                         </Row>
                         <Row gutter={16} >
                             <Col xl={{ span: 10, offset: 1 }} lg={{ span: 12 }} sm={{ span: 18 }} xs={{ span: 24 }}>
-                                <Form.Item name="inputs" label={fieldLabels.inputs} rules={[{ required: false }]}>
-                                    <DraggerWrapper uuid={uuid} type={type}>
+                                <Form.Item name="inputs" 
+                                            label={fieldLabels.inputs} 
+                                            help={this.state.error}
+                                            validateStatus={this.state.error ? "error" : "success" } 
+                                            >
+                                    <DraggerWrapper uuid={uuid} type={type} handleChange={this.handleUploadChange}>
                                         <p className="ant-upload-drag-icon">
                                             <InboxOutlined />
                                         </p>
