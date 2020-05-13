@@ -78,6 +78,13 @@ export default [
                     },
                 ],
             },
+            // analysis
+            //{
+            //    name: 'Анализ',
+            //    icon: 'areaChart',
+            //    path: '/analysis',
+            //    component: './Analysis/Analysis',
+            //},
             // logout
             {
                 name: 'Выйти',

@@ -25,7 +25,6 @@ const fieldLabels = {
     DELTAS_STORAGE: "DELTAS_STORAGE:",
     DELTA_RAILWAY: "DELTA_RAILWAY:",
     YEARS: "YEARS:",
-    FOB_PRICES: "FOB_PRICES:",
     RAILWAY_INITIAL_PRICE: "RAILWAY_INITIAL_PRICE:",
     MAX_RATIO_RAILWAY: "MAX_RATIO_RAILWAY:",
     STORAGES_BUY_ON_MARKET: "STORAGES_BUY_ON_MARKET:",
@@ -46,12 +45,30 @@ const fieldLabels = {
     START_PRICE: "START_PRICE:",
 }
 
+function validateArrayOfValues(value, min, max) {
+    var re = /\s*,\s*/;
+    var tokens = value.split(re);
+    for (let i = 0; i < tokens.length; ++i) {
+        let val = parseFloat(tokens[i])
+        if (isNaN(val))
+            return `Неверное значение ${tokens[i]}`
+        if (val < min)
+            return `Значение должно быть больше ${min}`
+        if (val > max)
+            return `Значение должно быть меньше ${max}`
+    }
+    return "";
+}
+
 class TaskForm extends PureComponent {
     formRef = React.createRef();
 
     state = {
         uuid: uuid(),
-        taskType: 1
+        taskType: 1,
+        PRODUCT: "",
+        years: [],
+        selectedYears: []
     }
 
     validate = () => {
@@ -60,7 +77,10 @@ class TaskForm extends PureComponent {
         } = this.props;
         const {
             uuid,
+            selectedYears,
+            PRODUCT
         } = this.state;
+        let YEARS = selectedYears.map(year => `${year}`).join(',')
         this.formRef.current.validateFields()
         .then(fields => {
             const {
@@ -69,7 +89,7 @@ class TaskForm extends PureComponent {
              } = fields.kit
             dispatch({
                 type: 'task/submit',
-                payload: { ...fields, uuid, kit, kitName},
+                payload: { ...fields, uuid, kit, kitName, YEARS, PRODUCT},
             });
         })
         .catch(errorInfo => {
@@ -80,17 +100,43 @@ class TaskForm extends PureComponent {
         this.setState({ taskType: e })
     }
 
+    productChange = (e) => {
+        this.setState({ PRODUCT: e.label, years: e.value, selectedYears: [] })
+    }
+
+    yearChange = (e) => {
+        this.setState({ selectedYears: e})
+    }
+
+    kitChange = (e) => {
+        const { dispatch } = this.props;
+
+        this.formRef.current.setFieldsValue({
+            PRODUCT: "", YEARS: []
+        })
+
+        dispatch({
+            type: 'params/fetch',
+            payload: { 
+                kit: e.key
+            }
+        });
+    }
+
     componentDidMount() {
         const { dispatch } = this.props;
         dispatch({
             type: 'kit/fetch',
+            payload: { status: "'finished'" }
         });
     }
 
     render() {
         const { 
             kit : { data }, 
-            loading, 
+            kitLoading, 
+            params: { list },
+            paramsLoading,
             submitting 
         } = this.props;
 
@@ -106,21 +152,18 @@ class TaskForm extends PureComponent {
                 <Form ref={this.formRef} layout="vertical" 
                     initialValues={{
                         CALCULATION_TYPE_ID: 1,
-                        PRODUCT : "СЕЛИТРА АММИАЧНАЯ",
-                        DELTA: '1',
+                        DELTA: 1,
                         START_PRICE: 500,
                         DELTAS_STORAGE: "1, 0.5",
                         DELTA_RAILWAY: "1, 0.5",
-                        YEARS: "2014, 2015, 2016, 2017, 2018, 2019",
-                        FOB_PRICES: "600, 700, 740, 740, 600",
-                        RAILWAY_INITIAL_PRICE: "280",
-                        MAX_RATIO_RAILWAY: "1",
+                        RAILWAY_INITIAL_PRICE: 280,
+                        MAX_RATIO_RAILWAY: 1,
                         STORAGES_BUY_ON_MARKET: true,
-                        WH_PREMIUM_RAILWAY: "16",
-                        OVERALL_PREMIA_ADDITION: "0",
+                        WH_PREMIUM_RAILWAY: 16,
+                        OVERALL_PREMIA_ADDITION: 0,
                         MIN_RADIUS: 2,
                         MAX_RADIUS: 2,
-                        CUSTOMER_DISTANCE: "1.8",
+                        CUSTOMER_DISTANCE: 1.8,
                         AVAILABILITY_RADIUS: 400,
                         STORAGE_PRICE: 1000000,
                         BALANCE_RATIO: 1.02,
@@ -133,7 +176,7 @@ class TaskForm extends PureComponent {
                 >
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16} >
-                            <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }} xs={12}>
+                            <Col xl={6} lg={12} md={{ span: 12 }} sm={{ span: 24 }} xs={12}>
                                 <Form.Item name="CALCULATION_TYPE_ID" label={fieldLabels.CALCULATION_TYPE_ID} rules={[{ required: true }]}>
                                     <Select onChange={this.taskTypeChange}>
                                         <Option key={1} value={1}>
@@ -145,19 +188,38 @@ class TaskForm extends PureComponent {
                                     </Select>
                                 </Form.Item>
                             </Col>
-                            <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
-                                <Form.Item name="PRODUCT" label={fieldLabels.PRODUCT} rules={[{ required: true }]}>
-                                    <Input placeholder="" />
-                                </Form.Item>
-                            </Col>
                         </Row>
                         <Row gutter={16} >
-                            <Col xl={6} lg={8} md={{ span: 12 }} sm={{ span: 24 }} xs={12}>
+                            <Col xl={6} lg={12} md={{ span: 12 }} sm={{ span: 24 }} xs={12}>
                                 <Form.Item name="kit" label={fieldLabels.kit} rules={[{ required: true }]}>
-                                    <Select loading={loading} labelInValue>
+                                    <Select loading={kitLoading} labelInValue onChange={this.kitChange} >
                                         { data.list.map(kit => (
                                             <Option key={kit.uuid} value={kit.uuid}>
                                                 {kit.name}
+                                            </Option>
+                                        ))}
+                                    </Select>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col xl={{ span: 6 }} lg={12} md={12} sm={24} xs={12}>
+                                <Form.Item name="PRODUCT" label={fieldLabels.PRODUCT} rules={[{ required: true }]}>
+                                    <Select loading={paramsLoading} labelInValue onChange={this.productChange}>
+                                        { list.map(prod => (
+                                            <Option key={prod.product} value={prod.years}>
+                                                {prod.product}
+                                            </Option>
+                                        ))}
+                                    </Select>
+                                </Form.Item>
+                            </Col>
+                            <Col xl={{ span: 6, offset: 2 }} lg={12} md={12} sm={24} xs={12}>
+                                <Form.Item name="YEARS" label={fieldLabels.YEARS} rules={[{ required: true }]}>
+                                    <Select loading={paramsLoading} mode="multiple" onChange={this.yearChange}>
+                                        { this.state.years.map(year => (
+                                            <Option key={year}  value={year}>
+                                                {year}
                                             </Option>
                                         ))}
                                     </Select>
@@ -171,12 +233,12 @@ class TaskForm extends PureComponent {
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
                                 <Form.Item name="DELTA" label={fieldLabels.DELTA} rules={[{ required: true }]}>
-                                    <Input placeholder="" />
+                                    <InputNumber placeholder="" />
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
                                 <Form.Item name="START_PRICE" label={fieldLabels.START_PRICE} rules={[{ required: true }]}>
-                                    <Input placeholder="" />
+                                    <InputNumber placeholder="" />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -189,24 +251,40 @@ class TaskForm extends PureComponent {
                     <Card className={styles.card} bordered={false} style={{ marginTop: 24 }}>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item name="DELTAS_STORAGE" label={fieldLabels.DELTAS_STORAGE} rules={[{ required: true }]}>
+                                <Form.Item name="DELTAS_STORAGE" 
+                                           label={fieldLabels.DELTAS_STORAGE} 
+                                           rules={[
+                                               { required: true },
+                                               ({ getFieldValue }) => ({
+                                                validator(rule, value) {
+                                                  let err = validateArrayOfValues(value, 0.01)
+                                                  if (err === "") {
+                                                    return Promise.resolve();
+                                                  }
+                                                  return Promise.reject(err);
+                                                },
+                                              })
+                                            ]}
+                                >
                                     <Input placeholder="" />
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
-                                <Form.Item name="DELTA_RAILWAY" label={fieldLabels.DELTA_RAILWAY} rules={[{ required: true }]}>
-                                    <Input placeholder="" />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item name="FOB_PRICES" label={fieldLabels.FOB_PRICES} rules={[{ required: true }]}>
-                                    <Input placeholder="" />
-                                </Form.Item>
-                            </Col>
-                            <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
-                                <Form.Item name="YEARS" label={fieldLabels.YEARS} rules={[{ required: true }]}>
+                                <Form.Item name="DELTA_RAILWAY" 
+                                           label={fieldLabels.DELTA_RAILWAY} 
+                                           rules={[
+                                            { required: true },
+                                            ({ getFieldValue }) => ({
+                                             validator(rule, value) {
+                                               let err = validateArrayOfValues(value, 0.01)
+                                               if (err === "") {
+                                                 return Promise.resolve();
+                                               }
+                                               return Promise.reject(err);
+                                             },
+                                           })
+                                         ]}
+                                >
                                     <Input placeholder="" />
                                 </Form.Item>
                             </Col>
@@ -215,13 +293,28 @@ class TaskForm extends PureComponent {
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item name="RAILWAY_INITIAL_PRICE" label={fieldLabels.RAILWAY_INITIAL_PRICE} rules={[{ required: true }]}>
-                                    <Input placeholder=""/>
+                                <Form.Item name="RAILWAY_INITIAL_PRICE" 
+                                           label={fieldLabels.RAILWAY_INITIAL_PRICE} 
+                                >
+                                    <InputNumber placeholder="" min={0}/>
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
-                                <Form.Item name="MAX_RATIO_RAILWAY" label={fieldLabels.MAX_RATIO_RAILWAY} rules={[{ required: true }]}>
-                                    <Input placeholder="" />
+                                <Form.Item name="MAX_RATIO_RAILWAY" 
+                                            label={fieldLabels.MAX_RATIO_RAILWAY} 
+                                            rules={[
+                                                { required: true },
+                                                ({ getFieldValue }) => ({
+                                                 validator(rule, value) {
+                                                    if (value > 0) {
+                                                        return Promise.resolve();
+                                                    }
+                                                    return Promise.reject('Значение должно быть больше 0');
+                                                 },
+                                               })
+                                             ]}
+                                >
+                                    <InputNumber placeholder="" max={1} min={0} />
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
@@ -239,8 +332,10 @@ class TaskForm extends PureComponent {
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
-                                <Form.Item name="OVERALL_PREMIA_ADDITION" label={fieldLabels.OVERALL_PREMIA_ADDITION} rules={[{ required: true }]}>
-                                    <InputNumber placeholder=""/>
+                                <Form.Item name="OVERALL_PREMIA_ADDITION" 
+                                        label={fieldLabels.OVERALL_PREMIA_ADDITION} 
+                                        rules={[{ required: true }]}>
+                                    <InputNumber placeholder="" min={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -248,37 +343,111 @@ class TaskForm extends PureComponent {
                     <Card className={styles.card} bordered={false}>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item name="MIN_RADIUS" label={fieldLabels.MIN_RADIUS} rules={[{ required: true }]}>
-                                    <InputNumber placeholder=""/>
+                                <Form.Item name="MIN_RADIUS" 
+                                    label={fieldLabels.MIN_RADIUS} 
+                                    rules={[
+                                        ({ getFieldValue }) => ({
+                                         validator(rule, value) {                                           
+                                           if (value > 0) {
+                                             return Promise.resolve();
+                                           }
+                                           return Promise.reject('Значение должно быть больше 0');
+                                         },
+                                       })
+                                     ]}
+                                >
+                                    <InputNumber placeholder="" min={0}/>
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
-                                <Form.Item name="MAX_RADIUS" label={fieldLabels.MAX_RADIUS} rules={[{ required: true }]}>
-                                    <InputNumber placeholder="" />
+                                <Form.Item name="MAX_RADIUS" 
+                                    label={fieldLabels.MAX_RADIUS} 
+                                    dependencies={['MIN_RADIUS']}
+                                    rules={[
+                                        ({ getFieldValue }) => ({
+                                         validator(rule, value) {
+                                           if (value >= getFieldValue('MIN_RADIUS')) {
+                                             return Promise.resolve();
+                                           }
+                                           return Promise.reject('Значение должно быть больше или равно MIN_RADIUS');
+                                         },
+                                       })
+                                     ]}
+                                >
+                                    <InputNumber placeholder="" min={0} />
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
-                                <Form.Item name="CUSTOMER_DISTANCE" label={fieldLabels.CUSTOMER_DISTANCE}>
-                                    <Input />
+                                <Form.Item name="CUSTOMER_DISTANCE" 
+                                        label={fieldLabels.CUSTOMER_DISTANCE}
+                                        rules={[
+                                            ({ getFieldValue }) => ({
+                                             validator(rule, value) {                                           
+                                               if (value > 0) {
+                                                 return Promise.resolve();
+                                               }
+                                               return Promise.reject('Значение должно быть больше 0');
+                                             },
+                                           })
+                                         ]}
+                                        >
+                                    <InputNumber placeholder="" min={0} />
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item name="AVAILABILITY_RADIUS" label={fieldLabels.AVAILABILITY_RADIUS} rules={[{ required: true }]}>
-                                    <InputNumber placeholder="" />
+                                <Form.Item name="AVAILABILITY_RADIUS" 
+                                        label={fieldLabels.AVAILABILITY_RADIUS} 
+                                        dependencies={['MAX_RADIUS']}
+                                        rules={[
+                                            ({ getFieldValue }) => ({
+                                            validator(rule, value) {
+                                            if (value >= getFieldValue('MAX_RADIUS')) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject('Значение должно быть больше или равно MAX_RADIUS');
+                                            },
+                                        })
+                                        ]}
+                                >
+                                    <InputNumber placeholder="" min={0}/>
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
-                                <Form.Item name="STORAGE_PRICE" label={fieldLabels.STORAGE_PRICE}>
-                                    <InputNumber />
+                                <Form.Item name="STORAGE_PRICE"
+                                        label={fieldLabels.STORAGE_PRICE}
+                                        rules={[
+                                            ({ getFieldValue }) => ({
+                                            validator(rule, value) {
+                                            if (value > 0) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject('Значение должно быть больше 0');
+                                            },
+                                        })
+                                        ]}
+                                >
+                                    <InputNumber placeholder="" min={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
-                                <Form.Item name="BALANCE_RATIO" label={fieldLabels.BALANCE_RATIO} rules={[{ required: true }]}>
-                                    <InputNumber placeholder=""/>
+                                <Form.Item name="BALANCE_RATIO"
+                                         label={fieldLabels.BALANCE_RATIO}
+                                         rules={[
+                                            ({ getFieldValue }) => ({
+                                            validator(rule, value) {
+                                            if (value > 0) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject('Значение должно быть больше 0');
+                                            },
+                                        })
+                                        ]}
+                                >
+                                    <InputNumber placeholder="" min={0}/>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -317,7 +486,21 @@ class TaskForm extends PureComponent {
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 14, offset: 2 }} lg={{ span: 14 }} md={12} sm={24} xs={24}>
-                                <Form.Item name="CORRECTION_CORIDOR" label={fieldLabels.CORRECTION_CORIDOR} rules={[{ required: true }]}>
+                                <Form.Item name="CORRECTION_CORIDOR" 
+                                        label={fieldLabels.CORRECTION_CORIDOR} 
+                                        rules={[
+                                            { required: true },
+                                            ({ getFieldValue }) => ({
+                                             validator(rule, value) {
+                                               let err = validateArrayOfValues(value, 0)
+                                               if (err === "") {
+                                                 return Promise.resolve();
+                                               }
+                                               return Promise.reject(err);
+                                             },
+                                           })
+                                         ]}
+                                >
                                     <Input />
                                 </Form.Item>
                             </Col>
@@ -336,9 +519,11 @@ class TaskForm extends PureComponent {
     }
 }
 
-export default connect(({kit, loading }) => ({
+export default connect(({kit, params, loading }) => ({
     kit,
-    loading: loading.models.kit,
+    kitLoading: loading.models.kit,
+    params,
+    paramsLoading: loading.models.params,
     submitting: loading.effects['task/submit'],
 }))(TaskForm);
 

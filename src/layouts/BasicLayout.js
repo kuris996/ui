@@ -8,7 +8,6 @@ import Media from 'react-media';
 import Context from './MenuContext';
 import HeaderView from './HeaderView'
 import SiderMenu from '@/components/SiderMenu';
-import Logo from '@/components/Logo'
 import styles from './BasicLayout.less';
 
 const { Content } = Layout;

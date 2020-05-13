@@ -59,7 +59,7 @@ function getTask(req, res, u) {
         let filterDataSource = [];
         status.forEach(s => {
             filterDataSource = filterDataSource.concat(
-                dataSource.filter(data => parseInt(data.status, 10) == parseInt(s[0], 10))
+                dataSource.filter(data => data.status == s[0])
             );
         });
         dataSource = filterDataSource;

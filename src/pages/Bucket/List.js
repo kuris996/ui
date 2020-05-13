@@ -23,7 +23,6 @@ class List extends PureComponent {
         const {
             input: { list },
             loading,
-            title,
         } = this.props
 
         const renderSize = (value) => {
