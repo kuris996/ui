@@ -256,7 +256,7 @@ class TaskForm extends PureComponent {
                         <Row gutter={16}>
                             <Col xl={6} lg={8} md={12} sm={24}>
                                 <Form.Item name="DELTA" label={fieldLabels.DELTA} rules={[{ required: true }]}>
-                                    <InputNumber placeholder="" />
+                                    <InputNumber placeholder="" min={0.01}/>
                                 </Form.Item>
                             </Col>
                             <Col xl={{ span: 6, offset: 2 }} lg={8} md={12} sm={24}>
@@ -392,14 +392,16 @@ class TaskForm extends PureComponent {
                             <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
                                 <Form.Item name="MAX_RADIUS" 
                                     label={fieldLabels.MAX_RADIUS} 
-                                    dependencies={['MIN_RADIUS']}
+                                    dependencies={['MIN_RADIUS', 'CUSTOMER_DISTANCE']}
                                     rules={[
                                         { required: true },
                                         ({ getFieldValue }) => ({
                                          validator(rule, value) {
+                                           if ((value * value * Math.PI)  / getFieldValue('CUSTOMER_DISTANCE') > 20)
+                                             return Promise.reject('Увеличьте значение CUSTOMER_DISTANCE или уменьшите MAX_RADIUS');
                                            if (value >= getFieldValue('MIN_RADIUS')) {
                                              return Promise.resolve();
-                                           }
+                                           }                                           
                                            return Promise.reject('Значение должно быть больше или равно MIN_RADIUS');
                                          },
                                        })
@@ -411,10 +413,13 @@ class TaskForm extends PureComponent {
                             <Col xl={{ span: 6, offset: 2 }} lg={{ span: 8 }} md={12} sm={24}>
                                 <Form.Item name="CUSTOMER_DISTANCE" 
                                         label={fieldLabels.CUSTOMER_DISTANCE}
+                                        dependencies={['MAX_RADIUS']}
                                         rules={[
                                             { required: true },
                                             ({ getFieldValue }) => ({
-                                             validator(rule, value) {                                           
+                                             validator(rule, value) {    
+                                               if ((getFieldValue('MAX_RADIUS') * getFieldValue('MAX_RADIUS') * Math.PI)  / value > 20)
+                                                 return Promise.reject('Увеличьте значение CUSTOMER_DISTANCE или уменьшите MAX_RADIUS');                                       
                                                if (value > 0) {
                                                  return Promise.resolve();
                                                }
