@@ -59,7 +59,7 @@ class DraggerWrapper extends PureComponent {
         }
 
         return (
-            <Dragger {...props}>
+            <Dragger {...props} >
                 {children}
             </Dragger>
         )
@@ -98,8 +98,14 @@ class KitForm extends PureComponent {
     }
 
     handleUploadChange = info => {
+        if (info.file.status !== 'done')
+            return
+
+        let fileList = this.state.fileList
+        fileList = fileList.concat(info.file)
+        
         this.setState({
-            fileList: info.fileList
+            fileList: fileList
         })
     }
 
