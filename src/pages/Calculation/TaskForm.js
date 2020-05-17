@@ -83,7 +83,7 @@ class TaskForm extends PureComponent {
             selectedYears,
             PRODUCT
         } = this.state;
-        let YEARS = selectedYears.map(year => `${year}`).join(',')
+        let YEARS = selectedYears
         this.formRef.current.validateFields()
         .then(fields => {
             const {
